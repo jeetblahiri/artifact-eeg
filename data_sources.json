@@ -1,0 +1,42 @@
+{
+  "eegdenoisenet": [
+    {
+      "name": "EEG_all_epochs.npy",
+      "sha256": "89350579007ab18daf918a26c9f730484ba3755e861bbf8a6f68d1657843a748",
+      "git_blob_sha": "9a115bc5731238042e9c8b67a2ba497c22370f10",
+      "source_url": "https://github.com/ncclabsustech/EEGdenoiseNet/blob/master/data/EEG_all_epochs.npy",
+      "shape": [
+        4514,
+        512
+      ],
+      "sampling_hz": 256
+    },
+    {
+      "name": "EOG_all_epochs.npy",
+      "sha256": "fe31f2c22efce5da7488a1047b6f05d678e80f48d22e20a70972aaf13784fa0a",
+      "git_blob_sha": "4b81426cb82692b05a3f14b13587bfd8a16e067f",
+      "source_url": "https://github.com/ncclabsustech/EEGdenoiseNet/blob/master/data/EOG_all_epochs.npy",
+      "shape": [
+        3400,
+        512
+      ],
+      "sampling_hz": 256
+    },
+    {
+      "name": "EMG_all_epochs.npy",
+      "sha256": "8bb16dff87582823488dd2189dba9d8fa019a8cbc9af9a8a19acb421b3fcfb16",
+      "git_blob_sha": "7cfffb6276af5ba172c8fd29645d3c44ddee98dd",
+      "source_url": "https://github.com/ncclabsustech/EEGdenoiseNet/blob/master/data/EMG_all_epochs.npy",
+      "shape": [
+        5598,
+        512
+      ],
+      "sampling_hz": 256
+    }
+  ],
+  "erp_core": {
+    "url": "https://data.nemar.org/nm000132/v1.1.1/",
+    "manifest_sha256": "71831eb7ad022ec998fdf30192c78f1a71256cd367e4a5ec84c6c88ec53b6f8d",
+    "selection": "All 40 participants; all N170 and P3 recordings; 406 files"
+  }
+}

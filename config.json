@@ -1,0 +1,67 @@
+{
+  "study_date": "2026-10-08",
+  "status": "local prospective run protocol after prior related results were known; not registered",
+  "seed": 20261008,
+  "source_dir": "data/eegdenoisenet",
+  "ecg_dir": "data/mit-bih",
+  "bci_dir": "data/bci_iv_2a",
+  "fs": 256,
+  "length": 512,
+  "split_fractions": [
+    0.6,
+    0.2,
+    0.2
+  ],
+  "snr_power_db": [
+    -7,
+    -4,
+    -1,
+    2
+  ],
+  "mixture_counts": {
+    "train": 10000,
+    "val": 2000,
+    "test": 3000
+  },
+  "training_seeds": [
+    17,
+    29,
+    43
+  ],
+  "epochs": 20,
+  "learning_rates": [
+    0.001,
+    0.003
+  ],
+  "batch_size": 128,
+  "bootstrap_replicates": 1000,
+  "linear_ridge_grid": [
+    1e-05,
+    0.001,
+    0.1
+  ],
+  "bci_subjects": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "bci_epoch_after_cue_s": [
+    0.5,
+    2.5
+  ],
+  "bci_filter_hz": [
+    1,
+    40
+  ],
+  "ica_correlation_threshold": 0.3,
+  "ica_max_removed": 3,
+  "ica_fit_samples": 40000,
+  "severe_quality_train_quantile": 0.975,
+  "task_noninferiority_margin_accuracy": 0.02
+}

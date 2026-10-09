@@ -1,0 +1,15 @@
+{
+  "baseline": "Frozen 2561-parameter Femto convolutional autoencoder",
+  "source_publication_doi": "10.1109/ICASSP55912.2026.11462844",
+  "source_authors": [
+    "Jeet Bandhu Lahiri",
+    "A. Kulkarni",
+    "Siddharth Panwar"
+  ],
+  "original_checkpoint_sha256": "2a66dfddf6c6152fc4797d4a538fbf677f7316fb2696bfeab5cbcc2040c39228",
+  "released_checkpoint_sha256": "d6549b75765fb5e5c68e459e7cda7eb94b7b8349ca9d50eff3cc08248ee8a315",
+  "conversion": "Full model object converted to tensor-only state_dict; every tensor compared exactly with torch.equal",
+  "parameters": 2561,
+  "erp_fine_tuning": false,
+  "source_person_ids_available": false
+}

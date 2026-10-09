@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-08",
+  "status": "exploratory extension fixed before these new controls; earlier study results already known",
+  "seed": 94621,
+  "simulation_draws": 100000,
+  "simulation_task_amplitude": 1.0,
+  "simulation_overlap_artifact_sd": 1.0,
+  "simulation_background_variance": 0.5,
+  "simulation_low_artifact_variance": 0.5,
+  "teacher_deletion_fraction": [0.0, 0.25, 0.5, 0.75, 1.0],
+  "target_rms_uncertainty_fractions": [0.0, 0.01, 0.05, 0.1, 0.2],
+  "real_teacher_variants": ["parent", "remove_8_30", "retain_1_8", "remove_1_4"],
+  "real_teacher_decoders": ["CSP", "bandpower"],
+  "interpretation": "Known-source simulation, adversarial target sensitivity and controlled real-EEG teacher intervention. No estimate of actual EEGdenoiseNet neural loss or target impurity."
+}

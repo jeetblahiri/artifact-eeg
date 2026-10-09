@@ -1,0 +1,113 @@
+{
+  "note": "Release adapts locations only; fresh runs fingerprint the released code and configuration. Historical outputs are not included or relabeled as new runs.",
+  "files": [
+    {
+      "path": "src/common.py",
+      "executed_source_sha256": "f3fac944754d2b76439cb76d8120ffa7c01c7266cf3cae9abf465dfb5fec6de6",
+      "release_sha256": "2883507fbcfef3dc5cda963038663681ec12832121ff1dc7f64bf6a727ae4198",
+      "adaptation": "Portable input paths only"
+    },
+    {
+      "path": "src/measurement_math.py",
+      "executed_source_sha256": "3f47b07d00870af9d99164b1556afca54c9dab651911dda1cf5ff0404046201f",
+      "release_sha256": "3f47b07d00870af9d99164b1556afca54c9dab651911dda1cf5ff0404046201f",
+      "adaptation": "Unchanged"
+    },
+    {
+      "path": "src/target_validity.py",
+      "executed_source_sha256": "c0607bb160796d9d3849b63b95692664faa28f2b75170ada12bd138e9504108b",
+      "release_sha256": "c0607bb160796d9d3849b63b95692664faa28f2b75170ada12bd138e9504108b",
+      "adaptation": "Unchanged"
+    },
+    {
+      "path": "src/mixture_study.py",
+      "executed_source_sha256": "33a52b18684f88b11809aa95087f178bf5a8f6f62c04d713dc8db2e8c378c3bd",
+      "release_sha256": "33a52b18684f88b11809aa95087f178bf5a8f6f62c04d713dc8db2e8c378c3bd",
+      "adaptation": "Unchanged"
+    },
+    {
+      "path": "src/real_task.py",
+      "executed_source_sha256": "1bf75b1474e501f6439468daae652177e48de0ca23946217a2835e59e88002ad",
+      "release_sha256": "b3806f674a6d8cb15e7912731560b7ef14b5faa1de5f2d70b33bbec36a85c1ae",
+      "adaptation": "Portable input paths only"
+    },
+    {
+      "path": "src/teacher_intervention.py",
+      "executed_source_sha256": "a02fd1fab6e32507a93b7bc2f21b4194f92eef2b79818934bd20e81a23041e27",
+      "release_sha256": "a02fd1fab6e32507a93b7bc2f21b4194f92eef2b79818934bd20e81a23041e27",
+      "adaptation": "Unchanged"
+    },
+    {
+      "path": "src/benchmark_task_transfer.py",
+      "executed_source_sha256": "d3632613fcaac0de3a8c7c7fd6d8fbce24e9298fd244bb9e5aadb484fd2e5169",
+      "release_sha256": "d3632613fcaac0de3a8c7c7fd6d8fbce24e9298fd244bb9e5aadb484fd2e5169",
+      "adaptation": "Unchanged"
+    },
+    {
+      "path": "src/download_erp_core.py",
+      "executed_source_sha256": "602e7c06d66fc67bc6410c406cf86af40cda0604a4bc2823a0f03cc54519794c",
+      "release_sha256": "602e7c06d66fc67bc6410c406cf86af40cda0604a4bc2823a0f03cc54519794c",
+      "adaptation": "Unchanged"
+    },
+    {
+      "path": "src/erp_validation.py",
+      "executed_source_sha256": "4c1d6ae1455624f8d24d83b9f7c3145ae1ac26cd36668ccedc48de527314e707",
+      "release_sha256": "7891e6f9f57bc8765e15119a00862a1432760f78cdcfe62e2ce66d5f69d8c54c",
+      "adaptation": "Portable input paths only"
+    },
+    {
+      "path": "src/verify_results.py",
+      "executed_source_sha256": "bb9e0e441d5b42c425adf1dcb4ba044d1a98a7933a43d377758838c092ec8604",
+      "release_sha256": "32f488234c05e0309d1104664e8d34fd2462560511676987343b46d937cf434f",
+      "adaptation": "Accept runner fingerprint when a fresh run has no historical source snapshot"
+    },
+    {
+      "path": "src/verify_erp_validation.py",
+      "executed_source_sha256": "a91d2518e60bec21bf6d28a5a3b280f1d264cc59be69f025bd387e27f11acec5",
+      "release_sha256": "a91d2518e60bec21bf6d28a5a3b280f1d264cc59be69f025bd387e27f11acec5",
+      "adaptation": "Unchanged"
+    },
+    {
+      "path": "src/guard_diagnostics.py",
+      "executed_source_sha256": "1df07958798b240114e63ed2d02799387c9f941e3c18faf3b3cb70905f8578b2",
+      "release_sha256": "1df07958798b240114e63ed2d02799387c9f941e3c18faf3b3cb70905f8578b2",
+      "adaptation": "Unchanged"
+    },
+    {
+      "path": "src/build_figures.py",
+      "executed_source_sha256": "1e3a3e8e6a491b947d6b8f9baf2460801612c7a47fa4f1bcb9f29b78807f417e",
+      "release_sha256": "ff74f1c92dfebd8cdb812c6fbd84ec60385aec55896327a9ac4f783c500ed3d9",
+      "adaptation": "Create figure output directory for a fresh run"
+    },
+    {
+      "path": "src/build_target_figures.py",
+      "executed_source_sha256": "b09ffcfbbeafebd963c691c38088205dab54093dc99ca38fe97069f21af9bef2",
+      "release_sha256": "2b63f7b6623a47f5c74788f81dfa543a866b3a8b13d713386979a8b1f0a9f8bf",
+      "adaptation": "Create figure output directory for a fresh run"
+    },
+    {
+      "path": "src/build_erp_figures.py",
+      "executed_source_sha256": "de92491e124c8f38439bd35ffc620099bf16db1b87e6d576e65c8e454070e1df",
+      "release_sha256": "d73933e61f1a4cc9637305d0f72433590bfddd18438d985294d6bcc6d0dc4270",
+      "adaptation": "Create figure output directory for a fresh run"
+    },
+    {
+      "path": "src/legacy/models.py",
+      "executed_source_sha256": "b0da36e3e633afd1a2e5a5fb2f8da13742df8e7bb4c09efc5e7a920b09bf469f",
+      "release_sha256": "c0a20c44731d6061af599eab189bc29ca6240081c8e08e15522fdd8257f3f22e",
+      "adaptation": "Trailing whitespace removed; architecture and numerical operations unchanged"
+    },
+    {
+      "path": "src/legacy/utils.py",
+      "executed_source_sha256": "6bc0444067b25711c49d49a1626f777ac3dd5d3038dd7fa9ce46bff8d715b5fb",
+      "release_sha256": "d5605e7297805a747cd325f6c2c07d333d42413bf68dbcaa8e8c5c5fb9b4774e",
+      "adaptation": "Trailing whitespace removed; architecture and numerical operations unchanged"
+    }
+  ],
+  "original_configuration_sha256": {
+    "config.json": "39929c0e3eb3e0a6ca1af5047c1a101cfbc0dcaf80bf8d2ff80f9aeec96758cc",
+    "target_validity_config.json": "2e0fecff3e50f27eb9b8ea083d73e4bb68c1084c9c9a8a97108f9f7dc850356d",
+    "tim_validation_config.json": "083e2a9e621568bdef2bf5a369f6722337cfc821270e2736d0670c9838537f14"
+  },
+  "pinned_erp_manifest_sha256": "71831eb7ad022ec998fdf30192c78f1a71256cd367e4a5ec84c6c88ec53b6f8d"
+}
