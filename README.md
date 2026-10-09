@@ -21,7 +21,39 @@ python src/run_known_source.py
 
 The tests check power-SNR, source isolation, model capacities, affine estimation, reference regression, decoding, reference-risk identities, sharp ranking bounds, measurement projection, and conformal coverage. The known-source calculation needs no downloaded recordings. Its source labels are stipulated simulation quantities, not inferred neural ground truth.
 
-## Independent ERP assessment
+## Revised measurement assessment (10/20/10 and all 40)
+
+The current procedure adds an independently published pretrained **IC-U-Net**, a fixed montage-mapping control, reference-construction ranges, two spatial digital-probe directions, bandlimited endpoint guards, and participant-level calibration/robustness checks. It retains favorable denoiser outcomes rather than treating neural correction as uniformly harmful. The paper's physiological claim is limited: reconstruction alone does not validate neural preservation; actual EEGdenoiseNet neural impurity remains unidentified.
+
+Prepare the public ERP recordings and frozen-baseline caches with the historical runner below, then execute the follow-up:
+
+```sh
+python src/download_icunet.py
+python src/independent_denoiser.py
+python src/tim_revision.py
+python src/revision_probes.py
+python src/smooth_direction_probes.py
+python src/crossfit_assessment.py
+python src/guard_mechanism_audit.py
+python src/verify_tim_revision.py
+```
+
+The pinned downloader fetches the architecture and checkpoint from the original IC-U-Net authors, commit `7f4f27dbf79c0909a0993f680209cf24c32f7791`, and verifies SHA-256 before inference. Neither file is bundled here. The scholarly model is [Chuang et al., NeuroImage 263, 119586 (2022)](https://doi.org/10.1016/j.neuroimage.2022.119586). The deployed 2,669,854-parameter model uses four-second genuine recording contexts and global window normalization, with no ERP fine-tuning. A fixed spherical-spline montage map, with exact shared electrodes, is accompanied by mapping-only outputs. This deployment uses the common parent passband; it does not recreate the model's training preprocessing. GPU inference is much faster than CPU on this cohort.
+
+`tim_revision_config.json` preserves 10 development, 20 calibration and 10 evaluation participants. These follow-up choices were made after earlier cohort outcomes were inspected; the study is exploratory, not fresh confirmatory validation. Fitting remains numerically isolated to development people. Seven genuine candidates enter calibration; montage and guard controls are excluded. Finite 90% and 95% rank envelopes use calibration ranks 19 and 20. Operation-specific bounds are provided separately; pooled cross-fitted decoder scores are descriptive and have no exact split-conformal guarantee. All-40 voltage-only calibration applies only to fixed non-ERP-fitted operations and has no fresh same-cohort coverage test.
+
+The numerical checker independently recomputes 1,040 participant/task/method rows and 23,040 probe responses. Delivered float32 feature/scaler/LDA conventions are explicit; voltage endpoints use float64 accumulation. Nonlinear probe means, dispersion and extrema are saved. The unit response of regression with EOG fixed and of endpoint guards is algebraic. Probe geometry, montage interpolation, decoder fitting and source purity are distinct limitations.
+
+After placing the acknowledged EEGdenoiseNet banks and executing the reconstruction runner, run:
+
+```sh
+python src/reference_audit.py
+python src/build_revision_figures.py
+```
+
+The audit scores five explicit alternative passbands/projections and the released target against the **same predictions and inputs**. It computes exact risk-contrast ranges over the six-reference convex hull, plus descriptive crossed-component-window bootstrap intervals. Construction disagreement is not δ, a purified target, or evidence of cortical loss. Window identities, not historical participant identities, are available. Different passbands may imply different measurands. The figure builder expects both reference-audit and ERP outputs; run it after both stages.
+
+## Historical ERP assessment (20/10/10)
 
 The pinned public acquisition is [ERP CORE / NEMAR nm000132 v1.1.1](https://data.nemar.org/nm000132/v1.1.1/), N170 and P3, all 40 participants. The downloader verifies the published checksums for every selected file. The raw download is approximately 5.37 GB; processing and saved outputs require additional space.
 

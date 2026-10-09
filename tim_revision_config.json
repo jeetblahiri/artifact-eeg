@@ -1,0 +1,173 @@
+{
+  "date": "2026-10-09",
+  "status": "Exploratory reviewer-directed revision; choices recorded after original outcomes and before follow-up outcomes; no preregistration claim",
+  "seed": 90109,
+  "dataset": "ERP CORE / NEMAR nm000132 v1.1.1",
+  "development": [
+    30,
+    8,
+    24,
+    39,
+    36,
+    1,
+    29,
+    23,
+    6,
+    25
+  ],
+  "calibration": [
+    21,
+    17,
+    31,
+    32,
+    22,
+    19,
+    12,
+    26,
+    11,
+    3,
+    27,
+    4,
+    5,
+    40,
+    2,
+    13,
+    18,
+    20,
+    15,
+    28
+  ],
+  "evaluation": [
+    7,
+    14,
+    37,
+    10,
+    9,
+    16,
+    38,
+    33,
+    34,
+    35
+  ],
+  "tasks": {
+    "N170": {
+      "positive": "face",
+      "negative": "car",
+      "roi": [
+        "PO7",
+        "PO8"
+      ],
+      "window_s": [
+        0.11,
+        0.17
+      ],
+      "probe_center_s": 0.14,
+      "probe_sd_s": 0.025
+    },
+    "P3": {
+      "positive": "target",
+      "negative": "non-target",
+      "roi": [
+        "Pz"
+      ],
+      "window_s": [
+        0.3,
+        0.6
+      ],
+      "probe_center_s": 0.45,
+      "probe_sd_s": 0.08
+    }
+  },
+  "sampling_hz": 256,
+  "epoch_s": [
+    -0.5,
+    1.5
+  ],
+  "baseline_s": [
+    -0.2,
+    0.0
+  ],
+  "reference": "30-channel scalp average; three recorded EOG channels retain original reference",
+  "parent_filter_hz": [
+    0.1,
+    30.0
+  ],
+  "teachers": [
+    "parent",
+    "hp0.5",
+    "hp1",
+    "hp2",
+    "regression",
+    "ica",
+    "mapping",
+    "icunet",
+    "femto",
+    "femto_guard",
+    "femto_smooth",
+    "icunet_smooth"
+  ],
+  "guard_constraints": "Original endpoint and baseline constraints, compared with closest correction restricted to DFT frequencies <=30 Hz",
+  "filter": "fourth-order Butterworth forward-backward on continuous 256-Hz data; finite zero-phase offline operation",
+  "regression_ridge_fraction": 1e-05,
+  "ica_components": 29,
+  "ica_samples_per_development_person": 5000,
+  "ica_eog_correlation_threshold": 0.3,
+  "ica_max_removed": 3,
+  "ica_max_iter": 1000,
+  "decoder": "100-ms channel means from 0 to 0.8 s; development-fitted scaling and shrinkage LDA with equal class priors",
+  "decoder_assessments": [
+    "parent-frozen",
+    "method-adapted"
+  ],
+  "quality_quantile": 0.975,
+  "endpoint_tolerances": {
+    "amplitude_uv": 1.0,
+    "balanced_accuracy": 0.02
+  },
+  "conformal_alpha": 0.1,
+  "conformal_score": "maximum absolute parent-relative deviation, scaled by declared tolerances, across both tasks and voltage/frozen-decoder BA endpoints, for the seven operations explicitly listed in calibration_family; diagnostic guards and mapping are excluded",
+  "probe_amplitudes_uv": [
+    -2.0,
+    -1.0,
+    -0.5,
+    0.5,
+    1.0,
+    2.0
+  ],
+  "probe_evaluation_epochs_per_class": 4,
+  "bootstrap_draws": 10000,
+  "interpretation": "Parent-relative measured endpoint stability and digital known-voltage response. No latent neural ground truth or physical acquisition calibration. Tolerances are engineering examples, not clinical acceptance thresholds.",
+  "calibration_family": [
+    "hp0.5",
+    "hp1",
+    "hp2",
+    "regression",
+    "ica",
+    "icunet",
+    "femto"
+  ],
+  "independent_model": "IC-U-Net published checkpoint at AIEEG commit 7f4f27dbf79c0909a0993f680209cf24c32f7791; strict tensor loading; 4-s genuine-recording context; template-montage spherical spline mapping and matched mapping-only control",
+  "partition_sensitivity_seeds": [
+    94601,
+    94602,
+    94603,
+    94604,
+    94605,
+    94606,
+    94607,
+    94608,
+    94609,
+    94610,
+    94611,
+    94612,
+    94613,
+    94614,
+    94615,
+    94616,
+    94617,
+    94618,
+    94619,
+    94620
+  ],
+  "metadata_clarification": "2026-10-09: corrected an inherited description that said eight nonparent teachers; the executed algorithm already used the seven explicit calibration_family entries. No numerical parameter, participant, candidate, or endpoint changed."
+}

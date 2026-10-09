@@ -102,12 +102,80 @@
       "executed_source_sha256": "6bc0444067b25711c49d49a1626f777ac3dd5d3038dd7fa9ce46bff8d715b5fb",
       "release_sha256": "d5605e7297805a747cd325f6c2c07d333d42413bf68dbcaa8e8c5c5fb9b4774e",
       "adaptation": "Trailing whitespace removed; architecture and numerical operations unchanged"
+    },
+    {
+      "path": "src/independent_denoiser.py",
+      "executed_source_sha256": "cd9e96cc673634b18de905a0884ae3eab30ed682acfc2d2f20e262725ca125e9",
+      "release_sha256": "cd9e96cc673634b18de905a0884ae3eab30ed682acfc2d2f20e262725ca125e9",
+      "adaptation": "Unchanged executed revision source"
+    },
+    {
+      "path": "src/download_icunet.py",
+      "executed_source_sha256": "4ea435919aead153148f98d798b6a696baa4de6640b870e6cd9b1a3158ce23b3",
+      "release_sha256": "4ea435919aead153148f98d798b6a696baa4de6640b870e6cd9b1a3158ce23b3",
+      "adaptation": "Unchanged executed revision source"
+    },
+    {
+      "path": "src/revision_math.py",
+      "executed_source_sha256": "788e508532b0635fd7ca4a896085ffaa575ebdd17406220b28bb80723d1efc22",
+      "release_sha256": "788e508532b0635fd7ca4a896085ffaa575ebdd17406220b28bb80723d1efc22",
+      "adaptation": "Unchanged executed revision source"
+    },
+    {
+      "path": "src/tim_revision.py",
+      "executed_source_sha256": "ed95a05cb6d4bc2325cbc3a5d30992a74ab8bf08e087fdef2f74fd433e59a995",
+      "release_sha256": "ed95a05cb6d4bc2325cbc3a5d30992a74ab8bf08e087fdef2f74fd433e59a995",
+      "adaptation": "Unchanged executed revision source"
+    },
+    {
+      "path": "src/revision_probes.py",
+      "executed_source_sha256": "475daa600f08904f06216d41fb1aa87fa1bfcc414985d37fbae9ef5a15f4680c",
+      "release_sha256": "475daa600f08904f06216d41fb1aa87fa1bfcc414985d37fbae9ef5a15f4680c",
+      "adaptation": "Unchanged executed revision source"
+    },
+    {
+      "path": "src/smooth_direction_probes.py",
+      "executed_source_sha256": "7abc9cfd456966b7ec4949ea348cd75afeed5dcb170508ddae9c6f02bbc64f3b",
+      "release_sha256": "7abc9cfd456966b7ec4949ea348cd75afeed5dcb170508ddae9c6f02bbc64f3b",
+      "adaptation": "Unchanged executed revision source"
+    },
+    {
+      "path": "src/crossfit_assessment.py",
+      "executed_source_sha256": "842b029ba0433f87974490a3a01b3d262d023b24b16054526cf1340ed367841f",
+      "release_sha256": "842b029ba0433f87974490a3a01b3d262d023b24b16054526cf1340ed367841f",
+      "adaptation": "Unchanged executed revision source"
+    },
+    {
+      "path": "src/guard_mechanism_audit.py",
+      "executed_source_sha256": "7fd68fc9e3b85230963d885e862945f7d8437956bd8c39846e8c5b64fda44a11",
+      "release_sha256": "7fd68fc9e3b85230963d885e862945f7d8437956bd8c39846e8c5b64fda44a11",
+      "adaptation": "Unchanged executed revision source"
+    },
+    {
+      "path": "src/reference_audit.py",
+      "executed_source_sha256": "cf7032c3c838148e38c1eb50bbd1308bb9eb8b86a5c4c56b4831ba711e74b372",
+      "release_sha256": "ae8927e6554eb562899ecc27d0e8bbc2cf1163f137536dd88bc6de881130782e",
+      "adaptation": "Portable EEGdenoiseNet bank location only; numerical audit unchanged"
+    },
+    {
+      "path": "src/verify_tim_revision.py",
+      "executed_source_sha256": "3b66c22e3b453ee10475d1aca317f06825f37cd0cca8481d7dd65beefca601be",
+      "release_sha256": "3b66c22e3b453ee10475d1aca317f06825f37cd0cca8481d7dd65beefca601be",
+      "adaptation": "Unchanged executed revision source"
+    },
+    {
+      "path": "src/build_revision_figures.py",
+      "executed_source_sha256": "8f524d51517790fdaae470b13ac6b8cb010fa7889288a7e2cfe94ee997fa789e",
+      "release_sha256": "8f524d51517790fdaae470b13ac6b8cb010fa7889288a7e2cfe94ee997fa789e",
+      "adaptation": "Unchanged executed revision source"
     }
   ],
   "original_configuration_sha256": {
     "config.json": "39929c0e3eb3e0a6ca1af5047c1a101cfbc0dcaf80bf8d2ff80f9aeec96758cc",
     "target_validity_config.json": "2e0fecff3e50f27eb9b8ea083d73e4bb68c1084c9c9a8a97108f9f7dc850356d",
-    "tim_validation_config.json": "083e2a9e621568bdef2bf5a369f6722337cfc821270e2736d0670c9838537f14"
+    "tim_validation_config.json": "083e2a9e621568bdef2bf5a369f6722337cfc821270e2736d0670c9838537f14",
+    "tim_revision_config.json": "93a057b244adaf82ddd76957608b4c8710d20d15418c4362773666175d872c2e"
   },
-  "pinned_erp_manifest_sha256": "71831eb7ad022ec998fdf30192c78f1a71256cd367e4a5ec84c6c88ec53b6f8d"
+  "pinned_erp_manifest_sha256": "71831eb7ad022ec998fdf30192c78f1a71256cd367e4a5ec84c6c88ec53b6f8d",
+  "revision_note": "Follow-up 10/20/10 analysis after inspection of earlier ERP results. Original 20/10/10 code/settings are retained. Reference-audit release changes its input bank path only; new runs fingerprint their own source. No generated historical signals or manuscript are included."
 }
