@@ -1,3 +1,33 @@
+## Direct reference and controlled-target follow-up
+
+`causal_revision_config.json` records the new exploratory experiments requested after the preceding review. These add the published EEGdenoiseNet simple CNN and complex residual CNN architectures, translated from pinned official source and retrained on source-isolated EOG mixtures, without ERP tuning. Three seeds, 50 epochs, RMSprop 5e-5, and validation-MSE checkpoint selection are explicit; these are architecture reproductions, not original pretrained weights or claims to replicate the authors' leaderboard. Inference uses equal seed averages and records individual evaluation-seed outputs.
+
+The reported reference-construction recipe is instantiated on all 80 ERP CORE recordings with 1–80-Hz filtering, a 60-Hz notch, extended-infomax ICA, and ICLabel. Brain-argmax retention and conservative artifact-probability ≥0.8 exclusion are separate fixed policies. Filter-only and ICA-only arms distinguish the stages. Original expert decisions and thresholds are not available; this is not a recreation of released clean labels or a cortical-purity test. Thirteen fits reach the 500-iteration limit; their flags and converged-only sensitivity remain visible.
+
+A matched-input affine-ridge experiment changes only training targets: parent voltage versus the two constructed references. ERP development trial indices and public EOG source pools are separated before fitting/validation mixtures. The same ten evaluation people and a matched synthetic-contamination control test the resulting target-definition effect. The parent remains a comparator, not accepted neural truth.
+
+Reproduce after preparing the original and first-revision ERP caches and EEGdenoiseNet mixtures:
+
+```sh
+python src/download_benchmark_source.py
+python src/benchmark_models.py
+python src/reference_recipe.py
+python src/target_intervention.py
+python src/target_contamination_control.py
+python src/coverage_diagnostics.py
+python src/causal_assessment.py
+python src/causal_crossfit.py
+python src/output_reference_control.py
+python src/verify_causal_assessment.py
+python src/build_causal_figures.py
+```
+
+All new means, intervals, individual seeds, cross-target loss matrices and coverage diagnostics are generated under the ignored `results/causal_revision/` folder. Independent rescoring checks 800 new primary records, 60 contaminated records, 320 output-reference records and 2080 probe aggregates; 32 actual model probe responses are independently rerun. All 21 contract tests pass.
+
+`mne-icalabel==0.9.0` is included in the dependency lock. Public benchmark code licensing is reproduced in `THIRD_PARTY_NOTICES.md`. Third-party source/weights, the six newly trained CNN weights, raw data, generated results and manuscript files are excluded from this code release. The previously included compact baseline is retained. Model training uses a local GPU when available; CPU reproduction is substantially slower.
+
+Coverage diagnostics include the original seven-candidate envelope with/without regression, the exact exchangeable-rank distribution for the ICA failure count, 100,000 frozen-score reassignments with ties, and separate development-fit sensitivity. The unusual 5/10 ICA coverage is flagged, not rationalized as a heavy-tail effect or used to claim prospective validation. All-40 cross-fitting excludes the paired-target learners, whose ERP training participants would otherwise enter held-out folds.
+
 # EEG benchmark validity and measurement preservation
 
 Analysis code by Jeet Bandhu Lahiri and Siddharth Panwar, Indian Institute of Technology Mandi.

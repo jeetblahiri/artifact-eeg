@@ -1,0 +1,139 @@
+{
+  "date": "2026-10-09",
+  "status": "Exploratory; decisions recorded before these follow-up outcomes, after prior ERP results; no preregistration claim",
+  "seed": 94709,
+  "development": [
+    30,
+    8,
+    24,
+    39,
+    36,
+    1,
+    29,
+    23,
+    6,
+    25
+  ],
+  "calibration": [
+    21,
+    17,
+    31,
+    32,
+    22,
+    19,
+    12,
+    26,
+    11,
+    3,
+    27,
+    4,
+    5,
+    40,
+    2,
+    13,
+    18,
+    20,
+    15,
+    28
+  ],
+  "evaluation": [
+    7,
+    14,
+    37,
+    10,
+    9,
+    16,
+    38,
+    33,
+    34,
+    35
+  ],
+  "models": {
+    "architectures": [
+      "simple_cnn",
+      "complex_cnn"
+    ],
+    "seeds": [
+      17,
+      29,
+      43
+    ],
+    "epochs": 50,
+    "batch_size": 40,
+    "optimizer": "RMSprop",
+    "learning_rate": 5e-05,
+    "rho": 0.9,
+    "epsilon": 1e-07,
+    "selection": "minimum validation MSE per seed; equal mean of three seed predictions for ERP deployment; no ERP tuning",
+    "source_commit": "8d290661146c7189c98cc04812d37371d4b9426c",
+    "source": "https://github.com/ncclabsustech/EEGdenoiseNet",
+    "adaptations": "Architecture translated from TensorFlow to PyTorch; identical layer order, padding, BN epsilon/momentum and flatten ordering. Conventional minibatch BN/dropout training rather than original per-example calls; source-isolated existing 60/20/20 fixed mixtures at four SNRs; architecture reproduction, not original published training results."
+  },
+  "reference_recipe": {
+    "filter_hz": [
+      1,
+      80
+    ],
+    "notch_hz": 60,
+    "notch_q": 30,
+    "filter": "fourth-order forward-backward Butterworth within original recording boundaries; 30-Hz lowpass after construction for matched ERP analysis",
+    "ica": "per-recording extended infomax, 29 components, systematic every-fourth-sample fit; ICLabel features on the entire 256-Hz stream; max_iter=500, seed=94709+subject",
+    "policies": {
+      "brain_argmax": "keep only ICs whose most probable class is brain",
+      "artifact80": "remove ICs with probability >=0.8 in eye, muscle, heart, line or channel noise; retain other/uncertain"
+    },
+    "unreported_original_choices": "Benchmark publication does not specify filter design/order, ICA settings, component thresholds or manual-selection decisions. This is an automated instantiation and sensitivity analysis, not an exact recreation of original labels. No manual selection or epoch rejection.",
+    "control": "apply same classified ICA to 0.1-30-Hz parent to isolate component selection from reference bandpass",
+    "execution_amendment": "Before any recipe result was obtained, ICA fitting was changed to every fourth sample for tractable computation on all 80 records. This subsamples time points for spatial fitting; no downsampled series enters ICLabel PSD/autocorrelation. All events/voltages remain at 256 Hz."
+  },
+  "coverage_diagnostics": {
+    "fixed_reassignments": 100000,
+    "refit_seeds": [
+      94711,
+      94712,
+      94713,
+      94714,
+      94715
+    ],
+    "fit_sample_sizes": [
+      10,
+      20
+    ],
+    "scope": "conditional on frozen procedures; original fit remains primary; separate refits diagnose instability, not restore confirmatory guarantees"
+  },
+  "bootstrap_draws": 10000,
+  "scope": "Parent-relative endpoint preservation and controlled digital response, not cortical purity or universal causality of benchmark-model failures.",
+  "target_intervention": {
+    "learner": "full temporal affine ridge, 512 inputs + intercept, shared design/regularization, three separately optimized target definitions",
+    "targets": [
+      "parent",
+      "recipe_brain_argmax",
+      "recipe_artifact80"
+    ],
+    "training_people": [
+      30,
+      8,
+      24,
+      39,
+      36,
+      1,
+      29,
+      23,
+      6,
+      25
+    ],
+    "fit_mixtures": 20000,
+    "validation_mixtures": 4000,
+    "source_selection": "parent epochs and recipe targets from identical ERP development trials, all30 channels; fixed half-epoch split within each development person for fit/validation; public EOG train/validation source pools strictly separated",
+    "power_snr_db": [
+      -7,
+      -4,
+      -1,
+      2
+    ],
+    "ridge_fraction": 0.001,
+    "seed": 94751,
+    "evaluation": "unchanged ten evaluation people, parent input without added synthetic artifact, plus matched synthetic-contamination control; common frozen decoder",
+    "interpretation": "Changing only target construction while fixing training inputs and learner isolates a target-definition effect on fitted digital outputs; parent is not known pure neural voltage. Artificial EOG mixing remains a controlled training device, not validation of physiological purity."
+  }
+}

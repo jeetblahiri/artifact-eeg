@@ -31,3 +31,14 @@ ERP processing uses scalp-average reference, resampling to 256 Hz, continuous fo
 Independent rescoring uses saved voltages, identities, decoders, source checksums, and protocol/code hashes. Participant bootstrap intervals are descriptive and conditional on fixed development fits. Joint conformal scores include both tasks, voltage and frozen-decoder endpoints, and all eight nonparent operations. A participant, not a task or trial, is the calibration unit. Parent-relative stability does not certify cortical fidelity. EOG-only decoding tests peripheral task association; retaining it cannot be equated with retaining neural information.
 
 Guard spectral diagnostics were added after the ERP results and are explicitly post hoc. The original executed numerical code remains in the local evidence package; the public release documents its portability adaptations separately.
+
+
+## Direct-reference and matched-target follow-up (9–10 October 2026)
+
+The new exploratory configuration is `causal_revision_config.json`, preserving the same 10/20/10 people and endpoints as the preceding revision. New public EEGdenoiseNet architecture reproductions use three seeds and 50 epochs, validation-MSE checkpoint selection, and equal seed predictions for deployment, without ERP selection. They are retrained architecture ports, not original author checkpoints or a replication of the published leaderboard.
+
+The two ICLabel policies are brain-argmax retention and probability-at-least-0.8 artifact exclusion. No task labels select components and no trial is rejected. Expert selection cannot be replicated. ICA fitting was changed to systematic every-fourth-sample fitting before any recipe endpoint result was obtained; ICLabel and output streams remain at 256 Hz. Thirteen of 80 fits hit the 500-iteration limit, with flags retained.
+
+Three affine fits hold learner, inputs and regularization fixed and change only supervisory targets. ERP development trial indices and public EOG source pools are separated before mixtures; overlapping raw epoch times are not claimed to be independent. Source construction and decoder outcomes are assessed on the same ten evaluation people. Shared contamination and output-reference checks are explicit follow-ups. Output-reference sensitivity and converged-only subsets are post hoc. All-40 cross-fitting excludes paired-target learners to keep their ERP fitting participants out of held-out folds.
+
+The original pooled ICA 5/10 coverage is flagged as unusual using the random-calibration rank distribution and 100000 frozen-score reassignments. Family envelopes are shown with/without regression; operator refits diagnose sensitivity without rescuing coverage. All cohort reuse and follow-up choices remain exploratory. Prospective exchangeable-person coverage requires an advance-fixed procedure and new cohort. No true cortical reference, hardware calibration, or clinical acceptance is claimed.
