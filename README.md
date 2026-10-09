@@ -54,6 +54,8 @@ python src/build_figures.py
 python src/build_target_figures.py
 ```
 
+To reproduce the introductory six-panel synthetic-mixture illustration after placing the three EEGdenoiseNet banks in `data/eegdenoisenet/`, run `python src/build_mixture_example.py`. It uses fixed source rows, verifies their checksums, and adds the same EEG reference separately to ocular and muscle segments at 0 dB power-SNR. It exports PNG/SVG figures, plot coordinates, and source metadata to ignored output directories. Normalized amplitudes are dimensionless; the illustration does not validate neural purity.
+
 The reconstruction analysis deduplicates source content, isolates windows before mixing, selects hyperparameters on validation data, and averages losses across fitted seeds rather than ensembling predictions. ECG sources are split by recording. Released EEGdenoiseNet windows lack complete participant identities; window isolation is not participant isolation. Historical source-person overlap with the BCI cohort cannot be excluded. The transfer and teacher studies are exploratory.
 
 ## Provenance and fresh runs
