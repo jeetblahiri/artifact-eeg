@@ -195,9 +195,10 @@
     },
     {
       "path": "src/build_nonlinear_report.py",
-      "executed_source_sha256": "c67e55027a99a08110c750ae489dd2b78e1a44d75a83b9d5a0bbdca2085c5d8e",
-      "release_sha256": "c67e55027a99a08110c750ae489dd2b78e1a44d75a83b9d5a0bbdca2085c5d8e",
-      "adaptation": "Unchanged"
+      "executed_source_sha256": "9f133bc77a1b44072bc4ce018ee8ffcec8c8f492c88a6439d67bece71c8152d7",
+      "release_sha256": "9f133bc77a1b44072bc4ce018ee8ffcec8c8f492c88a6439d67bece71c8152d7",
+      "adaptation": "Editorial correction of protocol history; numerical algorithms and fitted configurations unchanged",
+      "previous_report_generation_sha256": "c67e55027a99a08110c750ae489dd2b78e1a44d75a83b9d5a0bbdca2085c5d8e"
     },
     {
       "path": "nonlinear_revision_config.json",
@@ -255,9 +256,10 @@
     },
     {
       "path": "src/build_filter_report.py",
-      "executed_source_sha256": "242cd48061eaabb5ebd2b3fdfc5b485995e131870eb2c18975ffc292d0824b3b",
-      "release_sha256": "242cd48061eaabb5ebd2b3fdfc5b485995e131870eb2c18975ffc292d0824b3b",
-      "adaptation": "Unchanged fourth-arm revision source"
+      "executed_source_sha256": "c9557a6b482177508e68039082ccaf36a11705acf2343b93c3ac7bcdd6aeafdb",
+      "release_sha256": "c9557a6b482177508e68039082ccaf36a11705acf2343b93c3ac7bcdd6aeafdb",
+      "adaptation": "Editorial correction of protocol history; numerical algorithms and fitted configurations unchanged",
+      "previous_report_generation_sha256": "242cd48061eaabb5ebd2b3fdfc5b485995e131870eb2c18975ffc292d0824b3b"
     }
   ],
   "original_configuration_sha256": {

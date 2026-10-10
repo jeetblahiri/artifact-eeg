@@ -1,0 +1,1713 @@
+
+# Supplementary material for Electroencephalography Artifact Removal: Limits of Validation Against Constructed References
+
+Jeet Bandhu Lahiri and Siddharth Panwar, School of Computing and Electrical Engineering, Indian Institute of Technology Mandi.
+
+This consolidated numerical record identifies three successive exploratory protocols. Original outputs and configurations are preserved; historical observations are not relabeled as new or prospective validation. Part C contains the current paired nonlinear supervision comparison. Parts A and B retain the reference audit, known-source derivation, independent ERP assessment and preceding controls. Auxiliary ECG and motor-imagery studies are outside the core manuscript and remain in their separate archived reports. The main manuscript states the essential claims and results without requiring this full record.
+
+## Supplement locator
+
+| Deferred material | Location |
+|---|---|
+| Source ambiguity and sharp neural-risk/ranking bounds | Part A, S14; main Eqs. (2)–(4) |
+| Bayes-optimal target versus neural estimator | Part A, S14 |
+| Known-source counterexample and independent mixing | Part A, S11; Part C, section 8 |
+| Ridge coefficient/intercept intervention | Part B, section 5; main Eq. (6) |
+| Acquisition, montage, preprocessing and feature/decoder specification | Part A, S12; Part B, sections 4 and 8 |
+| Benchmark source construction, splits and source hashes | Part A, S3 and S9; Part B, section 12 |
+| Matched architecture/optimizer/seed protocol and fixed-epoch curves | Part C, section 4; Part D, D1 and D4 |
+| Complete four-by-four cross-target loss matrices | Part D, D4 (both architectures) |
+| Individual paired-seed endpoint contrasts | Part C, section 6; Part D, D4 |
+| Clean-input sanity, normalization and genuine-context/window checks | Part C, sections 2 and 3 |
+| Shared contamination and output-reference controls | Part B, section 7; Part C, section 5; Part D, D2–D3 |
+| Adapted decoders, all-participant cross-fitting and partition sensitivity | Part A, S7 and S12; Part B, section 8; Part C, section 5 |
+| Probe geometry, dispersion, montage-only and edge/bandlimit controls | Part A, S5–S6 and S14; Part B, section 8 |
+| Calibration quantiles, score ranks, coverage and ICA diagnostics | Part A, S7; Part B, sections 9–10; Part E, E3 |
+| Four-arm transfer fractions, stage contrasts and residuals | Part D, D3; Part E, E2 |
+| 1–100 Hz sensitivity and ICA iteration-limit records | Part D, D5 |
+| Chronology, cohort reuse, run pairing and verification | Part A, S1; Part C, section 10; Part D, D1/D6; Part E, E4 |
+
+
+# Part A. Reference audit, digital measurement assessment and mathematical detail
+
+## S1. Scope and protocol history
+
+The six revision priorities are addressed by an independent pretrained IC-U-Net deployment, a real reference-construction audit, 20-person calibration plus all-40 cross-fitting, explicit measurement-assessment contributions, removal of ECG/BCI evidence from the core argument, and bandlimited guard mechanism controls. The released EEGdenoiseNet windows do **not** identify their latent neural impurity. Measured construction disagreement is neither an estimate nor an upper bound on δ. ERP/task content cannot be tested in a window pool without event identities, channel provenance, pre-construction parents, and simultaneous peripheral recordings.
+
+The follow-up protocol was specified after the earlier 20/10/10 results were seen. Primary fitting now uses 10 development people, with 20 calibration and the same 10 evaluation people. This is exploratory reuse of the cohort; numerical fitting isolation does not turn it into a fresh confirmatory study. The broad spatial probe followed an audit of localized montage attenuation. Fivefold cross-fitting and partition sensitivity are follow-up diagnostics. Pooled decoder-dependent cross-fitted scores have no exact split-conformal guarantee.
+
+- Development: 30, 8, 24, 39, 36, 1, 29, 23, 6, 25
+- Calibration: 21, 17, 31, 32, 22, 19, 12, 26, 11, 3, 27, 4, 5, 40, 2, 13, 18, 20, 15, 28
+- Evaluation: 7, 14, 37, 10, 9, 16, 38, 33, 34, 35
+
+The initial configuration snapshot is `results/revision/config_before_description_clarification.json`. An inherited textual score description incorrectly said eight nonparent operations; it was corrected to match the **seven explicitly listed calibration candidates actually used throughout**. No setting, split, candidate, endpoint, or numerical algorithm changed. The two classical fits and all digital assessments were rerun after this clarification; old and new operator tensors match exactly.
+
+## S2. Published independent model
+
+IC-U-Net: Chuang et al., NeuroImage 263, 119586 (2022), doi: [10.1016/j.neuroimage.2022.119586](https://doi.org/10.1016/j.neuroimage.2022.119586). Original author repository commit `7f4f27dbf79c0909a0993f680209cf24c32f7791`; 2,669,854 parameters; strict state loading; no ERP fine-tuning.
+
+- Architecture SHA-256: `be5a7a9350f36f06d35f76d8ab1d84d535d2a85441d584413785bb1044c427b0`.
+- Checkpoint SHA-256: `591d2a7819c4ddcd6280198645aae59c80e40c280a4ec7ac368068c33c2de75e`.
+- Four-second actual continuous contexts at 256 Hz, global window normalization, output physical scale restored, central two seconds retained, and baseline correction reapplied. Common 0.1–30 Hz parent preprocessing is declared explicitly; author training preprocessing is not recreated.
+- Standard-1020 spherical-spline forward/backward mapping, alpha 1e−5; shared electrodes have exact identity rows. Pz maps identically. Missing template/ERP channels are interpolated. Mapping-only outputs quantify this deployment effect.
+- Inference ran on Apple MPS for all 80 participant/task recordings. SHA-256-verified source downloading is provided separately; third-party source and weights are not redistributed in the public code release.
+
+## S3. Real reference-construction audit
+
+All 4514 centered, unit-RMS, 512-sample/256-Hz EEG windows were audited. Butterworth alternatives are fourth-order, forward–backward, on the released two-second windows; boundary distortion is possible. Fourier alternatives are orthogonal projections, not ground-truth references. These constructions may specify different measurands. Treat their convex hull as an admissible neural class only with separate application-specific justification. Under that membership assumption, convexity gives δ ≤ max_j ||T−T_j||; for this normalized corpus family the bound is 46.37% of reference RMS. This is a data-derived conditional bound, not a physiological calibration of δ.
+
+| Construction | Whole-pool disagreement (% RMS) | Median window (%) | 5th–95th window percentiles (%) |
+| --- | ---: | ---: | ---: |
+| Butterworth 1-20 | 46.3672 | 44.1597 | 33.1290–61.8472 |
+| Butterworth 1-30 | 40.6806 | 37.5473 | 26.3291–58.2761 |
+| Butterworth 1-40 | 37.8250 | 34.2830 | 22.4618–56.1974 |
+| Spectral 1-30 | 27.0115 | 27.0421 | 20.4519–32.2264 |
+| Spectral 1-40 | 22.3488 | 22.3852 | 16.5848–26.9804 |
+
+With predictions and inputs fixed, every model-pair risk contrast is affine in the reference. Thus its minimum/maximum across the six vertices gives the exact range over their convex hull. Seed-family losses are averaged; mean predictions enter only the contrast identity. These ranges are not confidence intervals.
+
+| Mixture | Comparison | Exact lower | Exact upper | Strict ordering throughout declared family? |
+| --- | --- | ---: | ---: | --- |
+| EOG | large_mlp minus affine | -0.03296551 | -0.02119871 | True |
+| EOG | tiny_cnn minus affine | -0.00552034 | 0.00170266 | False |
+| EOG | tiny_cnn minus large_mlp | 0.01586807 | 0.03466817 | True |
+| EMG | large_mlp minus affine | 0.19345375 | 0.23424291 | True |
+| EMG | tiny_cnn minus affine | -0.00317481 | 0.00221404 | False |
+| EMG | tiny_cnn minus large_mlp | -0.23202886 | -0.19657819 | True |
+
+The EOG CNN–affine released point gap is +0.00170266 with a descriptive crossed-window bootstrap interval [−0.00315573, +0.00664413]. Its ordering is unresolved before perturbation. Butterworth 1–30 yields −0.00552034 [−0.00979124, −0.00120036]. This changes point ordering, not a previously established significant ranking. The EOG MLP remains better than affine under every tested construction. Fourier alternatives do not reverse the EOG CNN ordering. Source-window bootstrap is conditional on selected fits and is not participant inference.
+
+## S4. Full primary ERP outcomes
+
+All 14,400 planned epochs were retained, including the same 3,600 evaluation epochs for every operation. Voltage means are participant-mean event contrasts; frozen/adapted BA use the respective development-fitted decoder. The parent is a scalp-voltage comparator, not clean cortical truth. Intervals are paired-participant descriptive bootstrap intervals, conditional on fixed fitted operations.
+
+| Task | Operation | Mean µV | ΔµV [95% interval] | Frozen BA % | ΔBA points [95% interval] | Adapted BA % |
+| --- | --- | ---: | --- | ---: | --- | ---: |
+| N170 | Parent | -3.3295 | +0.0000 [+0.0000, +0.0000] | 60.6875 | +0.0000 [+0.0000, +0.0000] | 60.6875 |
+| N170 | HP 0.5 Hz | -3.4266 | -0.0971 [-0.2749, +0.0771] | 60.3750 | -0.3125 [-1.8750, +1.1875] | 60.5625 |
+| N170 | HP 1 Hz | -3.5498 | -0.2202 [-0.6691, +0.2761] | 60.6250 | -0.0625 [-1.6875, +1.5000] | 58.8750 |
+| N170 | HP 2 Hz | -3.2693 | +0.0602 [-0.8041, +1.1312] | 60.0000 | -0.6875 [-3.0000, +1.6250] | 58.5000 |
+| N170 | EOG regression | -3.2493 | +0.0802 [-0.0539, +0.2068] | 58.3750 | -2.3125 [-4.5625, -0.1875] | 60.3750 |
+| N170 | ICA/EOG | -2.6469 | +0.6826 [+0.2559, +1.1200] | 54.5000 | -6.1875 [-8.9375, -3.3750] | 60.0625 |
+| N170 | Montage mapping only | -3.2512 | +0.0783 [-0.3969, +0.5362] | 59.8125 | -0.8750 [-2.6875, +0.6875] | 59.8125 |
+| N170 | IC-U-Net | -2.7054 | +0.6241 [-0.0207, +1.2360] | 60.7500 | +0.0625 [-2.8125, +2.7500] | 58.5000 |
+| N170 | FemtoEOGClean | -3.3517 | -0.0222 [-0.5912, +0.6460] | 59.4375 | -1.2500 [-3.5625, +1.0000] | 58.5000 |
+| N170 | FemtoEOGClean rectangular guard | -3.3295 | +0.0000 [-0.0000, +0.0000] | 58.7500 | -1.9375 [-5.3750, +1.6250] | 57.7500 |
+| N170 | FemtoEOGClean smooth guard | -3.3295 | -0.0000 [-0.0000, +0.0000] | 58.7500 | -1.9375 [-5.5625, +1.7500] | 57.8750 |
+| N170 | IC-U-Net smooth guard | -3.3295 | +0.0000 [+0.0000, +0.0000] | 59.1250 | -1.5625 [-4.3750, +1.0625] | 57.9375 |
+| N170 | FemtoEOGClean fully bandlimited guard | -3.3295 | -0.0000 [-0.0000, +0.0000] | 58.6875 | -2.0000 [-5.6250, +1.6250] | 57.9375 |
+| P3 | Parent | 4.5098 | +0.0000 [+0.0000, +0.0000] | 64.9375 | +0.0000 [+0.0000, +0.0000] | 64.9375 |
+| P3 | HP 0.5 Hz | 4.2819 | -0.2280 [-1.1181, +0.5974] | 65.5625 | +0.6250 [-1.7500, +3.1250] | 66.4688 |
+| P3 | HP 1 Hz | 2.0632 | -2.4467 [-4.1137, -0.8542] | 66.7500 | +1.8125 [-1.0937, +5.0000] | 65.7813 |
+| P3 | HP 2 Hz | 0.5097 | -4.0002 [-5.6944, -2.3843] | 54.9688 | -9.9688 [-14.1883, -6.2805] | 62.8750 |
+| P3 | EOG regression | 14.5393 | +10.0295 [+2.7017, +20.5542] | 66.0000 | +1.0625 [-0.9695, +3.5312] | 64.5625 |
+| P3 | ICA/EOG | 3.9828 | -0.5270 [-1.8692, +0.5107] | 65.3125 | +0.3750 [-2.1250, +2.5312] | 64.6562 |
+| P3 | Montage mapping only | 4.5098 | +0.0000 [+0.0000, +0.0000] | 66.3438 | +1.4063 [-1.1250, +4.2188] | 65.8438 |
+| P3 | IC-U-Net | 4.1365 | -0.3733 [-0.9371, +0.2183] | 67.9687 | +3.0312 [+0.6562, +5.8750] | 66.0000 |
+| P3 | FemtoEOGClean | 0.5286 | -3.9812 [-5.7037, -2.3123] | 57.4062 | -7.5312 [-11.5937, -4.0000] | 61.1562 |
+| P3 | FemtoEOGClean rectangular guard | 4.5098 | -0.0000 [-0.0000, +0.0000] | 64.7812 | -0.1563 [-2.4063, +1.7812] | 63.0938 |
+| P3 | FemtoEOGClean smooth guard | 4.5098 | -0.0000 [-0.0000, +0.0000] | 64.6875 | -0.2500 [-2.3133, +1.5938] | 63.2188 |
+| P3 | IC-U-Net smooth guard | 4.5098 | -0.0000 [-0.0000, +0.0000] | 67.0938 | +2.1562 [-0.2500, +4.5000] | 65.4375 |
+| P3 | FemtoEOGClean fully bandlimited guard | 4.5098 | +0.0000 [+0.0000, +0.0000] | 64.6875 | -0.2500 [-2.3133, +1.5938] | 63.2812 |
+
+Individual results are in `results/revision/participant_metrics.csv` (1040 rows). The EOG-only P3 result establishes predictive information in those recorded channels, not pure peripheral activity or the origin of scalp decoding. Regression unit probe gain follows from holding EOG fixed; it is not independent evidence of physiological preservation.
+
+## S5. Probe dispersion and geometry controls
+
+Each geometry has 480 finite gains per operation and task (10 people × 8 backgrounds × 6 signed amplitudes). Profiles are Gaussian at 140 ms/25-ms SD for N170 and 450 ms/80-ms SD for P3. Localized and broad zero-mean scalp patterns have unit ROI mean; broad geometry uses a 0.4-rad geodesic Gaussian. These are digital injection directions, not cortical forward models. Model gain is background/amplitude dependent.
+
+| Geometry | Task | Operation | Mean | SD | 5th percentile | 95th percentile | Min | Max |
+| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Broad | N170 | Parent | 1.00000 | 0.00000 | 1.00000 | 1.00000 | 1.00000 | 1.00000 |
+| Broad | N170 | HP 0.5 Hz | 0.99090 | 0.00000 | 0.99090 | 0.99090 | 0.99090 | 0.99090 |
+| Broad | N170 | HP 1 Hz | 0.93909 | 0.00000 | 0.93909 | 0.93909 | 0.93909 | 0.93909 |
+| Broad | N170 | HP 2 Hz | 0.72199 | 0.00000 | 0.72199 | 0.72199 | 0.72199 | 0.72199 |
+| Broad | N170 | EOG regression | 1.00000 | 0.00000 | 1.00000 | 1.00000 | 1.00000 | 1.00000 |
+| Broad | N170 | ICA/EOG | 0.87675 | 0.00000 | 0.87675 | 0.87675 | 0.87675 | 0.87675 |
+| Broad | N170 | Montage mapping only | 0.82932 | 0.00000 | 0.82932 | 0.82932 | 0.82932 | 0.82932 |
+| Broad | N170 | IC-U-Net | 0.68207 | 0.14409 | 0.52093 | 0.94794 | 0.39214 | 1.07779 |
+| Broad | N170 | FemtoEOGClean | 0.75726 | 0.31680 | 0.14133 | 1.21561 | -0.00081 | 1.41596 |
+| Broad | N170 | FemtoEOGClean rectangular guard | 1.00000 | 0.00000 | 1.00000 | 1.00000 | 1.00000 | 1.00000 |
+| Broad | N170 | FemtoEOGClean smooth guard | 1.00000 | 0.00000 | 1.00000 | 1.00000 | 1.00000 | 1.00000 |
+| Broad | N170 | IC-U-Net smooth guard | 1.00000 | 0.00000 | 1.00000 | 1.00000 | 1.00000 | 1.00000 |
+| Broad | P3 | Parent | 1.00000 | 0.00000 | 1.00000 | 1.00000 | 1.00000 | 1.00000 |
+| Broad | P3 | HP 0.5 Hz | 0.84957 | 0.00000 | 0.84957 | 0.84957 | 0.84957 | 0.84957 |
+| Broad | P3 | HP 1 Hz | 0.39050 | 0.00000 | 0.39050 | 0.39050 | 0.39050 | 0.39050 |
+| Broad | P3 | HP 2 Hz | 0.09319 | 0.00000 | 0.09319 | 0.09319 | 0.09319 | 0.09319 |
+| Broad | P3 | EOG regression | 1.00000 | 0.00000 | 1.00000 | 1.00000 | 1.00000 | 1.00000 |
+| Broad | P3 | ICA/EOG | 1.03566 | 0.00000 | 1.03566 | 1.03566 | 1.03566 | 1.03566 |
+| Broad | P3 | Montage mapping only | 1.00000 | 0.00000 | 1.00000 | 1.00000 | 1.00000 | 1.00000 |
+| Broad | P3 | IC-U-Net | 0.88178 | 0.20611 | 0.56224 | 1.24175 | 0.40340 | 1.53043 |
+| Broad | P3 | FemtoEOGClean | 0.10347 | 0.15024 | -0.12285 | 0.34079 | -0.25736 | 0.58382 |
+| Broad | P3 | FemtoEOGClean rectangular guard | 1.00000 | 0.00000 | 1.00000 | 1.00000 | 1.00000 | 1.00000 |
+| Broad | P3 | FemtoEOGClean smooth guard | 1.00000 | 0.00000 | 1.00000 | 1.00000 | 1.00000 | 1.00000 |
+| Broad | P3 | IC-U-Net smooth guard | 1.00000 | 0.00000 | 1.00000 | 1.00000 | 1.00000 | 1.00000 |
+| Localized | N170 | Parent | 1.00000 | 0.00000 | 1.00000 | 1.00000 | 1.00000 | 1.00000 |
+| Localized | N170 | HP 0.5 Hz | 0.99090 | 0.00000 | 0.99090 | 0.99090 | 0.99090 | 0.99090 |
+| Localized | N170 | HP 1 Hz | 0.93909 | 0.00000 | 0.93909 | 0.93909 | 0.93909 | 0.93909 |
+| Localized | N170 | HP 2 Hz | 0.72199 | 0.00000 | 0.72199 | 0.72199 | 0.72199 | 0.72199 |
+| Localized | N170 | EOG regression | 1.00000 | 0.00000 | 1.00000 | 1.00000 | 1.00000 | 1.00000 |
+| Localized | N170 | ICA/EOG | 1.04115 | 0.00000 | 1.04115 | 1.04115 | 1.04115 | 1.04115 |
+| Localized | N170 | Montage mapping only | -0.05311 | 0.00000 | -0.05311 | -0.05311 | -0.05311 | -0.05311 |
+| Localized | N170 | IC-U-Net | -0.03663 | 0.01563 | -0.05735 | -0.00820 | -0.06480 | 0.00268 |
+| Localized | N170 | FemtoEOGClean | 0.75726 | 0.31680 | 0.14133 | 1.21561 | -0.00081 | 1.41596 |
+| Localized | N170 | FemtoEOGClean rectangular guard | 1.00000 | 0.00000 | 1.00000 | 1.00000 | 1.00000 | 1.00000 |
+| Localized | N170 | FemtoEOGClean smooth guard | 1.00000 | 0.00000 | 1.00000 | 1.00000 | 1.00000 | 1.00000 |
+| Localized | N170 | IC-U-Net smooth guard | 1.00000 | 0.00000 | 1.00000 | 1.00000 | 1.00000 | 1.00000 |
+| Localized | P3 | Parent | 1.00000 | 0.00000 | 1.00000 | 1.00000 | 1.00000 | 1.00000 |
+| Localized | P3 | HP 0.5 Hz | 0.84957 | 0.00000 | 0.84957 | 0.84957 | 0.84957 | 0.84957 |
+| Localized | P3 | HP 1 Hz | 0.39050 | 0.00000 | 0.39050 | 0.39050 | 0.39050 | 0.39050 |
+| Localized | P3 | HP 2 Hz | 0.09319 | 0.00000 | 0.09319 | 0.09319 | 0.09319 | 0.09319 |
+| Localized | P3 | EOG regression | 1.00000 | 0.00000 | 1.00000 | 1.00000 | 1.00000 | 1.00000 |
+| Localized | P3 | ICA/EOG | 0.88364 | 0.00000 | 0.88364 | 0.88364 | 0.88364 | 0.88364 |
+| Localized | P3 | Montage mapping only | 1.00000 | 0.00000 | 1.00000 | 1.00000 | 1.00000 | 1.00000 |
+| Localized | P3 | IC-U-Net | 0.65125 | 0.15528 | 0.43766 | 0.91657 | 0.26931 | 1.17128 |
+| Localized | P3 | FemtoEOGClean | 0.10347 | 0.15024 | -0.12285 | 0.34079 | -0.25736 | 0.58382 |
+| Localized | P3 | FemtoEOGClean rectangular guard | 1.00000 | 0.00000 | 1.00000 | 1.00000 | 1.00000 | 1.00000 |
+| Localized | P3 | FemtoEOGClean smooth guard | 1.00000 | 0.00000 | 1.00000 | 1.00000 | 1.00000 | 1.00000 |
+| Localized | P3 | IC-U-Net smooth guard | 1.00000 | 0.00000 | 1.00000 | 1.00000 | 1.00000 | 1.00000 |
+
+The localized N170 mapping gain is negative; the broader mapping gain is 0.829. This demonstrates geometry dependence and prevents attributing the localized response solely to IC-U-Net. Guard unit response is algebraic.
+
+## S6. Guard edge/high-frequency control
+
+The smooth correction is the minimum-norm feasible displacement in the ≤30-Hz orthogonal Fourier subspace. A second variant applies the same guard after projecting the entire candidate output. Both protect endpoint and baseline in every channel without labels. Rectangular, correction-bandlimited, and fully bandlimited controls retain the same protected amplitude.
+
+| Original 20-development-person decoder | Task | BA % | ΔBA points [95% descriptive interval] |
+| --- | --- | ---: | --- |
+| Parent | N170 | 62.25000 | +0.00000 [+0.00000, +0.00000] |
+| FemtoEOGClean | N170 | 60.81250 | -1.43750 [-3.31250, +0.12500] |
+| FemtoEOGClean rectangular guard | N170 | 59.56250 | -2.68750 [-5.43750, +0.00000] |
+| FemtoEOGClean smooth guard | N170 | 59.56250 | -2.68750 [-5.62500, +0.12500] |
+| FemtoEOGClean fully bandlimited guard | N170 | 59.62500 | -2.62500 [-5.50000, +0.18750] |
+| Parent | P3 | 69.34375 | +0.00000 [+0.00000, +0.00000] |
+| FemtoEOGClean | P3 | 56.71875 | -12.62500 [-16.03203, -9.12500] |
+| FemtoEOGClean rectangular guard | P3 | 65.78125 | -3.56250 [-5.37500, -1.96875] |
+| FemtoEOGClean smooth guard | P3 | 65.75000 | -3.59375 [-5.34375, -2.03125] |
+| FemtoEOGClean fully bandlimited guard | P3 | 65.71875 | -3.62500 [-5.40625, -2.06250] |
+
+With the original P3 decoder, the deficits remain 3.56/3.59/3.63 points after these controls, rejecting correction edges/high-frequency addition as the sole explanation for that decoder. With the primary 10-development-person decoder, the smooth deficit is only 0.25 points and its interval crosses zero. This is dependence on representation/decoder training, not a quantified cortical loss. The largest stored endpoint discrepancy is 2.2641350e−5 µV, independently recomputed.
+
+## S7. Calibration and robustness
+
+Twenty calibration people yield finite ranks 19 (90%) and 20 (95%). Joint candidate-family maxima use seven operations × two tasks × two endpoints; guards and mapping are excluded. Scales 1 µV/2 BA points are illustrative, not physiological standards. P3 regression changes determine the upper ranks. The family maximum is deliberately a stress test; its 26.62/30.45 multipliers are too wide to certify the example tolerances.
+
+| Operation | Joint q90 | Joint q95 | Voltage90 µV | Voltage95 µV | BA90 points | BA95 points | Joint evaluation covered / 10 (90%;95%) |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| HP 0.5 Hz | 4.37500 | 4.95452 | 3.03407 | 4.95452 | 7.18750 | 8.75000 | 10; 10 |
+| HP 1 Hz | 6.56632 | 9.99956 | 6.56632 | 9.99956 | 10.00000 | 11.25000 | 9; 10 |
+| HP 2 Hz | 11.03126 | 12.50000 | 10.37223 | 11.03126 | 20.62500 | 25.00000 | 10; 10 |
+| EOG regression | 26.62093 | 30.45375 | 26.62093 | 30.45375 | 8.12500 | 10.62500 | 9; 9 |
+| ICA/EOG | 4.37500 | 4.53125 | 2.40995 | 3.10754 | 8.75000 | 9.06250 | 5; 5 |
+| IC-U-Net | 5.31250 | 8.75000 | 3.07516 | 4.25340 | 10.62500 | 17.50000 | 9; 10 |
+| FemtoEOGClean | 10.82259 | 11.54311 | 10.82259 | 11.54311 | 15.93750 | 16.25000 | 9; 10 |
+
+Separate voltage and BA marginal columns are not simultaneous 90% coverage for both, or for selection across operations. Operation-specific joint q protects its four endpoints only. Prospective split-rank coverage assumes exchangeability and a fixed fitting/assessment procedure; the inspected cohort is exploratory. Low observed ICA coverage is retained.
+
+| Fixed operation | All-40 voltage95 µV (rank 39) |
+| --- | ---: |
+| HP 0.5 Hz | 4.91523976 |
+| HP 1 Hz | 6.70136893 |
+| HP 2 Hz | 10.37222821 |
+| Montage mapping only | 1.74214964 |
+| IC-U-Net | 3.07515656 |
+| FemtoEOGClean | 10.82258650 |
+| FemtoEOGClean rectangular guard | 0.00000004 |
+| FemtoEOGClean smooth guard | 0.00000004 |
+
+These all-40 voltage scores do not depend on fitted ERP decoders/operators. There is no fresh empirical coverage test on the same forty. Fivefold cross-fitting below trains a parent decoder on 32 people and tests on eight. ICA/regression are excluded because their operators would otherwise leak fitted cohort data.
+
+| Task | Operation | All-40 mean parent BA % | Cross-fitted ΔBA points | Voltage change µV | Twenty-partition ΔBA min / median / max points |
+| --- | --- | ---: | ---: | ---: | --- |
+| N170 | HP 0.5 Hz | 61.34375 | -0.15625 | +0.01707 | -0.87500 / +0.18750 / +2.18750 |
+| N170 | HP 1 Hz | 61.34375 | +0.12500 | +0.21536 | -1.81250 / +0.50000 / +2.25000 |
+| N170 | HP 2 Hz | 61.34375 | -0.28125 | +0.12749 | -0.87500 / +0.81250 / +2.56250 |
+| N170 | Montage mapping only | 61.34375 | -1.15625 | -0.06024 | -1.87500 / -0.34375 / +1.06250 |
+| N170 | IC-U-Net | 61.34375 | -2.21875 | +0.27186 | -2.12500 / -0.28125 / +2.06250 |
+| N170 | FemtoEOGClean | 61.34375 | -1.12500 | +0.17530 | -2.62500 / +0.25000 / +2.25000 |
+| N170 | FemtoEOGClean rectangular guard | 61.34375 | -1.59375 | +0.00000 | -3.56250 / -1.06250 / +1.87500 |
+| N170 | FemtoEOGClean smooth guard | 61.34375 | -1.59375 | -0.00000 | -3.62500 / -1.31250 / +1.81250 |
+| P3 | HP 0.5 Hz | 66.36719 | -0.20313 | -0.46781 | -3.09375 / +0.09375 / +1.62500 |
+| P3 | HP 1 Hz | 66.36719 | -3.07031 | -2.32245 | -8.93750 / -3.20312 / +1.31250 |
+| P3 | HP 2 Hz | 66.36719 | -7.50781 | -3.45871 | -14.68750 / -9.34375 / -5.50000 |
+| P3 | Montage mapping only | 66.36719 | -0.09375 | +0.00000 | -2.56250 / -0.53125 / +1.50000 |
+| P3 | IC-U-Net | 66.36719 | -1.25000 | -0.16580 | -7.81250 / -1.73437 / +0.28125 |
+| P3 | FemtoEOGClean | 66.36719 | -8.93750 | -3.61331 | -14.62500 / -10.50000 / -4.50000 |
+| P3 | FemtoEOGClean rectangular guard | 66.36719 | -3.07813 | +0.00000 | -6.56250 / -2.31250 / +2.87500 |
+| P3 | FemtoEOGClean smooth guard | 66.36719 | -2.91406 | -0.00000 | -6.34375 / -2.40625 / +3.03125 |
+
+Partition ranges are descriptive, not confidence intervals. Pooled cross-fitted quantiles are likewise descriptive; no exact cross-conformal guarantee is claimed. The positive primary IC-U-Net decoding result is retained even though its sign varies across assessments.
+
+## S9. Executable record and verification
+
+- Primary outputs: `results/revision/summary.json`, task-specific operations/decoders/voltages, participant CSV, montage matrices, source provenance.
+- Reference family: `reference_audit.json`; every target-shift risk identity is checked against directly rescored losses.
+- Direction records: `probes.json` and `smooth_probes.json`, 23,040 full per-background responses.
+- Robustness: `partition_sensitivity.json`, `crossfit_assessment.json`, `guard_mechanism_audit.json`.
+- Numerical checks: `verify_tim_revision.py` independently recomputes all 1040 rows, classical transformed voltages, delivered decoder labels, guard constraints, rank quantiles/coverage, and probe aggregates. Float32 feature/scaler/LDA conventions are reproduced explicitly; voltage endpoints accumulate in float64.
+- Scientific tests: original sixteen plus bandlimited projection feasibility/minimum norm and finite 20-person rank coverage, eighteen passing tests. Downloader tested against the two actual pinned public source files. An isolated public-code fixture exactly reproduces all construction-audit records and passes the 1040-row/23040-probe verifier.
+- DOI metadata resolve for all retained scholarly references; conformal citation uses the published 2023 version. Bibliography excludes GitHub and web-status tags.
+- Main manuscript remains the existing open LaTeX source; seven IEEE template pages, inline source-backed figures, and successful built-in compilation. No manuscript or raw recordings are uploaded to the code repository.
+
+All raw datasets are publicly available and remain subject to their source terms. Results establish reference-construction sensitivity and measured digital endpoint changes; actual neural impurity, physical acquisition calibration, and clinical acceptance remain outside the measured evidence.
+
+## S11. Additional mathematical directions and known-source control
+
+The following material was moved from the main manuscript to keep its operational argument readable.
+
+```latex
+Additional evidence may constrain only some directions. In coordinates scaled to empirical MSE, suppose $L\Delta=b$ is independently established and $\|\Delta-L^\dagger b\|_2\leq r$. With $P_0=I-L^\dagger L$,
+\begin{equation}
+D_N=D_T+2v^\top L^\dagger b\ \pm\ 2r\|P_0v\|_2.
+\label{eq:partial}
+\end{equation}
+Every feasible bias is $L^\dagger b+h$, $h\in\ker L$; alignment with $P_0v$ attains the extremes. One endpoint can therefore constrain a ranking without identifying the whole waveform. Parent-relative changes below do not measure $b$ for an unknown cortical target.
+
+
+```
+
+```latex
+A known-source control separately verifies the missing implication. Orthogonal unit-RMS modes $g_b,g_u,g_a$ define $N=Bg_b+Ug_u$, $A=Vg_u+Cg_a$, $T_\alpha=Bg_b+(1-\alpha)Ug_u$, and $\widetilde A_\alpha=A+\alpha Ug_u$. Draw independent $B,C\sim\mathcal N(0,0.5)$, $V\sim\mathcal N(0,1)$, and balanced $U\in\{-1,1\}$, with normal parameters denoting variances. Every mixture equals $N+A$. For $z=U+V$, $\E[U\mid z]=\tanh z$; the target optimum has risks
+\begin{equation}
+R_T=(1-\alpha)^2(1-\rho),\quad R_N=1-\rho+\alpha^2\rho,
+\label{eq:simulation}
+\end{equation}
+where $\rho=\E[\tanh^2z]\simeq0.5504$. Orthogonality and conditional-expectation residuals prove the expressions; 100000 draws and quadrature verify them. This demonstrates possibility, not actual benchmark impurity.
+
+
+```
+
+## S12. Detailed digital deployment, decoder, and probe specifications
+
+```latex
+\subsection{Independent denoiser, classical operations, and probes}
+Table~\ref{tab:erp} includes the published pretrained IC-U-Net \cite{icunet} with 2669854 parameters, a fixed author checkpoint, and no ERP fine-tuning. It receives actual four-second continuous contexts at 256 Hz, globally normalized as in the author code; outputs are rescaled and the central two seconds retained. A fixed spherical-spline map transfers the ERP montage to the model's 30-channel template and back, preserving exactly shared electrodes. A mapping-only control isolates this adaptation. Pz maps identically; PO7/PO8 require interpolation. The common parent passband is retained, so this is a declared deployment test, not a recreation of IC-U-Net's training preprocessing.
+
+Comparators include 0.5-, 1-, and 2-Hz high-pass filtering; three-channel EOG regression; EOG-guided ICA; and the frozen 2561-parameter FemtoEOGClean \cite{lahiri}. Regression and ICA use 50000 sampled continuous development points, 5000 per person. Regression ridge is $10^{-5}\operatorname{tr}(E^\top E)/3$. ICA fits 29 components on 1--30 Hz data and removes at most three with absolute EOG correlation above 0.3; both task-specific fits converge and remove three. Operators are frozen and baseline correction is reapplied. Rectangular and smooth FemtoEOGClean guards, a smooth IC-U-Net guard, and a fully bandlimited FemtoEOGClean guard provide diagnostic variants.
+
+A decoder uses eight 100-ms channel means from 0 to 0.8 s, development-only standardization, and shrinkage LDA with equal class priors. We report participant-mean balanced accuracy (BA), with parent-trained frozen and operation-adapted decoders, plus EOG-only decoding. Fivefold cross-fitting trains parent decoders on 32 participants and tests on eight, covering all 40. Twenty alternative 10/20/10 partitions test fixed-operation sensitivity; ICA/regression are excluded from these checks because their operators would also require refitting.
+
+Probes use Gaussian time profiles centered at 140 ms (SD 25 ms) and 450 ms (SD 80 ms), six amplitudes $\pm0.5,\pm1,\pm2$ $\mu$V, and eight backgrounds per evaluation person, four per class. Two zero-mean scalp patterns have unit ROI mean: an ROI-localized pattern and a broad geodesic Gaussian of width 0.4 rad. The broad pattern was added after the localized mapping response revealed montage attenuation. Each operation has 480 gains per task and direction. EOG is fixed, so regression's unit EEG-injection response follows algebraically; guard response is also unit by design. Continuous-filter injections use 32-s zero-padded context, whereas IC-U-Net uses the same real four-second context as inference. Descriptive 95\% ERP intervals use 10000 paired participant bootstrap draws.
+
+Calibration concerns seven genuine candidates, excluding mapping and guards, both tasks, voltage change, and frozen BA change. Scales of 1 $\mu$V and two percentage points are illustrative engineering tolerances, not application standards. We also report separate voltage and BA envelopes, and voltage-only calibration across all 40 for fixed, externally specified operations. An independent implementation rescores all 1040 participant/task/method records and 23040 probe responses from delivered outputs. Source hashes, splits, and numerical conventions are recorded.
+
+
+```
+
+## S13. Historical seven-candidate family display
+
+This figure source is moved to the supplement to make room for the direct reference-stage and matched-target results.
+
+```latex
+\begin{figure}[!t]
+\centering
+% BEGIN ERP_CALIBRATION
+\pgfplotstableread{
+x cal test
+1 7.343750000 nan
+2 7.968750000 nan
+3 10.381275326 nan
+4 26.620925254 nan
+5 3.108893185 nan
+6 3.437500000 nan
+7 5.179334280 nan
+8 8.627469059 nan
+9 16.006871817 nan
+10 6.718750000 nan
+11 5.000000000 nan
+12 30.453746649 nan
+13 4.531250000 nan
+14 8.012873621 nan
+15 9.028026846 nan
+16 7.187500000 nan
+17 4.234328991 nan
+18 9.719700761 nan
+19 4.687500000 nan
+20 6.045718075 nan
+21 nan 50.396525499
+22 nan 5.408704840
+23 nan 13.943497602
+24 nan 18.360267525
+25 nan 5.312500000
+26 nan 6.562500000
+27 nan 4.894035436
+28 nan 4.854749292
+29 nan 11.250000000
+30 nan 5.625000000
+}\pcal
+% END ERP_CALIBRATION
+\begin{tikzpicture}
+\begin{axis}[timaxis,height=1.5in,xmin=.5,xmax=30.5,ymin=0,ymax=55,
+ xlabel={Participant index: calibration 1--20, evaluation 21--30},ylabel={Maximum scaled change},
+ xtick={1,10,20,30},ytick={0,10,20,30,40,50},
+ legend columns=2,legend style={at={(.5,1.02)},anchor=south},unbounded coords=discard]
+\addplot[teacherblue,only marks,mark=*,mark size=1.8] table[x=x,y=cal]{\pcal};\addlegendentry{Calibration}
+\addplot[modelred,only marks,mark=square*,mark size=1.8] table[x=x,y=test]{\pcal};\addlegendentry{Evaluation}
+\addplot[parentgray,dashed,domain=.5:30.5]{26.620925254};
+\addplot[parentgray,dashdotted,domain=.5:30.5]{30.453746649};
+\addplot[parentgray,densely dotted,domain=.5:30.5]{1};
+\node[font=\footnotesize,anchor=west] at (axis cs:21,34){$q_{95}=30.45$};
+\node[font=\footnotesize,anchor=west] at (axis cs:21,23){$q_{90}=26.62$};
+\end{axis}
+\end{tikzpicture}
+\caption{Family stress test: one score per person, maximized over seven candidates, both tasks, and voltage/BA changes. Dotted: unit engineering scales. Large regression changes dominate the upper calibration ranks. The displayed ten-person coverage is descriptive; prospective rank coverage requires a fixed procedure and exchangeability.}
+\label{fig:calibration}
+\end{figure}
+```
+
+## S14. Full derivations and diagnostic detail moved from the main text
+
+```latex
+Without restrictions on sources, $(N+H)+(A-H)=Y$ for every admissible $H$. If one observation permits neural targets $n_0,n_1$, every estimate $z$ obeys
+\begin{equation}
+\max\{\|z-n_0\|_2^2,\|z-n_1\|_2^2\}
+\geq\tfrac14\|n_0-n_1\|_2^2.
+\label{eq:nonid}
+\end{equation}
+The triangle inequality makes at least one distance no smaller than half the target separation. This is a standard nonidentifiability statement for the specified source class. Spatial information, reference channels, independence, or validated source models can restrict that class. Spectral overlap alone does not prohibit multichannel separation; prediction of $T$ under a fixed joint law remains well defined.
+
+
+Increasing capacity cannot validate the target relation. Conditional-expectation orthogonality gives
+\begin{equation}
+R_N(\E[T\mid X])-R_N(\E[N\mid X])
+=\|\E[\Delta\mid X]\|^2.
+\label{eq:optimum}
+\end{equation}
+This identifies an objective mismatch when the reference bias is predictable from the input. It does not establish that a released dataset has that bias. These elementary identities are used here to delimit claims, not presented as new mathematical results.
+
+
+The follow-up split assigns 10 people to development, 20 to calibration, and 10 to evaluation, keeping both tasks together. It retains the earlier ten evaluation people and reallocates ten of the original twenty development people to calibration. This revision was specified after earlier cohort outcomes were inspected; it is exploratory and does not constitute fresh confirmatory validation. Development people alone fit the pooled operators, scalers, and decoders. The added reference recipe fits ICA separately and without event labels on each recording, as an explicitly adaptive construction. Historical identities in denoiser source pools are unavailable, preventing a complete pretrained-model participant crosswalk.
+
+
+Broad-direction IC-U-Net gains average 0.682 for N170 and 0.882 for P3; their 5th--95th percentiles are 0.521--0.948 and 0.562--1.242. FemtoEOGClean gives 0.757 and 0.103, with ranges 0.141--1.216 and $-0.123$--0.341. This dispersion would be concealed by a single mean. The broad mapping-only N170 gain is 0.829. For the localized N170 direction, mapping alone gives $-0.053$ and IC-U-Net $-0.037$; that attenuation cannot be attributed solely to the network. Probe geometry and deployment mapping must accompany the gain claim.
+
+The smooth guard preserves the parent P3 contrast but gives 64.69\% primary BA, a change of $-0.25$ points ($[-2.31,+1.59]$), so a residual deficit is not established in this split. To isolate the earlier guard mechanism, we retain the original twenty-development-person decoder and its unchanged ten-person test set. Its P3 deficit is 3.56 points for the rectangular guard, 3.59 for the smooth guard, and 3.63 for the entirely bandlimited variant. The latter two remove the correction's step-edge/high-frequency explanation, while leaving a deficit for that particular decoder. They do not establish lost cortical information. In all-participant cross-fitting, smooth-guard BA changes by $-2.91$ points; decoder choice remains material.
+
+The rectangular P3 correction has 0.94\% of epoch-spectral energy above 30 Hz; the smooth correction has only roundoff there. Across stored controls, the largest endpoint-constraint discrepancy is $2.26\times10^{-5}$ $\mu$V. EOG-only BA is 51.62\% for N170 and 65.44\% for P3. This establishes predictive information in recorded EOG channels, not a pure peripheral source or proof that the scalp decoder mainly reads eye movements.
+
+
+A synthetic reconstruction score is valid for its constructed task; physiological validation requires an independently justified link to the intended neural measurement. The reference audit quantifies a real target-definition sensitivity while preserving robust comparisons, including the EOG MLP advantage. It cannot estimate EEGdenoiseNet's latent neural impurity. Publishing participant/channel provenance, event labels, simultaneous peripheral recordings, and pre-construction parents would make a stronger purity assessment possible.
+
+The independent ERP assessment adds evidence unavailable to that score. Known-direction response, scalp voltage, prediction, and reference-channel controls address different properties. The endpoint guard proves that matching a mean leaves other directions unconstrained; the bandlimited variants test its edge explanation directly. Decoder and montage controls prevent changes caused by deployment geometry or classification training from being labeled cortical loss. This extends paired-reference validation \cite{sweeney} and ERP quality assessment \cite{zhangvalidation} by reporting construction-conditional ranking ranges and calibrated digital change limits alongside the endpoint tests.
+
+Minimal processing is a candidate to assess, not a universal solution. For a filter $H$, source error is $(H-I)N+HA$; attenuation may affect both neural voltage and interference. Likewise, a predictive task label may reflect a confound. A useful application should specify what must be retained, what interference must be reduced, and acceptable changes, then select the least processing supported by those tests. Our illustrative tolerances are not physiological acceptance standards, and confound reduction is not certified here.
+
+
+```
+
+
+# Part B. Automated reference construction and affine supervision intervention
+
+## 1. What the new experiments identify
+
+The new model comparisons test whether synthetic reconstruction performance establishes preservation on independent task recordings. They do **not** identify the cause of every deployment error. A separate intervention changes only the training targets of the same affine learner on the same mixtures, with the same regularization and held-out inputs. That intervention identifies a target-definition effect on **digital output**, conditional on this design. Neither experiment recovers pure cortical voltage or quantifies actual impurity of EEGdenoiseNet's released references.
+
+The minimally processed parent is a comparator. Its P3 can contain task-related peripheral voltage. A smaller contrast need not mean less cortical activity, and a larger contrast need not mean greater accuracy. Dataset labels and ICLabel probabilities are not direct source-purity measurements.
+
+## 2. Cohort, protocol history and split
+
+All 40 publicly available ERP CORE participants contribute N170 and P3 recordings, giving 80 recordings and 14400 epochs. The two tasks retain identical participant assignments. The parent is scalp-average referenced, resampled to 256 Hz, and continuously filtered at 0.1–30 Hz with fourth-order forward–backward Butterworth sections within each recording. Epochs span −0.5 to 1.5 s; baseline is −0.2 to 0 s. No planned trial is rejected. N170 is PO7/PO8 face-minus-car over 110–170 ms; P3 is Pz target-minus-nontarget over 300–600 ms. Ten evaluation people contribute 3600 identical trials across operations.
+
+
+| Partition | Participant IDs |
+| --- | --- |
+| development | 30, 8, 24, 39, 36, 1, 29, 23, 6, 25 |
+| calibration | 21, 17, 31, 32, 22, 19, 12, 26, 11, 3, 27, 4, 5, 40, 2, 13, 18, 20, 15, 28 |
+| evaluation | 7, 14, 37, 10, 9, 16, 38, 33, 34, 35 |
+
+
+The cohort had already been inspected. Split reallocation, broader probe geometry, new benchmark models and selection policies, output-reference checks, convergence subsets and subsequent robustness diagnostics are exploratory. Protocol decisions and amendments are in `PROTOCOL.md`; no preregistration or untouched-cohort confirmation is claimed. The full-record ICA attempt was replaced by every-fourth-sample spatial fitting before any recipe endpoint result was obtained. ICLabel features and all delivered voltages remained at 256 Hz. Inference batching later changed for computation; training/validation batching and model-selection criteria did not change. All simple-CNN inference was regenerated with the final implementation.
+
+Source snapshots and result metadata retain the configuration hashes used at execution. The final configuration also adds the target-intervention section; earlier recipe and coverage files therefore have earlier configuration hashes. These are preserved historical fingerprints, not relabeled as if all execution occurred under one byte-identical file.
+
+## 3. Published EEGdenoiseNet architecture reproductions
+
+The simple CNN and complex residual CNN are ported from the authors' [official source](https://github.com/ncclabsustech/EEGdenoiseNet/blob/8d290661146c7189c98cc04812d37371d4b9426c/Network_structure.py), pinned to commit `8d290661146c7189c98cc04812d37371d4b9426c`. The downloader verifies four source-file hashes. MIT licensing is reproduced in `THIRD_PARTY_NOTICES.md`.
+
+The simple network has four 64-channel, length-three convolutions followed by a dense 512-sample output (16815552 parameters). The residual network uses an initial 32-channel length-five convolution, three residual branches with kernels 3/5/7, concatenation, a length-one convolution and dense output (8455424 parameters). Batch-normalization epsilon/momentum, ReLU/dropout ordering, SAME padding and time-before-channel flatten ordering follow the inspected architecture. Tests count the parameters independently. A separately coded NumPy forward calculation agreed with random PyTorch ports within 2.1×10⁻⁶ maximum absolute error.
+
+Both are **architecture reproductions retrained here**, not the authors' original trained weights. The original TensorFlow runner calls individual examples without an explicit training flag; this implementation uses conventional minibatch batch normalization and dropout. Framework, optimizer and fixed-mixture/split differences are declared. No reproduction of the original publication's leaderboard is asserted.
+
+Deduplicated EEG/EOG source windows are partitioned 60/20/20 before synthesis. Existing fixed mixtures contain 10000 training, 2000 validation and 3000 test examples at power-SNR −7/−4/−1/+2 dB. Input-derived standard deviation scales input and target equally. Each architecture trains 50 epochs for seeds 17/29/43, minibatch 40, RMSprop learning rate 5×10⁻⁵, rho 0.9, epsilon 10⁻⁷. Checkpoints minimize validation MSE per seed, without ERP tuning. ERP input is each 512-sample channel normalized by its own standard deviation, with physical scale restored and baseline applied afterward. The primary predictor is the equal average of three seed predictions; individual seed outcomes are retained. Ensemble MSE is distinct from mean individual-seed MSE.
+
+
+| Architecture | Seed | Selected epoch | Validation MSE | Test MSE |
+| --- | --- | --- | --- | --- |
+| simple_cnn | 17 | 50 | 0.053908 | 0.052191 |
+| simple_cnn | 29 | 50 | 0.054054 | 0.052705 |
+| simple_cnn | 43 | 50 | 0.054085 | 0.052447 |
+| complex_cnn | 17 | 49 | 0.057529 | 0.055168 |
+| complex_cnn | 29 | 46 | 0.055586 | 0.053355 |
+| complex_cnn | 43 | 43 | 0.055683 | 0.054107 |
+
+
+| Architecture | Mean seed test MSE | Ensemble test MSE | Uncorrected MSE |
+| --- | --- | --- | --- |
+| simple_cnn | 0.052448 | 0.050517 | 0.638572 |
+| complex_cnn | 0.054210 | 0.046240 | 0.638572 |
+
+
+## 4. Reference-recipe instantiation and stage controls
+
+The EEGdenoiseNet paper describes 1–80 Hz filtering, a line-noise notch, resampling, ICA/ICLabel processing and visual selection. It does not disclose enough filter, ICA, component-threshold and expert-decision details to reconstruct its labels exactly. We instantiate two specified automated variants on each ERP recording: fourth-order zero-phase Butterworth 1–80 Hz filtering and a 60-Hz Q=30 notch; average reference; 29-component extended-infomax ICA fit on every fourth time point, maximum 500 iterations, seed 94709+participant. ICLabel features use the full 256-Hz stream. ICA and classification do not use event labels.
+
+**Brain-only** keeps components whose most probable class is brain. **Conservative** removes components only when eye, muscle, heart, line-noise or channel-noise probability reaches 0.8; other/uncertain components remain. Both policies share one decomposition. A 30-Hz lowpass supplies the common ERP analysis bandwidth after recipe construction. Filter-only retains the filtering stages without component rejection. ICA-only applies the same component projection to the unchanged parent, separating component selection from the reference filter.
+
+This is an automated instantiation with 30 rather than the benchmark source study's 64 scalp channels. Expert selection is not replicated. MNE-ICLabel recommends average reference, extended infomax and 1–100 Hz filtering; the deliberate 1–80 Hz benchmark setting triggers a documented warning and may alter classifier performance. Probability labels are not independent physiological truth. MNE-ICLabel 0.9.0 uses its Torch ICLabelNet.pt weights in these runs, SHA-256 `bccfee77d028858c855ea370b17e21b77e2f52d533775d4c54f12b168063579e`. Installed ONNX and MEGnet files are fingerprinted for package provenance but were not applied.
+
+
+There are 13/80 iteration-limit flags. Per-record component probabilities, exclusions, warnings, actual iteration counts, source hashes and projection matrices are retained; identity projection is checked numerically. The converged-only subset is a post-hoc sensitivity analysis, not a randomized subgroup or a replacement primary cohort.
+
+
+| Task | Iteration-limit participant IDs |
+| --- | --- |
+| N170 | 7, 31, 34, 36 |
+| P3 | 4, 7, 13, 16, 17, 19, 31, 33, 36 |
+
+
+| Task | Stage/target | Ten-person mean (µV) | Converged-only mean (µV) | Converged evaluation n |
+| --- | --- | --- | --- | --- |
+| N170 | parent | -3.330 | -3.127 | 8 |
+| N170 | recipe_filter | -3.545 | -3.630 | 8 |
+| N170 | recipe_brain_argmax | -3.027 | -2.927 | 8 |
+| N170 | recipe_artifact80 | -3.123 | -3.189 | 8 |
+| N170 | ica_brain_argmax | -3.041 | -2.656 | 8 |
+| N170 | ica_artifact80 | -2.993 | -2.789 | 8 |
+| N170 | target_parent | -2.148 | -2.094 | 8 |
+| N170 | target_recipe_brain_argmax | -1.720 | -1.754 | 8 |
+| N170 | target_recipe_artifact80 | -2.072 | -2.106 | 8 |
+| P3 | parent | 4.510 | 4.437 | 7 |
+| P3 | recipe_filter | 2.063 | 1.943 | 7 |
+| P3 | recipe_brain_argmax | 1.103 | 1.034 | 7 |
+| P3 | recipe_artifact80 | 1.521 | 1.479 | 7 |
+| P3 | ica_brain_argmax | 2.815 | 3.108 | 7 |
+| P3 | ica_artifact80 | 3.396 | 3.755 | 7 |
+| P3 | target_parent | 2.499 | 2.733 | 7 |
+| P3 | target_recipe_brain_argmax | 0.292 | 0.301 | 7 |
+| P3 | target_recipe_artifact80 | 0.435 | 0.458 | 7 |
+
+
+## 5. A target-only intervention with an exact coefficient identity
+
+Three 512-input, 512-output affine ridge fits share the same inputs, regularization and learner. Only their targets change: parent, brain-only recipe, or conservative recipe. Each task uses 20000 fit and 4000 validation mixtures from the ten development people. Trial **indices** are split into fixed halves within person before mixture sampling; fit/validation EOG windows come from distinct public source pools. Neighboring raw epochs can overlap in time, so this is not a claim of fully independent raw-sample or participant validation. The ten evaluation people remain absent from fitting. There is no ERP-validation hyperparameter search: eta is fixed at 0.001×trace(XcᵀXc)/512.
+
+Let Xc and Tc be column-centered matrices. Minimizing ‖Xc W−Tc‖F²+eta‖W‖F² gives W=(XcᵀXc+eta I)⁻¹XcᵀTc and b=mean(T)−mean(X)W. Subtraction for targets T1,T0 proves
+
+**ΔW=(XcᵀXc+eta I)⁻¹Xcᵀ(T1−T0)c**, and **Δb=mean(T1−T0)−mean(X)ΔW**.
+
+The saved float64 designs and targets independently reproduce every coefficient with zero matrix discrepancy. The identity makes explicit which input-correlated target changes propagate into the fit. Input/target normalization uses the same input-derived standard deviation for every target. At deployment the physical output is yW+SD(y)b, followed by the same baseline operation. Thus the compared held-out digital outputs differ only through the fitted target coefficients, not a target-specific scaling or input.
+
+
+| Task | Reference-supervised fit minus parent-supervised fit (µV) | 95% descriptive participant interval |
+| --- | --- | --- |
+| N170: target_recipe_brain_argmax | +0.429 | [+0.170, +0.692] |
+| N170: target_recipe_artifact80 | +0.077 | [-0.140, +0.324] |
+| P3: target_recipe_brain_argmax | -2.207 | [-3.425, -1.073] |
+| P3: target_recipe_artifact80 | -2.064 | [-3.245, -0.960] |
+
+
+The parent-supervised fit itself attenuates P3 from 4.51 to 2.50 µV. Target choice therefore adds a cause of attenuation; it is not its sole cause. The reference-supervised results do not prove removed voltage is entirely neural. Fixed regularization and model error, deliberate passband definition and peripheral contributions remain relevant.
+
+The cross-target validation matrices below compare each fitted learner on identical validation inputs. Rows are supervisory targets, columns are scoring references. These are normalized MSEs, not neural errors. The learner that wins changes with the reference, making the score's target dependence observable.
+
+
+### N170
+
+| Supervisory target | parent | recipe_brain_argmax | recipe_artifact80 |
+| --- | --- | --- | --- |
+| parent | 0.167066 | 0.356623 | 0.307076 |
+| recipe_brain_argmax | 0.397750 | 0.122465 | 0.103512 |
+| recipe_artifact80 | 0.373004 | 0.129141 | 0.098738 |
+
+### P3
+
+| Supervisory target | parent | recipe_brain_argmax | recipe_artifact80 |
+| --- | --- | --- | --- |
+| parent | 0.156205 | 0.364812 | 0.328276 |
+| recipe_brain_argmax | 0.419625 | 0.101120 | 0.094043 |
+| recipe_artifact80 | 0.394282 | 0.108327 | 0.088088 |
+
+
+## 6. Primary independent ERP outcomes
+
+All ten primary evaluation people are retained. The parent-trained frozen decoder uses development people only. Adapted decoders fit each operation's development outputs; they do not imply that an altered representation is physiologically faithful. Intervals are 10000 paired participant-bootstrap percentile draws and remain descriptive after cohort inspection. Balanced accuracy (BA) is percent; changes are percentage points, with binary chance 50%.
+
+
+| Task | Operation | Mean (µV) | Change (µV) | 95% change interval | Frozen BA (%) | BA change (points) | Adapted BA (%) |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| N170 | recipe_filter | -3.545 | -0.216 | [-0.661, +0.284] | 60.625 | -0.063 | 59.000 |
+| N170 | recipe_brain_argmax | -3.027 | +0.302 | [-0.281, +0.905] | 58.563 | -2.125 | 55.250 |
+| N170 | recipe_artifact80 | -3.123 | +0.207 | [-0.243, +0.699] | 60.000 | -0.687 | 59.875 |
+| N170 | ica_brain_argmax | -3.041 | +0.288 | [-0.085, +0.674] | 58.750 | -1.938 | 56.375 |
+| N170 | ica_artifact80 | -2.993 | +0.336 | [+0.205, +0.487] | 60.187 | -0.500 | 59.500 |
+| N170 | simple_cnn | -1.929 | +1.400 | [+0.539, +2.410] | 57.875 | -2.813 | 54.875 |
+| N170 | complex_cnn | -2.257 | +1.073 | [+0.234, +2.096] | 57.750 | -2.938 | 53.250 |
+| N170 | target_parent | -2.148 | +1.181 | [+0.653, +1.710] | 55.312 | -5.375 | 58.062 |
+| N170 | target_recipe_brain_argmax | -1.720 | +1.610 | [+0.883, +2.352] | 58.250 | -2.438 | 61.875 |
+| N170 | target_recipe_artifact80 | -2.072 | +1.258 | [+0.579, +1.988] | 56.688 | -4.000 | 60.938 |
+| P3 | recipe_filter | 2.063 | -2.447 | [-4.110, -0.853] | 66.750 | +1.813 | 65.594 |
+| P3 | recipe_brain_argmax | 1.103 | -3.407 | [-5.071, -1.947] | 61.719 | -3.219 | 64.156 |
+| P3 | recipe_artifact80 | 1.521 | -2.989 | [-4.593, -1.500] | 65.094 | +0.156 | 65.938 |
+| P3 | ica_brain_argmax | 2.815 | -1.695 | [-3.259, -0.285] | 62.969 | -1.969 | 63.562 |
+| P3 | ica_artifact80 | 3.396 | -1.114 | [-2.436, -0.081] | 63.906 | -1.031 | 65.156 |
+| P3 | simple_cnn | 0.052 | -4.458 | [-6.224, -2.797] | 50.813 | -14.125 | 56.844 |
+| P3 | complex_cnn | 0.075 | -4.435 | [-6.230, -2.758] | 50.688 | -14.250 | 58.000 |
+| P3 | target_parent | 2.499 | -2.011 | [-2.640, -1.290] | 58.000 | -6.937 | 58.875 |
+| P3 | target_recipe_brain_argmax | 0.292 | -4.218 | [-5.869, -2.632] | 49.750 | -15.187 | 58.281 |
+| P3 | target_recipe_artifact80 | 0.435 | -4.075 | [-5.706, -2.506] | 50.812 | -14.125 | 61.188 |
+
+
+Individual seed deployment, without treating seeds as participants:
+
+| Task | Architecture | Seed | Mean contrast (µV) | Frozen BA (%) |
+| --- | --- | --- | --- | --- |
+| N170 | simple_cnn | 17 | -1.9055 | 56.313 |
+| N170 | simple_cnn | 29 | -1.8980 | 57.813 |
+| N170 | simple_cnn | 43 | -1.9839 | 58.500 |
+| N170 | complex_cnn | 17 | -2.1454 | 56.812 |
+| N170 | complex_cnn | 29 | -2.2758 | 57.625 |
+| N170 | complex_cnn | 43 | -2.3492 | 55.875 |
+| P3 | simple_cnn | 17 | 0.0560 | 50.719 |
+| P3 | simple_cnn | 29 | 0.0602 | 50.750 |
+| P3 | simple_cnn | 43 | 0.0384 | 50.781 |
+| P3 | complex_cnn | 17 | 0.0836 | 50.625 |
+| P3 | complex_cnn | 29 | 0.0579 | 50.813 |
+| P3 | complex_cnn | 43 | 0.0834 | 51.094 |
+
+
+## 7. Shared-contamination and output-reference controls
+
+The held-out contamination control adds public EOG **test-pool** segments to the same evaluation parent trials at the four fixed SNRs. Inputs and artifact draws are shared across the three learners; selection uses no labels. Saved metadata contain original EOG row IDs and SNRs. This tests the target effect under a common synthetic contamination distribution, not simultaneous physiological corruption or physiological artifact reduction.
+
+
+| Task | Supervisory target | Output contrast (µV) | Frozen BA (%) |
+| --- | --- | --- | --- |
+| N170 | parent | -2.556 | 54.125 |
+| N170 | recipe_brain_argmax | -1.941 | 56.437 |
+| N170 | recipe_artifact80 | -2.338 | 56.000 |
+| P3 | parent | 2.265 | 55.281 |
+| P3 | recipe_brain_argmax | 0.338 | 51.094 |
+| P3 | recipe_artifact80 | 0.521 | 52.375 |
+
+
+| Task | Changed target | Change versus parent fit (µV) | 95% descriptive interval |
+| --- | --- | --- | --- |
+| N170 | recipe_brain_argmax | +0.615 | [+0.277, +0.927] |
+| N170 | recipe_artifact80 | +0.218 | [-0.061, +0.498] |
+| P3 | recipe_brain_argmax | -1.927 | [-3.219, -0.712] |
+| P3 | recipe_artifact80 | -1.744 | [-3.012, -0.535] |
+
+
+Average reference is applied **before** model input in the primary assessment; outputs are scored as delivered. Channelwise nonlinear processing or montage mappings can change the output common mode. A separate, post-hoc control applies average reference to all 30 output scalp channels, then rebaselines and rescores on the same trials/decoder. It preserves neither the original model interface nor a guarantee of greater cortical accuracy; it quantifies output-reference sensitivity. IC-U-Net's favorable primary P3 changes materially (4.14→2.96 µV; BA 67.97→65.25%). The benchmark CNN attenuation and target-only P3 effects remain.
+
+
+| Task | Operation | Output reference | Contrast (µV) | Frozen BA (%) |
+| --- | --- | --- | --- | --- |
+| N170 | parent | delivered | -3.330 | 60.688 |
+| N170 | parent | output_average | -3.330 | 60.688 |
+| N170 | femto | delivered | -3.352 | 59.438 |
+| N170 | femto | output_average | -3.294 | 59.875 |
+| N170 | icunet | delivered | -2.705 | 60.750 |
+| N170 | icunet | output_average | -2.920 | 61.000 |
+| N170 | simple_cnn | delivered | -1.929 | 57.875 |
+| N170 | simple_cnn | output_average | -1.896 | 56.562 |
+| N170 | complex_cnn | delivered | -2.257 | 57.750 |
+| N170 | complex_cnn | output_average | -2.170 | 56.313 |
+| N170 | target_parent | delivered | -2.148 | 55.312 |
+| N170 | target_parent | output_average | -2.146 | 55.437 |
+| N170 | target_recipe_brain_argmax | delivered | -1.720 | 58.250 |
+| N170 | target_recipe_brain_argmax | output_average | -1.720 | 58.000 |
+| N170 | target_recipe_artifact80 | delivered | -2.072 | 56.687 |
+| N170 | target_recipe_artifact80 | output_average | -2.072 | 56.688 |
+| P3 | parent | delivered | 4.510 | 64.937 |
+| P3 | parent | output_average | 4.510 | 64.937 |
+| P3 | femto | delivered | 0.529 | 57.406 |
+| P3 | femto | output_average | 0.492 | 57.969 |
+| P3 | icunet | delivered | 4.137 | 67.969 |
+| P3 | icunet | output_average | 2.959 | 65.250 |
+| P3 | simple_cnn | delivered | 0.052 | 50.812 |
+| P3 | simple_cnn | output_average | -0.008 | 50.656 |
+| P3 | complex_cnn | delivered | 0.075 | 50.688 |
+| P3 | complex_cnn | output_average | 0.030 | 50.781 |
+| P3 | target_parent | delivered | 2.499 | 58.000 |
+| P3 | target_parent | output_average | 2.488 | 57.750 |
+| P3 | target_recipe_brain_argmax | delivered | 0.292 | 49.750 |
+| P3 | target_recipe_brain_argmax | output_average | 0.295 | 49.531 |
+| P3 | target_recipe_artifact80 | delivered | 0.435 | 50.812 |
+| P3 | target_recipe_artifact80 | output_average | 0.438 | 50.437 |
+
+
+After output average reference, target-only differences:
+
+| Task | Changed target | Change (µV) | 95% descriptive interval |
+| --- | --- | --- | --- |
+| N170 | target_recipe_brain_argmax | +0.426 | [+0.168, +0.688] |
+| N170 | target_recipe_artifact80 | +0.075 | [-0.142, +0.317] |
+| P3 | target_recipe_brain_argmax | -2.193 | [-3.401, -1.065] |
+| P3 | target_recipe_artifact80 | -2.050 | [-3.225, -0.952] |
+
+
+## 8. Digital probes and all-participant decoder checks
+
+The added networks receive 1920 finite paired broad-direction probes: two tasks, two architectures, ten evaluation people, eight backgrounds, six signed/amplitude settings. Each response is a known-voltage difference divided by its known input endpoint. These are digital injections after acquisition, not physical source injections. Geometry, preprocessing order, normalization, reference and baseline are part of the probe definition; full specifications are retained in the prior supplement's S12 and executable code.
+
+For the two reference policies, 160 additional participant/task/policy broad-direction responses assess **frozen ICA projections**. No ICA or ICLabel refit occurs on the injected signal. They characterize the selected linear stage, not the whole adaptive pipeline. Conservative ICA can retain a chosen broad P3 direction with gain near one while changing the observed P3: one probe family does not span every task/peripheral voltage direction. This is why endpoint and probe evidence are reported separately.
+
+
+| Task | Operation | Evaluation responses | Mean gain | 5th percentile | 95th percentile |
+| --- | --- | --- | --- | --- | --- |
+| N170 | simple_cnn | 480 | 0.3164 | 0.0979 | 0.4703 |
+| N170 | complex_cnn | 480 | 0.3748 | 0.0325 | 0.5462 |
+| N170 | ica_brain_argmax | 10 | 0.8691 | 0.6105 | 1.0351 |
+| N170 | ica_artifact80 | 10 | 0.9903 | 0.9094 | 1.0619 |
+| P3 | simple_cnn | 480 | 0.0209 | -0.0861 | 0.1252 |
+| P3 | complex_cnn | 480 | 0.0259 | -0.0610 | 0.1352 |
+| P3 | ica_brain_argmax | 10 | 0.5906 | 0.1569 | 0.8796 |
+| P3 | ica_artifact80 | 10 | 1.0158 | 0.9777 | 1.0603 |
+
+
+Fivefold cross-fitting uses 32 people for the parent decoder and eight held-out people in each fold. The frozen benchmark predictors have no ERP training. Seven added operations produce 560 held-out participant/task/method records. The paired-target learners are excluded because their ten ERP training people would otherwise enter nominally held-out folds. Shared fold fits and inspected outcomes make these checks descriptive; pooled scores do not inherit split-conformal coverage.
+
+
+| Task | Operation | Participants | Mean BA change (points) |
+| --- | --- | --- | --- |
+| N170 | simple_cnn | 40 | -4.344 |
+| N170 | complex_cnn | 40 | -4.422 |
+| N170 | recipe_filter | 40 | +0.016 |
+| N170 | recipe_brain_argmax | 40 | -2.547 |
+| N170 | recipe_artifact80 | 40 | -0.297 |
+| N170 | ica_brain_argmax | 40 | -2.516 |
+| N170 | ica_artifact80 | 40 | -0.828 |
+| P3 | simple_cnn | 40 | -14.930 |
+| P3 | complex_cnn | 40 | -14.367 |
+| P3 | recipe_filter | 40 | -3.156 |
+| P3 | recipe_brain_argmax | 40 | -4.969 |
+| P3 | recipe_artifact80 | 40 | -2.906 |
+| P3 | ica_brain_argmax | 40 | -1.828 |
+| P3 | ica_artifact80 | 40 | -1.039 |
+
+
+The preceding guard analysis remains unchanged. Rectangular, smooth and entirely 30-Hz-bandlimited guards retain an approximately 3.6-point deficit with the original twenty-development-person decoder, ruling out edge/high-frequency addition as its sole cause. The current primary smooth-guard deficit is −0.25 points with an interval crossing zero. There is no established primary residual deficit. Guarding one mean preserves peripheral contributions and leaves the endpoint null space unconstrained.
+
+## 9. ICA's five-of-ten coverage: exact rank diagnostic
+
+The problematic ICA here is the **preceding pooled EOG-guided ICA operation**, fitted on ten development people. It is distinct from the new per-record ICLabel recipe. Its joint score is the maximum absolute parent-relative change over both tasks and voltage/BA endpoints, divided by illustrative scales 1 µV and 2 BA points. The 90% threshold is calibration order statistic 19 of 20, q=4.375 (physical limits 4.375 µV and 8.75 BA points). Only five of ten evaluation people satisfy that joint limit.
+
+If a threshold had a fixed known 90% probability, Binomial(10,0.9) would give P(K≤5)=0.00163494. A finite calibration threshold is random. Under iid continuous scores, its coverage probability has Beta(19,2) distribution, yielding a Beta-Binomial(10,19,2) count and P(K≤5)=0.00884173. More generally, condition on 30 distinct exchangeable score ranks and uniformly allocate 20 to calibration: K≤5 iff the 19th calibration rank is at most 24, iff at least 19 of the first 24 ranks are calibration. Thus **P(K≤5)=P{Hypergeometric(N=30, successes=20, draws=24)≥19}=0.00884173**. This rank result does not require a light-tailed score distribution.
+
+100000 random reassignments of the actual frozen scores, retaining ties, give 0.00857. This remains rare. Four failed participants are dominated by N170 decoding changes and one by P3 voltage, rather than a pure voltage heavy-tail mechanism. Heavy tails alone cannot invalidate exchangeable ranks. The conditional diagnostic flags a surprising inspected partition; it does not formally test distribution shift, prove nonexchangeability, or rescue the procedure's coverage. Post-hoc inspection, decoder/operator fitting and small evaluation size prevent a prospective validation claim. A rare exchangeable allocation remains possible.
+
+
+| Failed evaluation participant | Maximum score | Dominating task/endpoint |
+| --- | --- | --- |
+| 14 | 5.408705 | P3/amplitude_uv |
+| 9 | 5.312500 | N170/frozen_ba |
+| 16 | 6.562500 | N170/frozen_ba |
+| 38 | 4.687500 | N170/frozen_ba |
+| 35 | 5.625000 | N170/frozen_ba |
+
+
+## 10. Family inclusion, fit instability, and the tolerance frontier
+
+The original seven-candidate family remains the primary historical definition. Regression participants 32 and 4 dominate its upper scores. Removing regression is reported as an explicit sensitivity comparison, not a selected-after-inspection certificate.
+
+
+| Family | Level | Voltage limit (µV) | BA limit (points) | Evaluation people covered |
+| --- | --- | --- | --- | --- |
+| with_regression | q90 | 26.621 | 53.242 | 9 |
+| with_regression | q95 | 30.454 | 60.907 | 9 |
+| without_regression | q90 | 11.543 | 23.086 | 10 |
+| without_regression | q95 | 12.500 | 25.000 | 10 |
+
+
+Fixed-operation envelopes state a tolerance frontier for a proposed operation under the rank assumptions: one can compare the physical width with an externally justified application requirement. They do not establish a sufficiently small envelope here or justify increasing tolerances after inspection. In the preceding revision the 0.5-Hz filter has joint 90% limits 4.375 µV/8.75 BA points, IC-U-Net 5.3125 µV/10.625 points; their separate marginal voltage limits are 3.034/3.075 µV. Separate marginal columns are not a simultaneous guarantee. None certifies the illustrative 1-µV/two-point contract.
+
+Added operations are calibrated separately below. Joint widths multiply the same 1-µV/two-point scales, simultaneous over four task/endpoint combinations for that fixed operation. They do not protect unrestricted selection among newly added operations.
+
+
+| Operation | Marginal voltage90 (µV) | Marginal BA90 (points) | Joint voltage90 (µV) | Joint BA90 (points) | Evaluation covered |
+| --- | --- | --- | --- | --- | --- |
+| recipe_filter | 6.561 | 10.000 | 6.561 | 13.123 | 9 |
+| recipe_brain_argmax | 10.487 | 18.750 | 10.938 | 21.875 | 10 |
+| recipe_artifact80 | 10.576 | 14.687 | 10.576 | 21.152 | 10 |
+| ica_brain_argmax | 4.995 | 14.375 | 7.187 | 14.375 | 10 |
+| ica_artifact80 | 3.323 | 10.313 | 5.937 | 11.875 | 10 |
+| simple_cnn | 10.874 | 22.188 | 11.458 | 22.915 | 9 |
+| complex_cnn | 10.638 | 20.625 | 11.406 | 22.812 | 9 |
+| target_parent | 4.209 | 17.500 | 8.750 | 17.500 | 9 |
+| target_recipe_brain_argmax | 10.953 | 21.875 | 11.074 | 22.147 | 8 |
+| target_recipe_artifact80 | 10.814 | 21.562 | 10.909 | 21.819 | 9 |
+
+
+Five ten-person development subsets refit regression and pooled ICA while retaining the primary parent decoder. They diagnose fit sensitivity; the remaining pool is not a new independent coverage study, and people may change fit/test roles across these diagnostics. The full participant scores, exclusions and convergence details remain in `operator_refit_sensitivity.json`.
+
+
+| Subset seed | Operation | P3 evaluation mean (µV) | P3 frozen BA (%) |
+| --- | --- | --- | --- |
+| 94711 | ica | 4.199 | 64.812 |
+| 94711 | regression | 13.670 | 60.219 |
+| 94712 | ica | 3.021 | 62.719 |
+| 94712 | regression | 12.375 | 65.094 |
+| 94713 | ica | 8.091 | 61.469 |
+| 94713 | regression | 8.291 | 60.594 |
+| 94714 | ica | 4.534 | 65.125 |
+| 94714 | regression | 10.548 | 61.500 |
+| 94715 | ica | 3.762 | 65.562 |
+| 94715 | regression | -0.008 | 58.844 |
+
+
+Historical-to-current regression P3 means change from 9.90 to 14.54 µV after shrinking development from twenty to ten people; the FemtoEOGClean primary frozen-BA deficit changes from 12.63 to 7.53 points when the decoder fit changes. These changes are reported as sensitivity, not hidden by replacing historical results. Earlier all-40 voltage limits and pooled decoder cross-fitting remain descriptive, with no fresh same-cohort validation.
+
+## 11. Verification, reproducibility and limits
+
+
+| Independent check | Outcome |
+| --- | --- |
+| status | passed |
+| records_checked | 800 |
+| manual_voltage_and_decoder_scores | True |
+| recipe_probability_policies_and_identity_checked | True |
+| max_projection_rounding_error_uv | 0.00047935006114130374 |
+| maximum_refit_matrix_error | 0.0 |
+| paired_target_identity_verified | True |
+| target_training_development_only | True |
+| target_mixture_component_pools_and_erp_trial_indices_disjoint | True |
+| quantiles_recomputed | True |
+| matched_contamination_endpoint_records_checked | 60 |
+| output_reference_endpoint_records_checked | 320 |
+| probe_records_aggregate_checked | 2080 |
+| physical_model_probe_responses_independently_rerun | 32 |
+
+
+The verifier independently recomputes voltage contrasts, scaler/decoder predictions, recipe probability policies, projection identity, target fits from saved float64 designs, split/pool contracts and quantiles. It rescores 800 primary participant/task/method records, 60 contaminated records and 320 output-reference records. All 2080 probe records are checked at aggregate level, and 32 actual network probe responses are independently rerun with manual input scaling, output restoration and endpoint computation. Numerical tolerances address floating-point delivery; they do not state physiological accuracy. The largest saved projection/rounding discrepancy is approximately 0.000479 µV. All 21 scientific-contract unit tests pass.
+
+The original released EEG windows lack participant, channel, event, simultaneous peripheral and pre-ICA parent information needed for an independent purity test. No new data found here resolves that missing relation. Alternative filter disagreement is therefore construction sensitivity, not δ=‖T−N‖. Exact reference-hull ranges and convexity bounds become neural statements only under independently justified family membership. We do not claim all artifact removal is invalid, that overlap alone precludes multichannel source separation, that linear methods universally suffice, or that all deep models are redundant. Domain mismatch can explain historical CNN failure; the controlled learner intervention establishes only its specified digital target effect.
+
+A new cohort and a procedure frozen beforehand are required for prospective calibration. Hardware/electrode traceability, simultaneous corruption reduction, cortical source recovery and clinical benefit remain outside these digital experiments. The TIM scope cover-letter draft explicitly states this boundary and explains the contribution as validation of processing within an electrical measurement chain, rather than a new neural diagnostic or denoising architecture.
+
+## 12. Public sources and acknowledgment
+
+All human recordings were publicly released; no new human acquisition was performed. Data retain their source terms. GitHub URLs below locate executable source; they are not substitutes for scholarly references in the manuscript.
+
+- Zhang et al., EEGdenoiseNet, *Journal of Neural Engineering* 18, 056057 (2021), [doi:10.1088/1741-2552/ac2bf8](https://doi.org/10.1088/1741-2552/ac2bf8); [reference-construction methods](https://arxiv.org/html/2009.11662v4); [official source](https://github.com/ncclabsustech/EEGdenoiseNet).
+- Kappenman et al., ERP CORE, *NeuroImage* 225, 117465 (2021), [doi:10.1016/j.neuroimage.2020.117465](https://doi.org/10.1016/j.neuroimage.2020.117465); public NEMAR nm000132 v1.1.1, [doi:10.82901/nemar.nm000132](https://doi.org/10.82901/nemar.nm000132). Published checksums pin the downloaded recordings.
+- Pion-Tonachini et al., ICLabel, *NeuroImage* 198, 181–197 (2019), [doi:10.1016/j.neuroimage.2019.05.026](https://doi.org/10.1016/j.neuroimage.2019.05.026); [official MNE-ICLabel preprocessing example](https://mne.tools/mne-icalabel/stable/generated/examples/00_iclabel.html).
+- Chuang et al., IC-U-Net, *NeuroImage* 263, 119586 (2022), [doi:10.1016/j.neuroimage.2022.119586](https://doi.org/10.1016/j.neuroimage.2022.119586). Its pinned author checkpoint is unchanged from the preceding independent-model assessment.
+- [IEEE TIM author scope instructions](https://ieee-ims.org/publication/ieee-tim/information-authors); Shirmohammadi and Al Osman, measurement-specific ML terminology, [doi:10.1109/MIM.2021.9400955](https://doi.org/10.1109/MIM.2021.9400955).
+
+## 13. Supporting plots and evidence files
+
+- [Reference stages](../figures/causal_revision/reference_stages.png).
+- [Matched target intervention](../figures/causal_revision/matched_target_intervention.png).
+- [Cross-target validation losses](../figures/causal_revision/cross_target_loss_matrix.png).
+- [Independent P3 deployment](../figures/causal_revision/benchmark_model_p3.png).
+
+All figures also have SVG exports. Their coordinates are computed from saved outputs, with source fingerprints in `figure_sources.json`. The manuscript's six numerical assets are checked against the independently verified result files. The prior supplement retains full decoder/probe settings, mathematical elementary identities, guard derivations, and the auxiliary experiments moved out of the main paper. Code-only reproduction is at [artifact-eeg](https://github.com/jeetblahiri/artifact-eeg); manuscript, narrative reports, raw recordings, generated signals and result arrays are excluded from that repository.
+
+
+# Part C. Paired CNN supervision and clean-input diagnostics
+
+## 1. What the controlled comparison identifies
+
+Within architecture/seed, three fits share the exact float32 input design, initialized parameters and batch-normalization state, minibatch permutations, dropout seed, RMSprop settings, input-derived target scaling and fixed final epoch. Only the supervisory arrays differ. This identifies the effect of target definition **under this training algorithm and budget** on held-out digital outputs. It is not a claim about an optimizer limit, a population causal effect, cortical source purity or the unique cause of historical CNN deployment failure. Parent voltages are comparators with potentially mixed neural/peripheral content.
+
+The same architectures are used as the historical EEGdenoiseNet-trained fits: simple CNN (16,815,552 parameters) and complex residual CNN (8,455,424 parameters), PyTorch translations of pinned public source. These are retrained architecture ports, not the authors' original checkpoints or published leaderboard replication.
+
+## 2. No-added-artifact sanity check
+
+All 903 held-out EEGdenoiseNet EEG reference windows are supplied without added artifact, after the same mean-centering and unit-RMS normalization used for their source bank. The references are not accepted cortical truth. A 10% relative waveform RMS criterion is a descriptive engineering identity screen, not physiological equivalence or a required property of an MMSE denoiser.
+
+| Architecture | Windows | Pooled relative RMS | Median relative RMS | Mean correlation | Gain | Fraction ≤10% |
+|---|---|---|---|---|---|---|
+| Simple CNN | 903 | 0.3252 | 0.2349 | 0.9465 | 0.8554 | 0.0576 |
+| Residual CNN | 903 | 0.3068 | 0.2114 | 0.9512 | 0.9105 | 0.0365 |
+
+
+These fits do not approximately reproduce these inputs under the declared screen. Nonidentity may arise from conditional-mean shrinkage and training/deployment mismatch; it is not proof of physiological harm or impure references.
+
+| Architecture | Seed | Relative RMS | Gain |
+|---|---|---|---|
+| Simple CNN | 17 | 0.3306 | 0.8601 |
+| Simple CNN | 29 | 0.3318 | 0.8601 |
+| Simple CNN | 43 | 0.3322 | 0.8461 |
+| Residual CNN | 17 | 0.3363 | 0.9041 |
+| Residual CNN | 29 | 0.3366 | 0.9153 |
+| Residual CNN | 43 | 0.3329 | 0.9120 |
+
+
+## 3. ERP interface and alignment diagnostics
+
+Parent ERP inputs contain no newly added artifact. Every main contrast uses the unchanged ten evaluation participants. Delivered interface uses per-channel window SD, physical restoration and baseline. Two full-trial controls mean-center before inference or replace the local SD with the channel-specific median fitted on development people only. Those are sensitivity checks rather than newly selected deployments.
+
+The alignment control uses the same eight fixed trial backgrounds (four per class) in actual four-second recording contexts. Five two-second windows start at offsets 0, 128, 256, 384 and 512 samples; restored voltages are overlap-averaged and centrally extracted. No zero padding or fabricated context is used. Background contrasts must be compared with their same eight-trial central-window values, not the full-cohort ERP mean. Independent float32 parent/context caches differ by at most 0.000628 µV after baseline; this numerical tolerance is not physiological equivalence.
+
+| Task | Architecture | Mode | Mean contrast (µV) | Mean relative RMS |
+|---|---|---|---|---|
+| N170 | Simple CNN | delivered | -1.9292 | 0.9404 |
+| N170 | Simple CNN | center_window | -1.8972 | 0.9350 |
+| N170 | Simple CNN | fixed_development_sd | -1.9967 | 0.9317 |
+| N170 | Simple CNN | central_backgrounds | -1.7709 | 0.9527 |
+| N170 | Simple CNN | overlap_backgrounds | -1.7826 | 0.9342 |
+| N170 | Residual CNN | delivered | -2.2568 | 0.9392 |
+| N170 | Residual CNN | center_window | -2.2293 | 0.9321 |
+| N170 | Residual CNN | fixed_development_sd | -2.3168 | 0.9351 |
+| N170 | Residual CNN | central_backgrounds | -1.4208 | 0.9539 |
+| N170 | Residual CNN | overlap_backgrounds | -1.6352 | 0.9292 |
+| P3 | Simple CNN | delivered | 0.0515 | 0.9595 |
+| P3 | Simple CNN | center_window | 0.0793 | 0.9595 |
+| P3 | Simple CNN | fixed_development_sd | 0.1090 | 0.9519 |
+| P3 | Simple CNN | central_backgrounds | 0.4681 | 0.9763 |
+| P3 | Simple CNN | overlap_backgrounds | 0.1156 | 0.9623 |
+| P3 | Residual CNN | delivered | 0.0750 | 0.9599 |
+| P3 | Residual CNN | center_window | 0.1122 | 0.9570 |
+| P3 | Residual CNN | fixed_development_sd | 0.1332 | 0.9575 |
+| P3 | Residual CNN | central_backgrounds | 0.2843 | 0.9769 |
+| P3 | Residual CNN | overlap_backgrounds | 0.3685 | 0.9600 |
+
+
+Domain/normalization/window/single-channel effects can coexist. These finite controls do not identify a unique cause of historical near-zero P3 and are not used as causal evidence for the target-definition argument.
+
+## 4. Matched retraining protocol
+
+The first fixed 10,000 rows per task are taken from the saved affine-intervention training designs and pooled equally, for 20,000 training rows. The first 2,000 validation rows per task give 4,000 diagnostic rows. All training voltages and references come from the same ten development participants; the same trial indices, channels and public EOG draws define the three target conditions. Fit/validation trial indices and EOG source windows are separated, but development participants are shared and neighboring raw epochs may overlap. This is not independent-participant or disjoint-raw-sample validation.
+
+Three paired seeds (17, 29, 43), 50 epochs, batch size 128 and RMSprop (learning rate 5e−5, alpha 0.9, epsilon 1e−7, no weight decay) are fixed. **Epoch 50 is primary for every fit**; validation is diagnostic, without early stopping or selecting a target-specific checkpoint. The three seeds are equally averaged at deployment. Results depend on this finite budget; diagnostic losses and full histories remain available and do not prove convergence.
+
+| Architecture | Seed | Target | Epoch | Final train MSE | Final validation MSE | Last-five validation range |
+|---|---|---|---|---|---|---|
+| Simple CNN | 17 | Parent | 50 | 0.160568 | 0.186997 | 0.160932–0.187375 |
+| Simple CNN | 17 | Brain-only | 50 | 0.095618 | 0.104921 | 0.102582–0.104921 |
+| Simple CNN | 17 | Conservative | 50 | 0.075342 | 0.084225 | 0.080408–0.084225 |
+| Simple CNN | 29 | Parent | 50 | 0.160203 | 0.164364 | 0.164364–0.173163 |
+| Simple CNN | 29 | Brain-only | 50 | 0.096342 | 0.103774 | 0.103118–0.104252 |
+| Simple CNN | 29 | Conservative | 50 | 0.077242 | 0.083002 | 0.082410–0.083283 |
+| Simple CNN | 43 | Parent | 50 | 0.158693 | 0.166628 | 0.162046–0.166643 |
+| Simple CNN | 43 | Brain-only | 50 | 0.096261 | 0.104418 | 0.103284–0.104418 |
+| Simple CNN | 43 | Conservative | 50 | 0.076033 | 0.082394 | 0.080954–0.082394 |
+| Residual CNN | 17 | Parent | 50 | 0.109754 | 0.139907 | 0.127527–0.142963 |
+| Residual CNN | 17 | Brain-only | 50 | 0.089356 | 0.113632 | 0.105030–0.113632 |
+| Residual CNN | 17 | Conservative | 50 | 0.064579 | 0.086460 | 0.077634–0.086460 |
+| Residual CNN | 29 | Parent | 50 | 0.105554 | 0.133347 | 0.131481–0.139789 |
+| Residual CNN | 29 | Brain-only | 50 | 0.083429 | 0.106431 | 0.103560–0.107535 |
+| Residual CNN | 29 | Conservative | 50 | 0.060601 | 0.076884 | 0.075241–0.078764 |
+| Residual CNN | 43 | Parent | 50 | 0.106127 | 0.133328 | 0.128271–0.133328 |
+| Residual CNN | 43 | Brain-only | 50 | 0.085942 | 0.106388 | 0.104874–0.107010 |
+| Residual CNN | 43 | Conservative | 50 | 0.061989 | 0.078276 | 0.076210–0.078276 |
+
+
+Initial-state hashes, exact minibatch-order hashes, source-array/checkpoint checksums and final-epoch selection are verified independently in `verification.json`. Individual JSON files retain all 50 train/validation values, not only the last row.
+
+## 5. Held-out endpoints and shared controls
+
+No calibration participants enter this new training or deployment comparison. Full physical ensemble outputs are saved for ten development and ten evaluation people; individual-seed ROI waves and decoder features are retained. Parent-trained decoders are unchanged from the earlier assessment. Adapted decoders use only the ten development participants processed by the corresponding fit. They assess representational usability, not cortical fidelity. The contamination control uses exactly the previously saved held-out EOG test-pool mixtures at −7/−4/−1/+2 dB for every target and architecture. Here SNR is the ratio of centered signal power (voltage variance) to added EOG variance: coefficient SD(parent)×10^(−SNR/20) multiplies unit-SD, zero-mean EOG. Parent full-window means are retained, so this is not a total-RMS-power ratio when a window has nonzero mean. A separate output-average-reference control acts on all 30 scalp channels and rebaselines.
+
+| Task | Architecture | Training target | Input/control | Mean contrast (µV) | Frozen BA (%) | Adapted BA (%) |
+|---|---|---|---|---|---|---|
+| N170 | Simple CNN | Parent | parent_input | -2.5289 | 57.438 | 60.062 |
+| N170 | Simple CNN | Brain-only | parent_input | -1.9137 | 59.562 | 59.625 |
+| N170 | Simple CNN | Conservative | parent_input | -2.4055 | 59.438 | 58.250 |
+| N170 | Simple CNN | Parent | output_reference | -2.5231 | 57.812 | 60.438 |
+| N170 | Simple CNN | Brain-only | output_reference | -1.9230 | 59.812 | 59.625 |
+| N170 | Simple CNN | Conservative | output_reference | -2.4219 | 60.250 | 58.875 |
+| N170 | Simple CNN | Parent | contaminated_input | -3.1470 | 56.563 | 59.187 |
+| N170 | Simple CNN | Brain-only | contaminated_input | -2.1841 | 59.188 | 57.375 |
+| N170 | Simple CNN | Conservative | contaminated_input | -2.7938 | 59.125 | 56.875 |
+| P3 | Simple CNN | Parent | parent_input | 2.6382 | 59.406 | 61.312 |
+| P3 | Simple CNN | Brain-only | parent_input | 0.2970 | 51.688 | 60.844 |
+| P3 | Simple CNN | Conservative | parent_input | 0.4491 | 52.750 | 62.344 |
+| P3 | Simple CNN | Parent | output_reference | 2.4088 | 59.000 | 60.156 |
+| P3 | Simple CNN | Brain-only | output_reference | 0.2503 | 51.281 | 61.312 |
+| P3 | Simple CNN | Conservative | output_reference | 0.4058 | 52.406 | 62.469 |
+| P3 | Simple CNN | Parent | contaminated_input | 2.3435 | 57.781 | 60.719 |
+| P3 | Simple CNN | Brain-only | contaminated_input | 0.3733 | 52.719 | 58.156 |
+| P3 | Simple CNN | Conservative | contaminated_input | 0.5716 | 54.125 | 58.500 |
+| N170 | Residual CNN | Parent | parent_input | -2.6906 | 58.250 | 60.875 |
+| N170 | Residual CNN | Brain-only | parent_input | -2.0797 | 59.375 | 62.750 |
+| N170 | Residual CNN | Conservative | parent_input | -2.6565 | 59.500 | 61.063 |
+| N170 | Residual CNN | Parent | output_reference | -2.6660 | 58.000 | 61.812 |
+| N170 | Residual CNN | Brain-only | output_reference | -2.0789 | 59.688 | 62.125 |
+| N170 | Residual CNN | Conservative | output_reference | -2.6447 | 59.750 | 61.125 |
+| N170 | Residual CNN | Parent | contaminated_input | -3.2004 | 57.125 | 58.875 |
+| N170 | Residual CNN | Brain-only | contaminated_input | -2.2672 | 60.438 | 60.937 |
+| N170 | Residual CNN | Conservative | contaminated_input | -2.9825 | 59.750 | 59.125 |
+| P3 | Residual CNN | Parent | parent_input | 2.8282 | 60.156 | 62.250 |
+| P3 | Residual CNN | Brain-only | parent_input | 0.3525 | 52.437 | 60.156 |
+| P3 | Residual CNN | Conservative | parent_input | 0.5392 | 54.531 | 61.281 |
+| P3 | Residual CNN | Parent | output_reference | 2.7483 | 60.219 | 60.500 |
+| P3 | Residual CNN | Brain-only | output_reference | 0.3160 | 52.562 | 61.562 |
+| P3 | Residual CNN | Conservative | output_reference | 0.4952 | 56.375 | 62.500 |
+| P3 | Residual CNN | Parent | contaminated_input | 2.6885 | 59.594 | 60.094 |
+| P3 | Residual CNN | Brain-only | contaminated_input | 0.4413 | 53.781 | 59.906 |
+| P3 | Residual CNN | Conservative | contaminated_input | 0.6901 | 55.219 | 59.281 |
+
+
+Paired recipe-supervised minus parent-supervised effects; intervals are descriptive participant bootstraps conditional on the fitted seed ensembles, not seed-as-participant inference or prospective population bounds:
+
+| Task | Architecture | Changed target | Input/control | Voltage change (µV) | 95% interval | BA change (points) | 95% interval |
+|---|---|---|---|---|---|---|---|
+| N170 | Simple CNN | Brain-only | parent_input | +0.6153 | [+0.282, +0.927] | +2.125 | [-0.689, +4.937] |
+| N170 | Simple CNN | Conservative | parent_input | +0.1234 | [-0.096, +0.337] | +2.000 | [-0.938, +5.062] |
+| N170 | Simple CNN | Brain-only | output_reference | +0.6001 | [+0.277, +0.890] | +2.000 | [-0.688, +4.625] |
+| N170 | Simple CNN | Conservative | output_reference | +0.1012 | [-0.122, +0.326] | +2.437 | [-0.313, +5.375] |
+| N170 | Simple CNN | Brain-only | contaminated_input | +0.9629 | [+0.495, +1.391] | +2.625 | [-0.750, +5.938] |
+| N170 | Simple CNN | Conservative | contaminated_input | +0.3532 | [-0.019, +0.707] | +2.563 | [-1.375, +6.375] |
+| P3 | Simple CNN | Brain-only | parent_input | -2.3412 | [-3.460, -1.274] | -7.719 | [-11.656, -3.874] |
+| P3 | Simple CNN | Conservative | parent_input | -2.1891 | [-3.269, -1.156] | -6.656 | [-9.875, -3.469] |
+| P3 | Simple CNN | Brain-only | output_reference | -2.1584 | [-3.178, -1.166] | -7.719 | [-11.469, -4.063] |
+| P3 | Simple CNN | Conservative | output_reference | -2.0030 | [-2.991, -1.041] | -6.594 | [-9.563, -3.781] |
+| P3 | Simple CNN | Brain-only | contaminated_input | -1.9702 | [-3.101, -0.895] | -5.063 | [-8.406, -1.656] |
+| P3 | Simple CNN | Conservative | contaminated_input | -1.7719 | [-2.865, -0.714] | -3.656 | [-6.812, -0.688] |
+| N170 | Residual CNN | Brain-only | parent_input | +0.6109 | [+0.270, +0.914] | +1.125 | [-2.064, +4.250] |
+| N170 | Residual CNN | Conservative | parent_input | +0.0341 | [-0.169, +0.234] | +1.250 | [-1.627, +3.689] |
+| N170 | Residual CNN | Brain-only | output_reference | +0.5871 | [+0.255, +0.883] | +1.687 | [-0.500, +3.687] |
+| N170 | Residual CNN | Conservative | output_reference | +0.0213 | [-0.197, +0.244] | +1.750 | [-0.750, +4.000] |
+| N170 | Residual CNN | Brain-only | contaminated_input | +0.9333 | [+0.527, +1.298] | +3.312 | [+1.000, +5.687] |
+| N170 | Residual CNN | Conservative | contaminated_input | +0.2179 | [-0.079, +0.515] | +2.625 | [+0.750, +4.750] |
+| P3 | Residual CNN | Brain-only | parent_input | -2.4758 | [-3.785, -1.260] | -7.719 | [-11.250, -4.656] |
+| P3 | Residual CNN | Conservative | parent_input | -2.2891 | [-3.568, -1.095] | -5.625 | [-9.313, -2.000] |
+| P3 | Residual CNN | Brain-only | output_reference | -2.4324 | [-3.644, -1.300] | -7.656 | [-11.406, -4.313] |
+| P3 | Residual CNN | Conservative | output_reference | -2.2531 | [-3.465, -1.127] | -3.844 | [-7.594, -0.188] |
+| P3 | Residual CNN | Brain-only | contaminated_input | -2.2472 | [-3.616, -0.969] | -5.813 | [-8.312, -3.281] |
+| P3 | Residual CNN | Conservative | contaminated_input | -1.9985 | [-3.319, -0.744] | -4.375 | [-7.688, -1.250] |
+
+
+## 6. Individual paired seeds
+
+| Task | Architecture | Target | Seed | Voltage difference (µV) | 95% descriptive participant interval |
+|---|---|---|---|---|---|
+| N170 | Simple CNN | Brain-only | 17 | +0.5286 | [+0.195, +0.848] |
+| N170 | Simple CNN | Conservative | 17 | +0.0672 | [-0.151, +0.267] |
+| N170 | Simple CNN | Brain-only | 29 | +0.6978 | [+0.357, +1.034] |
+| N170 | Simple CNN | Conservative | 29 | +0.1479 | [-0.094, +0.393] |
+| N170 | Simple CNN | Brain-only | 43 | +0.6195 | [+0.284, +0.921] |
+| N170 | Simple CNN | Conservative | 43 | +0.1551 | [-0.063, +0.378] |
+| P3 | Simple CNN | Brain-only | 17 | -2.3563 | [-3.464, -1.294] |
+| P3 | Simple CNN | Conservative | 17 | -2.2123 | [-3.268, -1.199] |
+| P3 | Simple CNN | Brain-only | 29 | -2.4163 | [-3.635, -1.247] |
+| P3 | Simple CNN | Conservative | 29 | -2.2165 | [-3.401, -1.080] |
+| P3 | Simple CNN | Brain-only | 43 | -2.2510 | [-3.287, -1.257] |
+| P3 | Simple CNN | Conservative | 43 | -2.1385 | [-3.141, -1.177] |
+| N170 | Residual CNN | Brain-only | 17 | +0.6114 | [+0.248, +0.927] |
+| N170 | Residual CNN | Conservative | 17 | +0.0279 | [-0.203, +0.244] |
+| N170 | Residual CNN | Brain-only | 29 | +0.6151 | [+0.290, +0.923] |
+| N170 | Residual CNN | Conservative | 29 | +0.0522 | [-0.102, +0.215] |
+| N170 | Residual CNN | Brain-only | 43 | +0.6062 | [+0.263, +0.918] |
+| N170 | Residual CNN | Conservative | 43 | +0.0222 | [-0.225, +0.270] |
+| P3 | Residual CNN | Brain-only | 17 | -2.5999 | [-3.948, -1.337] |
+| P3 | Residual CNN | Conservative | 17 | -2.3960 | [-3.686, -1.185] |
+| P3 | Residual CNN | Brain-only | 29 | -2.4667 | [-3.770, -1.263] |
+| P3 | Residual CNN | Conservative | 29 | -2.3087 | [-3.626, -1.091] |
+| P3 | Residual CNN | Brain-only | 43 | -2.3607 | [-3.643, -1.179] |
+| P3 | Residual CNN | Conservative | 43 | -2.1625 | [-3.418, -1.003] |
+
+
+## 7. Cross-target loss matrices
+
+Rows are supervision targets and columns are scoring targets on the same 4,000 diagnostic validation inputs. These are losses of **equal-seed ensemble predictions**, not averages of individual-seed MSEs. Targets and predictions are in the same input-normalized units; these scores are not neural errors.
+
+
+### Simple CNN
+
+| Supervision | Parent | Brain-only | Conservative |
+|---|---|---|---|
+| Parent | 0.162514 | 0.341559 | 0.296620 |
+| Brain-only | 0.402464 | 0.102754 | 0.088450 |
+| Conservative | 0.374704 | 0.108798 | 0.080394 |
+
+
+### Residual CNN
+
+| Supervision | Parent | Brain-only | Conservative |
+|---|---|---|---|
+| Parent | 0.121012 | 0.379108 | 0.326468 |
+| Brain-only | 0.398903 | 0.101545 | 0.083703 |
+| Conservative | 0.365405 | 0.107848 | 0.073199 |
+
+
+## 8. Endpoint propagation, with residuals retained
+
+For each participant and linear contrast ℓ, let e_t=F_t−T_t on the identical evaluation arrays. Then
+
+**ℓ(F₁−F₀) = ℓ(T₁−T₀) + ℓ(e₁−e₀).**
+
+Adding/subtracting the references proves this elementary identity for any learner. The direct reference shift, observed learned shift and residual are independently scored from saved physical arrays. The empirical contribution is the controlled transmission test across participants and architectures, not a new algebraic identity. A residual is allowed to offset or amplify the direct shift; ratios are avoided when a reference contrast is small. In the contaminated-input control the corresponding uncontaminated targets remain the intended comparison, so the same decomposition includes contamination/deployment error.
+
+| Task | Architecture | Target | Direct shift (µV) | Learned shift (µV) | Residual shift (µV) |
+|---|---|---|---|---|---|
+| N170 | Simple CNN | Brain-only | +0.3023 | +0.6153 | +0.3129 |
+| N170 | Simple CNN | Conservative | +0.2069 | +0.1234 | -0.0835 |
+| P3 | Simple CNN | Brain-only | -3.4073 | -2.3412 | +1.0661 |
+| P3 | Simple CNN | Conservative | -2.9886 | -2.1891 | +0.7995 |
+| N170 | Residual CNN | Brain-only | +0.3023 | +0.6109 | +0.3086 |
+| N170 | Residual CNN | Conservative | +0.2069 | +0.0341 | -0.1729 |
+| P3 | Residual CNN | Brain-only | -3.4073 | -2.4758 | +0.9315 |
+| P3 | Residual CNN | Conservative | -2.9886 | -2.2891 | +0.6995 |
+
+
+### Independent mixing in the known-source endpoint
+
+The earlier known-source control provides a separate logical check (see `src/run_known_source.py`). At alpha=1, T=B*g_b and the constructed artifact is (U+V)*g_u+C*g_a. B is independent of (U,V,C), so these two constructed pools are independent. Their sum is still the same observed Y=B*g_b+(U+V)*g_u+C*g_a. Projection onto g_b recovers T exactly (R_T=0), while the desired source N=B*g_b+U*g_u differs by U*g_u (R_N=1 with unit-RMS modes and U in {−1,+1}). Thus this endpoint does not rely on dependence between the synthetically combined pools. T contains only stipulated neural activity yet omits an intended neural mode: purity alone would not establish completeness. Intermediate alpha values can share U between both pools and need not be independent. These are stipulated source labels and a possibility result, not evidence of real released-label impurity.
+
+
+## 9. Secondary calibration and ICA fit sensitivity
+
+Calibration has been demoted in the manuscript; full historical envelopes remain in `causal_revision_supplement.md` and `tim_revision_supplement.md`. For fixed development procedure and exchangeable participant scores S_i=max_j,k |d_ijk|/τ_k, the new score's rank among n+1 scores is uniform (ties conservative). Rank ceil((n+1)(1−alpha)) therefore yields marginal simultaneous change coverage within the fixed family; the order statistic is infinite if that rank exceeds n. It is not cortical-error coverage or conditional coverage for every participant.
+
+The pooled EOG-guided ICA envelope's 5/10 result is unusual under the frozen-score rank model: P(K≤5)=0.00884173, with 100,000 tied-score reassignments giving 0.00857. Four failures are driven by N170 decoding and one by P3 voltage. This ICA is distinct from the per-record ICLabel recipes in the target intervention. Five development-subset refits change mean P3 from 3.02 to 8.09 µV and N170 frozen BA from 53.44% to 60.81%, connecting fit sensitivity to the measured endpoints. This is a practical sensitivity clue, **not a demonstration that exchangeability breaks**: conditional on one frozen operator, instability across other operators does not invalidate the rank guarantee. The refits may change fit/test roles and are not a fresh coverage study. Rare allocation, participant heterogeneity and procedure dependence remain unresolved.
+
+## 10. Verification, remaining limits and execution
+
+| Independent check | Result |
+|---|---|
+| status | passed |
+| fixed_final_epoch_fits | 18 |
+| paired_initializations_and_batch_order | True |
+| development_only_design_verified | True |
+| source_indices_and_no_artifact_inputs_checked | True |
+| raw_development_source_design_regenerated | True |
+| maximum_design_regeneration_discrepancy | 0.0 |
+| centered_voltage_power_snr_verified | True |
+| erp_window_means_retained | True |
+| sanity_records_checked | 200 |
+| ensemble_records_rescored | 480 |
+| individual_seed_records | 720 |
+| transmission_identities_checked | 240 |
+| maximum_identity_discrepancy_uv | 2.7755575615628914e-15 |
+| maximum_endpoint_rescoring_discrepancy_uv | 1.7763568394002505e-15 |
+| maximum_context_cache_roundoff_uv | 0.0006271063111853437 |
+| checkpoints_independently_rerun | 18 |
+| rerun_device | cpu |
+| complete_trials_per_checkpoint | 4 |
+| maximum_rerun_feature_discrepancy_uv | 0.000179290771484375 |
+| cross_target_matrices_and_paired_intervals_verified | True |
+
+
+The original benchmark's preconstruction parents, event identities, simultaneous peripheral recordings and expert decisions are unavailable; neither this audit nor the two automated recipes establish impurity of the released labels. Spectral overlap alone is not a proof that constrained multichannel separation is impossible. No acquisition uncertainty, physical artifact reduction, clinical endpoint or universal sufficiency of minimal preprocessing is validated. Positive IC-U-Net findings and robust MLP benchmark advantages remain in the main study. Prospective validation requires a new cohort and a frozen full procedure.
+
+```sh
+python src/cnn_sanity.py
+python src/matched_cnn.py
+python src/matched_cnn_assessment.py
+python src/verify_nonlinear_revision.py
+python src/build_nonlinear_report.py
+```
+
+The new fits reuse prior public-data caches and designs; see the code repository for their prerequisites. New large weights, signal arrays and raw recordings are not bundled in the code-only release.
+
+
+# Part D. Filter-only supervision and passband sensitivity
+
+# Fourth supervisory arm and passband sensitivity
+
+Jeet Bandhu Lahiri and Siddharth Panwar
+
+## D1. Protocol, pairing and scope
+
+The fourth arm was added after the earlier three-arm outcomes and the entire cohort had been inspected, following draft-stage feedback. No external peer reviewer has reviewed this manuscript. `filter_revision_config.json` records the execution settings; its first public commit follows execution and does not establish prospective specification. The earlier configurations, code and all 18 checkpoints are preserved. This is exploratory, not a preregistered or fresh-cohort replication. Only six added CNN fits and two added affine fits are required: the original input design and earlier targets are reproduced bit-identically from the original trial/channel/EOG draws. Within architecture and seed, the filter arm matches the original initialized state, all 50 minibatch permutations, dropout seed, RMSprop settings, input-derived scaling and epoch 50 budget. Validation does not select checkpoints. The added labels are the 1–80Hz/notch/30Hz-analysis filter stage without component removal. All ten development participants remain shared between training and diagnostic validation; no claim of participant-independent internal validation is made.
+
+The affine fit uses all20000/4000 original rows per task and the same regularization; the pooled CNN design uses the same first10000/2000 rows per task as earlier. The same ten evaluation participants, unchanged trial identities, parent inputs, test-pool EOG mixtures and output-reference control are used. Adapted decoders use the same ten development participants. The recipe is a declared automated instantiation, not the original released benchmark labels.
+
+A shared-archive preparation collision on the first parallel launch stopped the residual worker before any fit; the completed archive was checked and the worker restarted. No data, fit settings or outcome-dependent selections changed.
+
+## D2. Four-arm endpoints
+
+| Task | Learner | Target | Control | Mean voltage(µV) | Frozen BA(%) | Adapted BA(%) |
+|---|---|---|---|---|---|---|
+| N170 | Affine | Parent | parent_input | -2.148482 | 55.3125 | 58.0625 |
+| N170 | Affine | Filter-only | parent_input | -2.171125 | 56.0000 | 56.5625 |
+| N170 | Affine | Brain-only | parent_input | -1.719723 | 58.2500 | 61.8750 |
+| N170 | Affine | Conservative | parent_input | -2.071591 | 56.6875 | 60.9375 |
+| N170 | Affine | Parent | contaminated_input | -2.556404 | 54.1250 | not rescored |
+| N170 | Affine | Filter-only | contaminated_input | -2.448583 | 54.0625 | 53.1875 |
+| N170 | Affine | Brain-only | contaminated_input | -1.940986 | 56.4375 | not rescored |
+| N170 | Affine | Conservative | contaminated_input | -2.338465 | 56.0000 | not rescored |
+| N170 | Affine | Parent | output_reference | -2.146092 | 55.4375 | not rescored |
+| N170 | Affine | Filter-only | output_reference | -2.168851 | 55.7500 | 56.5625 |
+| N170 | Affine | Brain-only | output_reference | -1.719985 | 58.0000 | not rescored |
+| N170 | Affine | Conservative | output_reference | -2.071516 | 56.6875 | not rescored |
+| P3 | Affine | Parent | parent_input | 2.498920 | 58.0000 | 58.8750 |
+| P3 | Affine | Filter-only | parent_input | 0.797952 | 52.1875 | 62.7500 |
+| P3 | Affine | Brain-only | parent_input | 0.292106 | 49.7500 | 58.2812 |
+| P3 | Affine | Conservative | parent_input | 0.435040 | 50.8125 | 61.1875 |
+| P3 | Affine | Parent | contaminated_input | 2.264882 | 55.2813 | not rescored |
+| P3 | Affine | Filter-only | contaminated_input | 0.890749 | 54.3750 | 56.1563 |
+| P3 | Affine | Brain-only | contaminated_input | 0.338028 | 51.0938 | not rescored |
+| P3 | Affine | Conservative | contaminated_input | 0.521316 | 52.3750 | not rescored |
+| P3 | Affine | Parent | output_reference | 2.487847 | 57.7500 | not rescored |
+| P3 | Affine | Filter-only | output_reference | 0.800559 | 52.3438 | 62.3750 |
+| P3 | Affine | Brain-only | output_reference | 0.294789 | 49.5312 | not rescored |
+| P3 | Affine | Conservative | output_reference | 0.437890 | 50.4375 | not rescored |
+| N170 | Simple CNN | Parent | parent_input | -2.528950 | 57.4375 | 60.0625 |
+| N170 | Simple CNN | Filter-only | parent_input | -2.446223 | 58.9375 | 58.0000 |
+| N170 | Simple CNN | Brain-only | parent_input | -1.913679 | 59.5625 | 59.6250 |
+| N170 | Simple CNN | Conservative | parent_input | -2.405540 | 59.4375 | 58.2500 |
+| N170 | Simple CNN | Parent | contaminated_input | -3.146953 | 56.5625 | 59.1875 |
+| N170 | Simple CNN | Filter-only | contaminated_input | -2.897628 | 57.5625 | 57.2500 |
+| N170 | Simple CNN | Brain-only | contaminated_input | -2.184075 | 59.1875 | 57.3750 |
+| N170 | Simple CNN | Conservative | contaminated_input | -2.793790 | 59.1250 | 56.8750 |
+| N170 | Simple CNN | Parent | output_reference | -2.523100 | 57.8125 | 60.4375 |
+| N170 | Simple CNN | Filter-only | output_reference | -2.469051 | 58.5000 | 57.0625 |
+| N170 | Simple CNN | Brain-only | output_reference | -1.923000 | 59.8125 | 59.6250 |
+| N170 | Simple CNN | Conservative | output_reference | -2.421930 | 60.2500 | 58.8750 |
+| P3 | Simple CNN | Parent | parent_input | 2.638230 | 59.4063 | 61.3125 |
+| P3 | Simple CNN | Filter-only | parent_input | 0.901734 | 56.1875 | 63.7812 |
+| P3 | Simple CNN | Brain-only | parent_input | 0.297039 | 51.6875 | 60.8438 |
+| P3 | Simple CNN | Conservative | parent_input | 0.449133 | 52.7500 | 62.3437 |
+| P3 | Simple CNN | Parent | contaminated_input | 2.343522 | 57.7813 | 60.7188 |
+| P3 | Simple CNN | Filter-only | contaminated_input | 1.087614 | 56.7813 | 60.9688 |
+| P3 | Simple CNN | Brain-only | contaminated_input | 0.373342 | 52.7187 | 58.1562 |
+| P3 | Simple CNN | Conservative | contaminated_input | 0.571641 | 54.1250 | 58.5000 |
+| P3 | Simple CNN | Parent | output_reference | 2.408776 | 59.0000 | 60.1562 |
+| P3 | Simple CNN | Filter-only | output_reference | 0.694314 | 56.0000 | 63.6562 |
+| P3 | Simple CNN | Brain-only | output_reference | 0.250338 | 51.2812 | 61.3125 |
+| P3 | Simple CNN | Conservative | output_reference | 0.405769 | 52.4062 | 62.4688 |
+| N170 | Residual CNN | Parent | parent_input | -2.690584 | 58.2500 | 60.8750 |
+| N170 | Residual CNN | Filter-only | parent_input | -2.765444 | 59.6875 | 58.8125 |
+| N170 | Residual CNN | Brain-only | parent_input | -2.079701 | 59.3750 | 62.7500 |
+| N170 | Residual CNN | Conservative | parent_input | -2.656506 | 59.5000 | 61.0625 |
+| N170 | Residual CNN | Parent | contaminated_input | -3.200420 | 57.1250 | 58.8750 |
+| N170 | Residual CNN | Filter-only | contaminated_input | -3.132878 | 58.6250 | 56.1250 |
+| N170 | Residual CNN | Brain-only | contaminated_input | -2.267162 | 60.4375 | 60.9375 |
+| N170 | Residual CNN | Conservative | contaminated_input | -2.982526 | 59.7500 | 59.1250 |
+| N170 | Residual CNN | Parent | output_reference | -2.666019 | 58.0000 | 61.8125 |
+| N170 | Residual CNN | Filter-only | output_reference | -2.735653 | 59.6875 | 58.1250 |
+| N170 | Residual CNN | Brain-only | output_reference | -2.078925 | 59.6875 | 62.1250 |
+| N170 | Residual CNN | Conservative | output_reference | -2.644713 | 59.7500 | 61.1250 |
+| P3 | Residual CNN | Parent | parent_input | 2.828233 | 60.1562 | 62.2500 |
+| P3 | Residual CNN | Filter-only | parent_input | 0.961789 | 56.7187 | 63.4375 |
+| P3 | Residual CNN | Brain-only | parent_input | 0.352474 | 52.4375 | 60.1562 |
+| P3 | Residual CNN | Conservative | parent_input | 0.539159 | 54.5312 | 61.2812 |
+| P3 | Residual CNN | Parent | contaminated_input | 2.688542 | 59.5938 | 60.0937 |
+| P3 | Residual CNN | Filter-only | contaminated_input | 1.127976 | 56.6250 | 61.2812 |
+| P3 | Residual CNN | Brain-only | contaminated_input | 0.441302 | 53.7812 | 59.9062 |
+| P3 | Residual CNN | Conservative | contaminated_input | 0.690053 | 55.2187 | 59.2812 |
+| P3 | Residual CNN | Parent | output_reference | 2.748339 | 60.2188 | 60.5000 |
+| P3 | Residual CNN | Filter-only | output_reference | 0.831602 | 58.9063 | 64.2500 |
+| P3 | Residual CNN | Brain-only | output_reference | 0.315980 | 52.5625 | 61.5625 |
+| P3 | Residual CNN | Conservative | output_reference | 0.495241 | 56.3750 | 62.5000 |
+
+
+## D3. Stage differences and transfer fractions
+
+For each participant, direct reference shift D=ℓ(T₁−T₀), learned shift L=ℓ(F₁−F₀), and residual E=L−D. The transfer fraction is mean(L)/mean(D), **not** mean(L/D). All paired participant data are resampled together using10000 draws, seed 94810. Intervals are descriptive and conditional on fitted operators and the inspected cohort; there is no multiplicity correction. Near-zero or crossing reference-shift denominators make a ratio unstable; the sign diagnostic and denominator interval are retained in the machine-readable record. Residuals can offset or amplify shifts; the ratio need not lie between0 and1 in general. Parent-supervised attenuation is a separate learner/deployment term and must not be attributed to the changed targets. Main-text total recipe-versus-parent intervals retain the original bootstrap realizations in Parts B and C (seed 94709); added stage and ratio intervals use the separately frozen seed 94810. Recomputed versions of the earlier contrasts are recorded here, rather than relabeled as a new replication.
+
+| Task | Learner | Control | From | To | Direct(µV) | Learned(µV) | Learned95% | Residual(µV) | Transfer(%) | Transfer95%(%) | Stable denominator |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| N170 | Affine | parent_input | Parent | Filter-only | -0.215865 | -0.022643 | [-0.251, +0.236] | +0.193223 | 10.489 | [-339.354, +370.108] | False |
+| N170 | Affine | parent_input | Filter-only | Brain-only | +0.518194 | +0.451401 | [+0.360, +0.549] | -0.066793 | 87.110 | [+46.119, +438.608] | False |
+| N170 | Affine | parent_input | Filter-only | Conservative | +0.422803 | +0.099534 | [+0.049, +0.150] | -0.323269 | 23.541 | [+11.524, +38.185] | True |
+| N170 | Affine | parent_input | Parent | Brain-only | +0.302329 | +0.428759 | [+0.169, +0.702] | +0.126430 | 141.819 | [-1018.384, +1179.988] | False |
+| N170 | Affine | parent_input | Parent | Conservative | +0.206938 | +0.076891 | [-0.140, +0.326] | -0.130047 | 37.157 | [-220.511, +276.228] | False |
+| N170 | Affine | contaminated_input | Parent | Filter-only | -0.215865 | +0.107821 | [-0.170, +0.408] | +0.323686 | -49.948 | [-871.218, +830.484] | False |
+| N170 | Affine | contaminated_input | Filter-only | Brain-only | +0.518194 | +0.507597 | [+0.331, +0.689] | -0.010598 | 97.955 | [+50.985, +454.354] | False |
+| N170 | Affine | contaminated_input | Filter-only | Conservative | +0.422803 | +0.110118 | [+0.044, +0.184] | -0.312685 | 26.045 | [+11.821, +41.489] | True |
+| N170 | Affine | contaminated_input | Parent | Brain-only | +0.302329 | +0.615418 | [+0.284, +0.933] | +0.313089 | 203.559 | [-1632.989, +1855.178] | False |
+| N170 | Affine | contaminated_input | Parent | Conservative | +0.206938 | +0.217939 | [-0.056, +0.498] | +0.011001 | 105.316 | [-612.979, +793.963] | False |
+| N170 | Affine | output_reference | Parent | Filter-only | -0.215865 | -0.022759 | [-0.251, +0.235] | +0.193106 | 10.543 | [-339.097, +368.242] | False |
+| N170 | Affine | output_reference | Filter-only | Brain-only | +0.518194 | +0.448866 | [+0.359, +0.543] | -0.069328 | 86.621 | [+45.317, +439.754] | False |
+| N170 | Affine | output_reference | Filter-only | Conservative | +0.422803 | +0.097336 | [+0.049, +0.146] | -0.325467 | 23.022 | [+11.104, +37.397] | True |
+| N170 | Affine | output_reference | Parent | Brain-only | +0.302329 | +0.426107 | [+0.168, +0.697] | +0.123778 | 140.941 | [-1011.003, +1169.234] | False |
+| N170 | Affine | output_reference | Parent | Conservative | +0.206938 | +0.074577 | [-0.141, +0.322] | -0.132361 | 36.038 | [-213.336, +272.674] | False |
+| P3 | Affine | parent_input | Parent | Filter-only | -2.446750 | -1.700969 | [-2.846, -0.628] | +0.745781 | 69.520 | [+53.501, +90.262] | False |
+| P3 | Affine | parent_input | Filter-only | Brain-only | -0.960519 | -0.505846 | [-0.622, -0.381] | +0.454673 | 52.664 | [+36.429, +83.288] | True |
+| P3 | Affine | parent_input | Filter-only | Conservative | -0.541855 | -0.362911 | [-0.449, -0.266] | +0.178944 | 66.976 | [+43.370, +120.491] | True |
+| P3 | Affine | parent_input | Parent | Brain-only | -3.407269 | -2.206815 | [-3.445, -1.068] | +1.200454 | 64.768 | [+50.612, +74.560] | True |
+| P3 | Affine | parent_input | Parent | Conservative | -2.988605 | -2.063880 | [-3.259, -0.963] | +0.924725 | 69.058 | [+52.764, +84.079] | True |
+| P3 | Affine | contaminated_input | Parent | Filter-only | -2.446750 | -1.374133 | [-2.572, -0.204] | +1.072617 | 56.162 | [+18.876, +78.953] | False |
+| P3 | Affine | contaminated_input | Filter-only | Brain-only | -0.960519 | -0.552721 | [-0.759, -0.346] | +0.407798 | 57.544 | [+39.195, +85.113] | True |
+| P3 | Affine | contaminated_input | Filter-only | Conservative | -0.541855 | -0.369433 | [-0.515, -0.230] | +0.172422 | 68.179 | [+40.485, +117.728] | True |
+| P3 | Affine | contaminated_input | Parent | Brain-only | -3.407269 | -1.926854 | [-3.224, -0.711] | +1.480415 | 56.551 | [+33.451, +70.469] | True |
+| P3 | Affine | contaminated_input | Parent | Conservative | -2.988605 | -1.743566 | [-3.020, -0.526] | +1.245039 | 58.340 | [+29.700, +77.253] | True |
+| P3 | Affine | output_reference | Parent | Filter-only | -2.446750 | -1.687287 | [-2.824, -0.622] | +0.759463 | 68.960 | [+53.968, +88.095] | False |
+| P3 | Affine | output_reference | Filter-only | Brain-only | -0.960519 | -0.505771 | [-0.622, -0.381] | +0.454748 | 52.656 | [+36.417, +83.283] | True |
+| P3 | Affine | output_reference | Filter-only | Conservative | -0.541855 | -0.362669 | [-0.449, -0.266] | +0.179186 | 66.931 | [+43.357, +120.320] | True |
+| P3 | Affine | output_reference | Parent | Brain-only | -3.407269 | -2.193058 | [-3.412, -1.063] | +1.214211 | 64.364 | [+50.354, +74.205] | True |
+| P3 | Affine | output_reference | Parent | Conservative | -2.988605 | -2.049957 | [-3.233, -0.957] | +0.938648 | 68.592 | [+53.205, +82.553] | True |
+| N170 | Simple CNN | parent_input | Parent | Filter-only | -0.215865 | +0.082727 | [-0.134, +0.315] | +0.298592 | -38.324 | [-772.272, +666.117] | False |
+| N170 | Simple CNN | parent_input | Filter-only | Brain-only | +0.518194 | +0.532544 | [+0.307, +0.770] | +0.014349 | 102.769 | [+62.501, +396.707] | False |
+| N170 | Simple CNN | parent_input | Filter-only | Conservative | +0.422803 | +0.040682 | [-0.067, +0.147] | -0.382121 | 9.622 | [-19.145, +32.217] | True |
+| N170 | Simple CNN | parent_input | Parent | Brain-only | +0.302329 | +0.615271 | [+0.284, +0.924] | +0.312942 | 203.510 | [-1503.871, +1694.858] | False |
+| N170 | Simple CNN | parent_input | Parent | Conservative | +0.206938 | +0.123409 | [-0.090, +0.343] | -0.083528 | 59.636 | [-299.982, +400.784] | False |
+| N170 | Simple CNN | contaminated_input | Parent | Filter-only | -0.215865 | +0.249325 | [-0.078, +0.595] | +0.465190 | -115.500 | [-1563.479, +1353.488] | False |
+| N170 | Simple CNN | contaminated_input | Filter-only | Brain-only | +0.518194 | +0.713553 | [+0.446, +0.979] | +0.195358 | 137.700 | [+82.773, +561.866] | False |
+| N170 | Simple CNN | contaminated_input | Filter-only | Conservative | +0.422803 | +0.103838 | [-0.033, +0.221] | -0.318965 | 24.559 | [-9.904, +47.179] | True |
+| N170 | Simple CNN | contaminated_input | Parent | Brain-only | +0.302329 | +0.962877 | [+0.510, +1.389] | +0.660548 | 318.487 | [-2508.214, +2936.474] | False |
+| N170 | Simple CNN | contaminated_input | Parent | Conservative | +0.206938 | +0.353162 | [-0.015, +0.716] | +0.146225 | 170.661 | [-1098.290, +1425.181] | False |
+| N170 | Simple CNN | output_reference | Parent | Filter-only | -0.215865 | +0.054049 | [-0.167, +0.291] | +0.269914 | -25.038 | [-619.365, +557.177] | False |
+| N170 | Simple CNN | output_reference | Filter-only | Brain-only | +0.518194 | +0.546051 | [+0.357, +0.734] | +0.027857 | 105.376 | [+59.438, +452.003] | False |
+| N170 | Simple CNN | output_reference | Filter-only | Conservative | +0.422803 | +0.047122 | [-0.038, +0.134] | -0.375681 | 11.145 | [-10.639, +29.477] | True |
+| N170 | Simple CNN | output_reference | Parent | Brain-only | +0.302329 | +0.600100 | [+0.283, +0.889] | +0.297771 | 198.492 | [-1469.895, +1695.909] | False |
+| N170 | Simple CNN | output_reference | Parent | Conservative | +0.206938 | +0.101170 | [-0.119, +0.332] | -0.105767 | 48.889 | [-290.411, +372.561] | False |
+| P3 | Simple CNN | parent_input | Parent | Filter-only | -2.446750 | -1.736496 | [-2.848, -0.656] | +0.710254 | 70.972 | [+57.227, +90.713] | False |
+| P3 | Simple CNN | parent_input | Filter-only | Brain-only | -0.960519 | -0.604694 | [-0.721, -0.478] | +0.355825 | 62.955 | [+44.067, +98.898] | True |
+| P3 | Simple CNN | parent_input | Filter-only | Conservative | -0.541855 | -0.452601 | [-0.607, -0.311] | +0.089254 | 83.528 | [+57.941, +140.789] | True |
+| P3 | Simple CNN | parent_input | Parent | Brain-only | -3.407269 | -2.341190 | [-3.462, -1.268] | +1.066079 | 68.712 | [+59.239, +79.206] | True |
+| P3 | Simple CNN | parent_input | Parent | Conservative | -2.988605 | -2.189097 | [-3.267, -1.154] | +0.799508 | 73.248 | [+61.313, +91.697] | True |
+| P3 | Simple CNN | contaminated_input | Parent | Filter-only | -2.446750 | -1.255908 | [-2.326, -0.202] | +1.190842 | 51.330 | [+18.750, +67.095] | False |
+| P3 | Simple CNN | contaminated_input | Filter-only | Brain-only | -0.960519 | -0.714272 | [-0.875, -0.511] | +0.246247 | 74.363 | [+52.765, +115.301] | True |
+| P3 | Simple CNN | contaminated_input | Filter-only | Conservative | -0.541855 | -0.515974 | [-0.658, -0.357] | +0.025881 | 95.224 | [+64.191, +163.531] | True |
+| P3 | Simple CNN | contaminated_input | Parent | Brain-only | -3.407269 | -1.970180 | [-3.092, -0.890] | +1.437089 | 57.823 | [+41.410, +71.407] | True |
+| P3 | Simple CNN | contaminated_input | Parent | Conservative | -2.988605 | -1.771881 | [-2.862, -0.710] | +1.216723 | 59.288 | [+39.574, +75.108] | True |
+| P3 | Simple CNN | output_reference | Parent | Filter-only | -2.446750 | -1.714462 | [-2.761, -0.670] | +0.732288 | 70.071 | [+55.264, +98.805] | False |
+| P3 | Simple CNN | output_reference | Filter-only | Brain-only | -0.960519 | -0.443977 | [-0.537, -0.351] | +0.516542 | 46.223 | [+33.678, +71.944] | True |
+| P3 | Simple CNN | output_reference | Filter-only | Conservative | -0.541855 | -0.288546 | [-0.413, -0.176] | +0.253309 | 53.251 | [+33.853, +91.998] | True |
+| P3 | Simple CNN | output_reference | Parent | Brain-only | -3.407269 | -2.158439 | [-3.181, -1.157] | +1.248830 | 63.348 | [+52.131, +75.342] | True |
+| P3 | Simple CNN | output_reference | Parent | Conservative | -2.988605 | -2.003008 | [-2.997, -1.032] | +0.985597 | 67.021 | [+52.488, +90.510] | True |
+| N170 | Residual CNN | parent_input | Parent | Filter-only | -0.215865 | -0.074860 | [-0.268, +0.118] | +0.141006 | 34.679 | [-146.737, +202.873] | False |
+| N170 | Residual CNN | parent_input | Filter-only | Brain-only | +0.518194 | +0.685743 | [+0.466, +0.908] | +0.167549 | 132.333 | [+79.025, +570.737] | False |
+| N170 | Residual CNN | parent_input | Filter-only | Conservative | +0.422803 | +0.108938 | [+0.021, +0.202] | -0.313865 | 25.766 | [+6.333, +41.542] | True |
+| N170 | Residual CNN | parent_input | Parent | Brain-only | +0.302329 | +0.610883 | [+0.276, +0.908] | +0.308554 | 202.059 | [-1479.192, +1643.635] | False |
+| N170 | Residual CNN | parent_input | Parent | Conservative | +0.206938 | +0.034078 | [-0.168, +0.240] | -0.172859 | 16.468 | [-269.970, +310.657] | False |
+| N170 | Residual CNN | contaminated_input | Parent | Filter-only | -0.215865 | +0.067542 | [-0.212, +0.384] | +0.283407 | -31.289 | [-785.143, +792.375] | False |
+| N170 | Residual CNN | contaminated_input | Filter-only | Brain-only | +0.518194 | +0.865716 | [+0.595, +1.130] | +0.347522 | 167.064 | [+97.504, +727.298] | False |
+| N170 | Residual CNN | contaminated_input | Filter-only | Conservative | +0.422803 | +0.150352 | [-0.003, +0.295] | -0.272451 | 35.561 | [-0.883, +58.166] | True |
+| N170 | Residual CNN | contaminated_input | Parent | Brain-only | +0.302329 | +0.933258 | [+0.533, +1.303] | +0.630929 | 308.689 | [-2454.606, +2847.269] | False |
+| N170 | Residual CNN | contaminated_input | Parent | Conservative | +0.206938 | +0.217894 | [-0.080, +0.525] | +0.010956 | 105.294 | [-588.154, +768.337] | False |
+| N170 | Residual CNN | output_reference | Parent | Filter-only | -0.215865 | -0.069634 | [-0.274, +0.138] | +0.146231 | 32.258 | [-164.123, +203.847] | False |
+| N170 | Residual CNN | output_reference | Filter-only | Brain-only | +0.518194 | +0.656728 | [+0.478, +0.828] | +0.138534 | 126.734 | [+70.584, +591.423] | False |
+| N170 | Residual CNN | output_reference | Filter-only | Conservative | +0.422803 | +0.090940 | [+0.007, +0.181] | -0.331862 | 21.509 | [+1.973, +37.092] | True |
+| N170 | Residual CNN | output_reference | Parent | Brain-only | +0.302329 | +0.587095 | [+0.261, +0.882] | +0.284766 | 194.191 | [-1437.611, +1578.083] | False |
+| N170 | Residual CNN | output_reference | Parent | Conservative | +0.206938 | +0.021307 | [-0.197, +0.250] | -0.185631 | 10.296 | [-329.017, +362.094] | False |
+| P3 | Residual CNN | parent_input | Parent | Filter-only | -2.446750 | -1.866445 | [-3.181, -0.623] | +0.580305 | 76.283 | [+58.527, +91.047] | False |
+| P3 | Residual CNN | parent_input | Filter-only | Brain-only | -0.960519 | -0.609314 | [-0.737, -0.460] | +0.351205 | 63.436 | [+49.269, +89.303] | True |
+| P3 | Residual CNN | parent_input | Filter-only | Conservative | -0.541855 | -0.422630 | [-0.583, -0.277] | +0.119225 | 77.997 | [+57.546, +120.909] | True |
+| P3 | Residual CNN | parent_input | Parent | Brain-only | -3.407269 | -2.475759 | [-3.795, -1.257] | +0.931510 | 72.661 | [+60.342, +81.346] | True |
+| P3 | Residual CNN | parent_input | Parent | Conservative | -2.988605 | -2.289074 | [-3.590, -1.097] | +0.699531 | 76.593 | [+62.360, +89.973] | True |
+| P3 | Residual CNN | contaminated_input | Parent | Filter-only | -2.446750 | -1.560567 | [-2.887, -0.231] | +0.886184 | 63.781 | [+21.571, +83.640] | False |
+| P3 | Residual CNN | contaminated_input | Filter-only | Brain-only | -0.960519 | -0.686674 | [-0.937, -0.404] | +0.273845 | 71.490 | [+48.450, +103.341] | True |
+| P3 | Residual CNN | contaminated_input | Filter-only | Conservative | -0.541855 | -0.437923 | [-0.657, -0.214] | +0.103932 | 80.819 | [+49.825, +125.183] | True |
+| P3 | Residual CNN | contaminated_input | Parent | Brain-only | -3.407269 | -2.247241 | [-3.620, -0.961] | +1.160028 | 65.954 | [+45.896, +76.961] | True |
+| P3 | Residual CNN | contaminated_input | Parent | Conservative | -2.988605 | -1.998489 | [-3.320, -0.743] | +0.990116 | 66.870 | [+41.884, +83.511] | True |
+| P3 | Residual CNN | output_reference | Parent | Filter-only | -2.446750 | -1.916737 | [-3.211, -0.715] | +0.530013 | 78.338 | [+64.166, +96.858] | False |
+| P3 | Residual CNN | output_reference | Filter-only | Brain-only | -0.960519 | -0.515622 | [-0.647, -0.368] | +0.444897 | 53.682 | [+39.195, +80.257] | True |
+| P3 | Residual CNN | output_reference | Filter-only | Conservative | -0.541855 | -0.336361 | [-0.466, -0.213] | +0.205494 | 62.076 | [+45.052, +101.733] | True |
+| P3 | Residual CNN | output_reference | Parent | Brain-only | -3.407269 | -2.432359 | [-3.667, -1.296] | +0.974910 | 71.387 | [+61.165, +79.825] | True |
+| P3 | Residual CNN | output_reference | Parent | Conservative | -2.988605 | -2.253098 | [-3.488, -1.128] | +0.735507 | 75.390 | [+62.541, +90.646] | True |
+
+
+The share attributable to the added filter-only supervision is the parent-to-filter learned shift divided by the parent-to-recipe learned shift. It measures a computational decomposition under this intervention, not the neural fraction of either target.
+
+| Learner | Recipe target | Filtering share(%) | 95% descriptive interval(%) |
+|---|---|---|---|
+| Affine | Brain-only | 77.078 | [+57.763, +83.838] |
+| Affine | Conservative | 82.416 | [+64.050, +88.394] |
+| Simple CNN | Brain-only | 74.171 | [+51.021, +83.110] |
+| Simple CNN | Conservative | 79.325 | [+55.753, +88.605] |
+| Residual CNN | Brain-only | 75.389 | [+49.146, +84.832] |
+| Residual CNN | Conservative | 81.537 | [+56.336, +90.169] |
+
+
+## D4. Individual paired seeds and cross-target losses
+
+| Task | Learner | Seed | From | To | Mean shift(µV) | 95% participant interval |
+|---|---|---|---|---|---|---|
+| N170 | Simple CNN | 17 | Parent | Filter-only | +0.051482 | [-0.167, +0.280] |
+| N170 | Simple CNN | 17 | Filter-only | Brain-only | +0.477071 | [+0.274, +0.694] |
+| N170 | Simple CNN | 17 | Filter-only | Conservative | +0.015675 | [-0.098, +0.125] |
+| N170 | Simple CNN | 17 | Parent | Brain-only | +0.528553 | [+0.197, +0.844] |
+| N170 | Simple CNN | 17 | Parent | Conservative | +0.067157 | [-0.151, +0.276] |
+| N170 | Simple CNN | 29 | Parent | Filter-only | +0.090128 | [-0.133, +0.332] |
+| N170 | Simple CNN | 29 | Filter-only | Brain-only | +0.607639 | [+0.361, +0.863] |
+| N170 | Simple CNN | 29 | Filter-only | Conservative | +0.057802 | [-0.046, +0.167] |
+| N170 | Simple CNN | 29 | Parent | Brain-only | +0.697767 | [+0.358, +1.031] |
+| N170 | Simple CNN | 29 | Parent | Conservative | +0.147930 | [-0.088, +0.401] |
+| N170 | Simple CNN | 43 | Parent | Filter-only | +0.106571 | [-0.122, +0.349] |
+| N170 | Simple CNN | 43 | Filter-only | Brain-only | +0.512920 | [+0.275, +0.750] |
+| N170 | Simple CNN | 43 | Filter-only | Conservative | +0.048570 | [-0.068, +0.162] |
+| N170 | Simple CNN | 43 | Parent | Brain-only | +0.619492 | [+0.288, +0.921] |
+| N170 | Simple CNN | 43 | Parent | Conservative | +0.155141 | [-0.061, +0.381] |
+| P3 | Simple CNN | 17 | Parent | Filter-only | -1.772502 | [-2.872, -0.706] |
+| P3 | Simple CNN | 17 | Filter-only | Brain-only | -0.583760 | [-0.709, -0.458] |
+| P3 | Simple CNN | 17 | Filter-only | Conservative | -0.439766 | [-0.599, -0.295] |
+| P3 | Simple CNN | 17 | Parent | Brain-only | -2.356263 | [-3.472, -1.294] |
+| P3 | Simple CNN | 17 | Parent | Conservative | -2.212269 | [-3.276, -1.191] |
+| P3 | Simple CNN | 29 | Parent | Filter-only | -1.758324 | [-2.960, -0.591] |
+| P3 | Simple CNN | 29 | Filter-only | Brain-only | -0.657974 | [-0.771, -0.520] |
+| P3 | Simple CNN | 29 | Filter-only | Conservative | -0.458187 | [-0.613, -0.309] |
+| P3 | Simple CNN | 29 | Parent | Brain-only | -2.416298 | [-3.635, -1.245] |
+| P3 | Simple CNN | 29 | Parent | Conservative | -2.216511 | [-3.405, -1.072] |
+| P3 | Simple CNN | 43 | Parent | Filter-only | -1.678661 | [-2.724, -0.657] |
+| P3 | Simple CNN | 43 | Filter-only | Brain-only | -0.572348 | [-0.693, -0.444] |
+| P3 | Simple CNN | 43 | Filter-only | Conservative | -0.459849 | [-0.612, -0.320] |
+| P3 | Simple CNN | 43 | Parent | Brain-only | -2.251010 | [-3.292, -1.253] |
+| P3 | Simple CNN | 43 | Parent | Conservative | -2.138510 | [-3.137, -1.172] |
+| N170 | Residual CNN | 17 | Parent | Filter-only | +0.004824 | [-0.219, +0.209] |
+| N170 | Residual CNN | 17 | Filter-only | Brain-only | +0.606531 | [+0.393, +0.830] |
+| N170 | Residual CNN | 17 | Filter-only | Conservative | +0.023042 | [-0.115, +0.149] |
+| N170 | Residual CNN | 17 | Parent | Brain-only | +0.611354 | [+0.253, +0.925] |
+| N170 | Residual CNN | 17 | Parent | Conservative | +0.027866 | [-0.199, +0.247] |
+| N170 | Residual CNN | 29 | Parent | Filter-only | -0.064869 | [-0.265, +0.137] |
+| N170 | Residual CNN | 29 | Filter-only | Brain-only | +0.679994 | [+0.460, +0.904] |
+| N170 | Residual CNN | 29 | Filter-only | Conservative | +0.117049 | [-0.000, +0.232] |
+| N170 | Residual CNN | 29 | Parent | Brain-only | +0.615126 | [+0.292, +0.923] |
+| N170 | Residual CNN | 29 | Parent | Conservative | +0.052180 | [-0.103, +0.217] |
+| N170 | Residual CNN | 43 | Parent | Filter-only | -0.164534 | [-0.361, +0.059] |
+| N170 | Residual CNN | 43 | Filter-only | Brain-only | +0.770704 | [+0.522, +1.024] |
+| N170 | Residual CNN | 43 | Filter-only | Conservative | +0.186722 | [+0.081, +0.315] |
+| N170 | Residual CNN | 43 | Parent | Brain-only | +0.606170 | [+0.268, +0.914] |
+| N170 | Residual CNN | 43 | Parent | Conservative | +0.022188 | [-0.223, +0.278] |
+| P3 | Residual CNN | 17 | Parent | Filter-only | -1.956577 | [-3.311, -0.656] |
+| P3 | Residual CNN | 17 | Filter-only | Brain-only | -0.643330 | [-0.757, -0.517] |
+| P3 | Residual CNN | 17 | Filter-only | Conservative | -0.439466 | [-0.635, -0.284] |
+| P3 | Residual CNN | 17 | Parent | Brain-only | -2.599907 | [-3.961, -1.328] |
+| P3 | Residual CNN | 17 | Parent | Conservative | -2.396043 | [-3.697, -1.188] |
+| P3 | Residual CNN | 29 | Parent | Filter-only | -1.791490 | [-3.111, -0.529] |
+| P3 | Residual CNN | 29 | Filter-only | Brain-only | -0.675198 | [-0.843, -0.495] |
+| P3 | Residual CNN | 29 | Filter-only | Conservative | -0.517165 | [-0.713, -0.327] |
+| P3 | Residual CNN | 29 | Parent | Brain-only | -2.466687 | [-3.781, -1.259] |
+| P3 | Residual CNN | 29 | Parent | Conservative | -2.308655 | [-3.643, -1.086] |
+| P3 | Residual CNN | 43 | Parent | Filter-only | -1.851268 | [-3.120, -0.656] |
+| P3 | Residual CNN | 43 | Filter-only | Brain-only | -0.509415 | [-0.688, -0.309] |
+| P3 | Residual CNN | 43 | Filter-only | Conservative | -0.311258 | [-0.478, -0.141] |
+| P3 | Residual CNN | 43 | Parent | Brain-only | -2.360683 | [-3.660, -1.174] |
+| P3 | Residual CNN | 43 | Parent | Conservative | -2.162525 | [-3.440, -1.002] |
+
+
+### Simple CNN ensemble diagnostic loss matrix
+
+| Supervision/scoring | Parent | Filter-only | Brain-only | Conservative |
+|---|---|---|---|---|
+| Parent | 0.1625137 | 0.3054798 | 0.3415586 | 0.2966201 |
+| Filter-only | 0.3641425 | 0.1028151 | 0.1466105 | 0.1085167 |
+| Brain-only | 0.4024643 | 0.1413309 | 0.1027540 | 0.0884497 |
+| Conservative | 0.3747043 | 0.1238658 | 0.1087982 | 0.0803941 |
+
+
+### Residual CNN ensemble diagnostic loss matrix
+
+| Supervision/scoring | Parent | Filter-only | Brain-only | Conservative |
+|---|---|---|---|---|
+| Parent | 0.1210115 | 0.3250080 | 0.3791078 | 0.3264677 |
+| Filter-only | 0.3572660 | 0.0891060 | 0.1477203 | 0.1034570 |
+| Brain-only | 0.3989027 | 0.1348151 | 0.1015453 | 0.0837031 |
+| Conservative | 0.3654048 | 0.1140372 | 0.1078482 | 0.0731987 |
+
+
+All24 CNN checkpoints use final epoch 50. Full curves and model reports retain each train/validation value. The following end-of-budget values are diagnostics, not proof of convergence.
+
+| Learner | Seed | Target | Train MSE at50 | Validation MSE at50 | Last-five validation range |
+|---|---|---|---|---|---|
+| Simple CNN | 17 | Parent | 0.1605680 | 0.1869967 | 0.1609320–0.1873752 |
+| Simple CNN | 17 | Filter-only | 0.0981103 | 0.1084568 | 0.1036920–0.1084568 |
+| Simple CNN | 17 | Brain-only | 0.0956177 | 0.1049208 | 0.1025824–0.1049208 |
+| Simple CNN | 17 | Conservative | 0.0753416 | 0.0842246 | 0.0804080–0.0842246 |
+| Simple CNN | 29 | Parent | 0.1602028 | 0.1643639 | 0.1643639–0.1731634 |
+| Simple CNN | 29 | Filter-only | 0.0988292 | 0.1067228 | 0.1051160–0.1075120 |
+| Simple CNN | 29 | Brain-only | 0.0963420 | 0.1037745 | 0.1031177–0.1042517 |
+| Simple CNN | 29 | Conservative | 0.0772419 | 0.0830024 | 0.0824104–0.0832830 |
+| Simple CNN | 43 | Parent | 0.1586933 | 0.1666279 | 0.1620456–0.1666434 |
+| Simple CNN | 43 | Filter-only | 0.0985058 | 0.1058037 | 0.1045977–0.1070083 |
+| Simple CNN | 43 | Brain-only | 0.0962610 | 0.1044179 | 0.1032836–0.1044179 |
+| Simple CNN | 43 | Conservative | 0.0760325 | 0.0823944 | 0.0809544–0.0823944 |
+| Residual CNN | 17 | Parent | 0.1097540 | 0.1399071 | 0.1275273–0.1429630 |
+| Residual CNN | 17 | Filter-only | 0.0780825 | 0.1019898 | 0.0972585–0.1019898 |
+| Residual CNN | 17 | Brain-only | 0.0893556 | 0.1136317 | 0.1050302–0.1136317 |
+| Residual CNN | 17 | Conservative | 0.0645789 | 0.0864596 | 0.0776338–0.0864596 |
+| Residual CNN | 29 | Parent | 0.1055542 | 0.1333468 | 0.1314806–0.1397892 |
+| Residual CNN | 29 | Filter-only | 0.0754826 | 0.0972720 | 0.0941412–0.0972720 |
+| Residual CNN | 29 | Brain-only | 0.0834292 | 0.1064310 | 0.1035602–0.1075349 |
+| Residual CNN | 29 | Conservative | 0.0606006 | 0.0768836 | 0.0752411–0.0787645 |
+| Residual CNN | 43 | Parent | 0.1061266 | 0.1333281 | 0.1282710–0.1333281 |
+| Residual CNN | 43 | Filter-only | 0.0753046 | 0.0963081 | 0.0936911–0.0963081 |
+| Residual CNN | 43 | Brain-only | 0.0859425 | 0.1063876 | 0.1048742–0.1070096 |
+| Residual CNN | 43 | Conservative | 0.0619886 | 0.0782759 | 0.0762103–0.0782759 |
+
+
+## D5. 1–100Hz construction sensitivity
+
+All80 recordings were refitted with the upper recipe passband changed to100Hz, following the documented MNE-ICLabel input range. Scalp-average reference, extended infomax29-component ICA, seed94709 + subject, every-fourth-sample fit,500-iteration limit, notch60Hz/Q30, two automated selection policies, final30Hz analysis lowpass, original epochs and baseline are unchanged. These are recipe endpoints, **not retraining** on100Hz targets. The primary1–80Hz results remain primary. Thirty versus64 channels and omitted expert selection remain limitations; meeting the passband specification does not validate ICLabel probabilities or cortical purity.
+
+Primary technical source: https://mne.tools/mne-icalabel/stable/generated/examples/00_iclabel.html (checked 10 October 2026).
+
+| Task | Policy | People | n | 1–80Hz mean(µV) | 1–100Hz mean(µV) | Change(µV) | 95% interval |
+|---|---|---|---|---|---|---|---|
+| N170 | Filter-only | all | 40 | -2.147040 | -2.147636 | -0.000597 | [-0.001, -0.000] |
+| N170 | Filter-only | evaluation | 10 | -3.545372 | -3.544705 | +0.000667 | [-0.001, +0.002] |
+| N170 | Brain-only | all | 40 | -1.734700 | -1.727272 | +0.007428 | [-0.079, +0.091] |
+| N170 | Brain-only | evaluation | 10 | -3.027178 | -2.837401 | +0.189776 | [+0.053, +0.340] |
+| N170 | Conservative | all | 40 | -2.019884 | -2.004491 | +0.015393 | [-0.003, +0.035] |
+| N170 | Conservative | evaluation | 10 | -3.122569 | -3.123956 | -0.001387 | [-0.043, +0.031] |
+| P3 | Filter-only | all | 40 | 1.512453 | 1.512685 | +0.000232 | [-0.000, +0.001] |
+| P3 | Filter-only | evaluation | 10 | 2.063087 | 2.063048 | -0.000040 | [-0.001, +0.001] |
+| P3 | Brain-only | all | 40 | 0.864108 | 0.864214 | +0.000105 | [-0.047, +0.050] |
+| P3 | Brain-only | evaluation | 10 | 1.102568 | 1.121186 | +0.018618 | [-0.093, +0.131] |
+| P3 | Conservative | all | 40 | 1.009572 | 1.007897 | -0.001674 | [-0.011, +0.006] |
+| P3 | Conservative | evaluation | 10 | 1.521232 | 1.520626 | -0.000606 | [-0.027, +0.017] |
+
+
+ICA iteration-limit records: primary13/80, sensitivity10/80. Complete probabilities, selected components, warning messages and reconstruction checks are retained per record.
+
+## D6. Independent verification and executable order
+
+| Check | Outcome |
+|---|---|
+| status | passed |
+| new_fixed_epoch_fits | 6 |
+| total_paired_cnn_fits | 24 |
+| ensemble_records_rescored | 960 |
+| four_arm_comparisons_checked | 90 |
+| individual_seed_records_rescored | 960 |
+| seed_pairs_checked | 60 |
+| cross_target_losses_checked | 32 |
+| transmission_identities_checked | 900 |
+| transfer_and_filter_share_bootstrap_checked | True |
+| exact_original_inputs_and_targets_verified | True |
+| filter_labels_regenerated_from_original_draws | True |
+| affine_normal_equations_and_outputs_verified | True |
+| original_training_loop_and_hyperparameters_identical | True |
+| maximum_endpoint_error_uv | 1.7763568394002505e-15 |
+| maximum_identity_discrepancy_uv | 0.0 |
+| checkpoints_independently_rerun | 6 |
+| maximum_checkpoint_feature_error_uv | 9.1552734375e-05 |
+| passband_recipe_records | 80 |
+| passband_endpoint_records | 240 |
+| configuration_sha256 | e973cf6b9f18c8c41c1ce3f235769be578d0019b731b23ffb5407a97810dc933 |
+| code_sha256 | 0c7eeea782bf953fb45a8e142093184192884ae80a8804257cbf70c4664af22b |
+| complete_100hz_filter_streams_regenerated | 2 |
+| frozen_100hz_component_actions_regenerated | 4 |
+| scope | Numerical and pairing verification; does not create independent cohort, neural source truth or causal validation of original released labels |
+
+
+```sh
+python src/filter_design.py
+python src/filter_cnn.py
+python src/filter_cnn_assessment.py
+python src/filter_assessment.py
+python src/reference_passband100.py
+python src/passband_assessment.py
+python src/verify_filter_revision.py
+python src/build_filter_report.py
+```
+
+The earlier source preparation, recipe and paired-CNN stages are prerequisites. No participant was newly recruited; neural truth, released-label bias and prospective ICA coverage remain unidentified.
+
+
+# Part E. Submission-stage verification
+
+## E1. Locator and completeness
+
+This is supplementary material for **Electroencephalography Artifact Removal: Limits of Validation Against Constructed References**, by Jeet Bandhu Lahiri and Siddharth Panwar. All requested supplementary results are included as readable numerical tables or mathematical text, rather than requiring access to local analysis files. Relative file paths identify reproducibility records; they do not replace the tables or derivations. Parts A–D retain stage-specific analyses. The headline statements, known-source result, P3 stage contrasts and one transfer interval are retained in the main paper.
+
+| Deferred material | Location |
+|---|---|
+| Source ambiguity and sharp neural-risk/ranking bounds | Part A, S14; main Eqs. (2)–(4) |
+| Bayes-optimal target versus neural estimator | Part A, S14 |
+| Known-source counterexample and independent mixing | Part A, S11; Part C, section 8 |
+| Ridge coefficient/intercept intervention | Part B, section 5; main Eq. (6) |
+| Acquisition, montage, preprocessing and feature/decoder specification | Part A, S12; Part B, sections 4 and 8 |
+| Benchmark source construction, splits and source hashes | Part A, S3 and S9; Part B, section 12 |
+| Matched architecture/optimizer/seed protocol and fixed-epoch curves | Part C, section 4; Part D, D1 and D4 |
+| Complete four-by-four cross-target loss matrices | Part D, D4 (both architectures) |
+| Individual paired-seed endpoint contrasts | Part C, section 6; Part D, D4 |
+| Clean-input sanity, normalization and genuine-context/window checks | Part C, sections 2 and 3 |
+| Shared contamination and output-reference controls | Part B, section 7; Part C, section 5; Part D, D2–D3 |
+| Adapted decoders, all-participant cross-fitting and partition sensitivity | Part A, S7 and S12; Part B, section 8; Part C, section 5 |
+| Probe geometry, dispersion, montage-only and edge/bandlimit controls | Part A, S5–S6 and S14; Part B, section 8 |
+| Calibration quantiles, score ranks, coverage and ICA diagnostics | Part A, S7; Part B, sections 9–10; Part E, E3 |
+| Four-arm transfer fractions, stage contrasts and residuals | Part D, D3; Part E, E2 |
+| 1–100 Hz sensitivity and ICA iteration-limit records | Part D, D5 |
+| Chronology, cohort reuse, run pairing and verification | Part A, S1; Part C, section 10; Part D, D1/D6; Part E, E4 |
+
+
+## E2. Repeated BA and transfer interval
+
+The residual CNN parent-target output scored with the frozen parent decoder has mean BA **60.15625%**. The residual CNN brain-only-target output scored with its separately fitted adapted decoder also has mean BA **60.15625%**. These equal aggregates arise from different outputs, decoders and participant-level predictions; neither value was copied to the other. They are both correctly rounded to60.16%. The same2000 P3 trials (ten evaluation participants,200 each) were rescored under both combinations, producing4000 predictions. Physical output files, labels and decoder parameters are hashed in the numerical audit.
+
+| Participant | Target | Decoder | Correct nontarget/160 | Correct target/40 | BA(%) |
+|---|---|---|---|---|---|
+| 7 | parent | frozen | 112/160 | 21/40 | 61.25000 |
+| 14 | parent | frozen | 119/160 | 11/40 | 50.93750 |
+| 37 | parent | frozen | 112/160 | 27/40 | 68.75000 |
+| 10 | parent | frozen | 115/160 | 15/40 | 54.68750 |
+| 9 | parent | frozen | 103/160 | 18/40 | 54.68750 |
+| 16 | parent | frozen | 133/160 | 9/40 | 52.81250 |
+| 38 | parent | frozen | 108/160 | 26/40 | 66.25000 |
+| 33 | parent | frozen | 127/160 | 12/40 | 54.68750 |
+| 34 | parent | frozen | 124/160 | 29/40 | 75.00000 |
+| 35 | parent | frozen | 104/160 | 24/40 | 62.50000 |
+| 7 | recipe_brain_argmax | adapted | 108/160 | 31/40 | 72.50000 |
+| 14 | recipe_brain_argmax | adapted | 71/160 | 19/40 | 45.93750 |
+| 37 | recipe_brain_argmax | adapted | 131/160 | 22/40 | 68.43750 |
+| 10 | recipe_brain_argmax | adapted | 102/160 | 10/40 | 44.37500 |
+| 9 | recipe_brain_argmax | adapted | 61/160 | 24/40 | 49.06250 |
+| 16 | recipe_brain_argmax | adapted | 121/160 | 22/40 | 65.31250 |
+| 38 | recipe_brain_argmax | adapted | 67/160 | 33/40 | 62.18750 |
+| 33 | recipe_brain_argmax | adapted | 93/160 | 26/40 | 61.56250 |
+| 34 | recipe_brain_argmax | adapted | 106/160 | 30/40 | 70.62500 |
+| 35 | recipe_brain_argmax | adapted | 97/160 | 25/40 | 61.56250 |
+
+
+For affine parent-to-brain-only supervision, the learned participant-mean P3 shift is-2.206814869µV and the direct reference shift is-3.407268994µV. Their ratio is64.767850%, with the paired95% percentile interval[50.612194,74.559928]%. This is the interval added to the main text, rounded to[50.6,74.6]%. It uses10000 jointly resampled participant sets, seed94810, and remains conditional on fitted operators and the inspected cohort. Every resampled denominator is negative. The main estimate is a ratio of means, not a mean of individual ratios.
+
+
+## E3. Complete calibration scores and order statistics
+
+Family scores take the maximum scaled absolute parent-relative change across seven candidates, two tasks and two endpoints. ICA scores use the historical pooled EOG-guided operation, not the separate per-record ICLabel constructions. Scales are1µV and0.02 BA. All30 calibration/evaluation scores are reported; the sorted20 calibration values make order statistics19 and20 explicit. Ties do not have unique participant ranks.
+
+| Participant | Split | Family maximum | Family dominating operation/task/endpoint | ICA maximum |
+|---|---|---|---|---|
+| 21 | calibration | 7.343750000 | femto/P3/frozen_ba | 2.500000000 |
+| 17 | calibration | 7.968750000 | femto/P3/frozen_ba | 4.375000000 |
+| 31 | calibration | 10.381275326 | regression/P3/amplitude_uv | 2.500000000 |
+| 32 | calibration | 26.620925254 | regression/P3/amplitude_uv | 0.937500000 |
+| 22 | calibration | 3.108893185 | femto/P3/amplitude_uv | 1.875000000 |
+| 19 | calibration | 3.437500000 | femto/P3/frozen_ba | 3.281250000 |
+| 12 | calibration | 5.179334280 | femto/P3/amplitude_uv | 2.409946567 |
+| 26 | calibration | 8.627469059 | regression/P3/amplitude_uv | 0.162938576 |
+| 11 | calibration | 16.006871817 | regression/P3/amplitude_uv | 3.107536591 |
+| 3 | calibration | 6.718750000 | femto/P3/frozen_ba | 1.406250000 |
+| 27 | calibration | 5.000000000 | hp2/P3/frozen_ba | 3.125000000 |
+| 4 | calibration | 30.453746649 | regression/P3/amplitude_uv | 3.750000000 |
+| 5 | calibration | 4.531250000 | femto/P3/frozen_ba | 2.812500000 |
+| 40 | calibration | 8.012873621 | femto/P3/amplitude_uv | 2.187500000 |
+| 2 | calibration | 9.028026846 | hp2/P3/amplitude_uv | 1.562500000 |
+| 13 | calibration | 7.187500000 | femto/N170/frozen_ba | 1.779510175 |
+| 18 | calibration | 4.234328991 | regression/P3/amplitude_uv | 1.250000000 |
+| 20 | calibration | 9.719700761 | regression/P3/amplitude_uv | 1.250000000 |
+| 15 | calibration | 4.687500000 | femto/P3/frozen_ba | 4.531250000 |
+| 28 | calibration | 6.045718075 | regression/P3/amplitude_uv | 1.562500000 |
+| 7 | evaluation | 50.396525499 | regression/P3/amplitude_uv | 0.937500000 |
+| 14 | evaluation | 5.408704840 | ica/P3/amplitude_uv | 5.408704840 |
+| 37 | evaluation | 13.943497602 | regression/P3/amplitude_uv | 2.500000000 |
+| 10 | evaluation | 18.360267525 | regression/P3/amplitude_uv | 1.875000000 |
+| 9 | evaluation | 5.312500000 | ica/N170/frozen_ba | 5.312500000 |
+| 16 | evaluation | 6.562500000 | ica/N170/frozen_ba | 6.562500000 |
+| 38 | evaluation | 4.894035436 | regression/P3/amplitude_uv | 4.687500000 |
+| 33 | evaluation | 4.854749292 | regression/P3/amplitude_uv | 2.187500000 |
+| 34 | evaluation | 11.250000000 | femto/P3/frozen_ba | 4.218750000 |
+| 35 | evaluation | 5.625000000 | ica/N170/frozen_ba | 5.625000000 |
+
+
+### Family calibration order statistics
+
+| Order statistic | Participant | Score |
+|---|---|---|
+| 1 | 22 | 3.108893185 |
+| 2 | 19 | 3.437500000 |
+| 3 | 18 | 4.234328991 |
+| 4 | 5 | 4.531250000 |
+| 5 | 15 | 4.687500000 |
+| 6 | 27 | 5.000000000 |
+| 7 | 12 | 5.179334280 |
+| 8 | 28 | 6.045718075 |
+| 9 | 3 | 6.718750000 |
+| 10 | 13 | 7.187500000 |
+| 11 | 21 | 7.343750000 |
+| 12 | 17 | 7.968750000 |
+| 13 | 40 | 8.012873621 |
+| 14 | 26 | 8.627469059 |
+| 15 | 2 | 9.028026846 |
+| 16 | 20 | 9.719700761 |
+| 17 | 31 | 10.381275326 |
+| 18 | 11 | 16.006871817 |
+| 19 | 32 | 26.620925254 |
+| 20 | 4 | 30.453746649 |
+
+
+### Ica calibration order statistics
+
+| Order statistic | Participant | Score |
+|---|---|---|
+| 1 | 26 | 0.162938576 |
+| 2 | 32 | 0.937500000 |
+| 3 | 18 | 1.250000000 |
+| 4 | 20 | 1.250000000 |
+| 5 | 3 | 1.406250000 |
+| 6 | 2 | 1.562500000 |
+| 7 | 28 | 1.562500000 |
+| 8 | 13 | 1.779510175 |
+| 9 | 22 | 1.875000000 |
+| 10 | 40 | 2.187500000 |
+| 11 | 12 | 2.409946567 |
+| 12 | 21 | 2.500000000 |
+| 13 | 31 | 2.500000000 |
+| 14 | 5 | 2.812500000 |
+| 15 | 11 | 3.107536591 |
+| 16 | 27 | 3.125000000 |
+| 17 | 19 | 3.281250000 |
+| 18 | 4 | 3.750000000 |
+| 19 | 17 | 4.375000000 |
+| 20 | 15 | 4.531250000 |
+
+
+The family quantiles are26.620925254/30.453746649; the ICA quantiles are4.375/4.53125. Family coverage is9/10 at both levels, ICA coverage5/10. The exact finite-rank diagnostic and tied-score reassignments are in Part B, section9. These exploratory scores do not resolve the prospective ICA coverage problem.
+
+
+## E4. Execution records versus repository history
+
+No external peer reviewer has reviewed this manuscript. Earlier “reviewer-directed” terminology described draft-stage feedback and has been corrected in the current manuscript, report narratives and repository README. Frozen configuration files retain their historical bytes so existing run-hash checks remain valid; their status prose is not evidence of journal peer review.
+
+The public history below was checked with `git log --diff-filter=A` for each configuration. Both first commits follow execution. File times below are local filesystem metadata, which are mutable; configuration hashes associate settings with saved outputs but do not prove when choices were made. These records establish archival consistency, **not prospective specification or preregistration**. The main text has been narrowed accordingly.
+
+| Stage | Configuration SHA256 | First public commit | Commit time | Local configuration mtime(UTC) | Completed report mtime range(UTC) |
+|---|---|---|---|---|---|
+| Paired CNNs | f799f8f01274982299567537dabff013feecc626feee514b68e31e567b4b025d | 21e6c31a00d5b496aa20382e5cfafd2fa5a59eca | 2026-10-10T08:41:41+05:30 | 2026-10-09T19:11:00.989531+00:00 | 2026-10-09T19:18:59.680246+00:00 to 2026-10-09T23:59:25.874564+00:00 |
+| Filter-only CNNs | e973cf6b9f18c8c41c1ce3f235769be578d0019b731b23ffb5407a97810dc933 | aa9894118f46c00540f3d9e783e529a5b0f49426 | 2026-10-10T10:25:24+05:30 | 2026-10-10T03:30:16.119580+00:00 | 2026-10-10T03:41:56.787138+00:00 to 2026-10-10T04:40:55.710396+00:00 |
+
+
+## E5. Primary DOI verification and reference list
+
+All19 identifiers redirect at the DOI resolver and have primary Crossref or DataCite registration metadata. References[10],[11] and[19] register the exact cited works. Publisher access restrictions are separate from DOI validity. Checked10October2026; canonical publisher locations and full deposited metadata are archived in `reference_metadata.json`.
+
+| Reference | DOI | Registered work | Primary registration agency |
+|---|---|---|---|
+| 1 | 10.1088/1741-2552/ac2bf8 | EEGdenoiseNet: a benchmark dataset for deep learning solutions of EEG denoising | Crossref |
+| 2 | 10.1109/TITB.2012.2207400 | A Methodology for Validating Artifact Removal Techniques for Physiological Signals | Crossref |
+| 3 | 10.1111/psyp.12437 | How inappropriate high‐pass filters can produce artifactual effects and incorrect conclusions in ERP studies of language and cognition | Crossref |
+| 4 | 10.1038/s41598-023-27528-0 | EEG is better left alone | Crossref |
+| 5 | 10.1088/1741-2552/ad788e | I see artifacts: ICA-based EEG artifact removal does not improve deep network decoding across three BCI tasks | Crossref |
+| 6 | 10.1038/s42003-025-08464-3 | How EEG preprocessing shapes decoding performance | Crossref |
+| 7 | 10.1111/psyp.14511 | Evaluating the effectiveness of artifact correction and rejection in event‐related potential research | Crossref |
+| 8 | 10.1109/MIM.2021.9400955 | Machine Learning in Measurement Part 1: Error Contribution and Terminology Confusion | Crossref |
+| 9 | 10.1109/MIM.2021.9436102 | Machine Learning in Measurement Part 2: Uncertainty Quantification | Crossref |
+| 10 | 10.1109/MIM.2025.10982089 | Uncertainty Quantification in AI-Based Measurement Systems | Crossref |
+| 11 | 10.1109/TIM.2025.3643048 | Machine Learning-Based Measurement Models: A Novel Methodology for GUM-Based Uncertainty Evaluation | Crossref |
+| 12 | 10.59161/JCGM200-2012 | International Vocabulary of Metrology – Basic and general concepts and associated terms (VIM), 3rd edition | Crossref |
+| 13 | 10.59161/JCGMGUM-6-2020 | Guide to the expression of uncertainty in measurement — Part 6: Developing and using  measurement models | Crossref |
+| 14 | 10.1016/j.neuroimage.2019.05.026 | ICLabel: An automated electroencephalographic independent component classifier, dataset, and website | Crossref |
+| 15 | 10.1561/2200000101 | Conformal Prediction: A Gentle Introduction | Crossref |
+| 16 | 10.1016/j.neuroimage.2020.117465 | ERP CORE: An open resource for human event-related potential research | Crossref |
+| 17 | 10.82901/nemar.nm000132 | ERP CORE | DataCite |
+| 18 | 10.1016/j.neuroimage.2022.119586 | IC-U-Net: A U-Net-based Denoising Autoencoder Using Mixtures of Independent Components for Automatic EEG Artifact Removal | Crossref |
+| 19 | 10.1109/ICASSP55912.2026.11462844 | Femtomodels for EEG Artifact Removal: A Parameter Lower-Bound for Generalisable EOG Denoising | Crossref |
+
+
+The citation keys appearing in the retained mathematical excerpts correspond to the numbered main-paper references listed here.
+
+[1] (zhang) H. Zhang, M. Zhao, C. Wei, D. Mantini, Z. Li, and Q. Liu, “EEGdenoiseNet: A benchmark dataset for deep learning solutions of EEG denoising,” J. Neural Eng., vol. 18, no. 5, Art. no. 056057, 2021, doi: 10.1088/1741-2552/ac2bf8.
+
+[2] (sweeney) K. T. Sweeney, H. Ayaz, T. E. Ward, M. Izzetoglu, S. F. McLoone, and B. Onaral, “A methodology for validating artifact removal techniques for physiological signals,” IEEE Trans. Inf. Technol. Biomed., vol. 16, no. 5, pp. 918–926, 2012, doi: 10.1109/TITB.2012.2207400.
+
+[3] (tanner) D. Tanner, K. Morgan-Short, and S. J. Luck, “How inappropriate high-pass filters can produce artifactual effects and incorrect conclusions in ERP studies of language and cognition,” Psychophysiology, vol. 52, no. 8, pp. 997–1009, 2015, doi: 10.1111/psyp.12437.
+
+[4] (delorme) A. Delorme, “EEG is better left alone,” Sci. Rep., vol. 13, Art. no. 2372, 2023, doi: 10.1038/s41598-023-27528-0.
+
+[5] (kang) T. Kang, Y. Chen, and C. Wallraven, “I see artifacts: ICA-based EEG artifact removal does not improve deep network decoding across three BCI tasks,” J. Neural Eng., vol. 21, no. 6, Art. no. 066036, 2024, doi: 10.1088/1741-2552/ad788e.
+
+[6] (kessler) R. Kessler, A. Enge, and M. A. Skeide, “How EEG preprocessing shapes decoding performance,” Commun. Biol., vol. 8, Art. no. 1039, 2025, doi: 10.1038/s42003-025-08464-3.
+
+[7] (zhangvalidation) G. Zhang, D. R. Garrett, A. M. Simmons, J. E. Kiat, and S. J. Luck, “Evaluating the effectiveness of artifact correction and rejection in event-related potential research,” Psychophysiology, vol. 61, no. 5, Art. no. e14511, 2024, doi: 10.1111/psyp.14511.
+
+[8] (mlterminology) S. Shirmohammadi and H. Al Osman, “Machine learning in measurement Part 1: Error contribution and terminology confusion,” IEEE Instrum. Meas. Mag., vol. 24, no. 2, pp. 84–92, 2021, doi: 10.1109/MIM.2021.9400955.
+
+[9] (mluq) H. Al Osman and S. Shirmohammadi, “Machine learning in measurement Part 2: Uncertainty quantification,” IEEE Instrum. Meas. Mag., vol. 24, no. 3, pp. 23–27, 2021, doi: 10.1109/MIM.2021.9436102.
+
+[10] (aiuq) E. Buchicchio, P. Carbone, A. De Angelis, F. Santoni, and A. Moschitta, “Uncertainty quantification in AI-based measurement systems,” IEEE Instrum. Meas. Mag., vol. 28, no. 3, pp. 52–59, 2025, doi: 10.1109/MIM.2025.10982089.
+
+[11] (mlgum) L. Angrisani et al., “Machine learning-based measurement models: A novel methodology for GUM-based uncertainty evaluation,” IEEE Trans. Instrum. Meas., vol. 74, Art. no. 2554611, 2025, doi: 10.1109/TIM.2025.3643048.
+
+[12] (vim) JCGM, International Vocabulary of Metrology–-Basic and General Concepts and Associated Terms, JCGM 200:2012, 2012, doi: 10.59161/JCGM200-2012.
+
+[13] (gum) JCGM, Guide to the Expression of Uncertainty in Measurement–-Part 6: Developing and Using Measurement Models, JCGM GUM-6:2020, 2020, doi: 10.59161/JCGMGUM-6-2020.
+
+[14] (iclabel) L. Pion-Tonachini, K. Kreutz-Delgado, and S. Makeig, “ICLabel: An automated electroencephalographic independent component classifier, dataset, and website,” NeuroImage, vol. 198, pp. 181–197, 2019, doi: 10.1016/j.neuroimage.2019.05.026.
+
+[15] (conformal) A. N. Angelopoulos and S. Bates, “Conformal prediction: A gentle introduction,” Found. Trends Mach. Learn., vol. 16, no. 4, pp. 494–591, 2023, doi: 10.1561/2200000101.
+
+[16] (erpcore) E. S. Kappenman, J. L. Farrens, W. Zhang, A. X. Stewart, and S. J. Luck, “ERP CORE: An open resource for human event-related potential research,” NeuroImage, vol. 225, Art. no. 117465, 2021, doi: 10.1016/j.neuroimage.2020.117465.
+
+[17] (nemar) NEMAR, “ERP CORE,” dataset nm000132, ver. 1.1.1, 2026, doi: 10.82901/nemar.nm000132.
+
+[18] (icunet) C.-H. Chuang, K.-Y. Chang, C.-S. Huang, and T.-P. Jung, “IC-U-Net: A U-Net-based denoising autoencoder using mixtures of independent components for automatic EEG artifact removal,” NeuroImage, vol. 263, Art. no. 119586, 2022, doi: 10.1016/j.neuroimage.2022.119586.
+
+[19] (lahiri) J. B. Lahiri, A. Kulkarni, and S. Panwar, “Femtomodels for EEG artifact removal: A parameter lower-bound for generalisable EOG denoising,” in Proc. IEEE Int. Conf. Acoust., Speech Signal Process. (ICASSP), Barcelona, Spain, 2026, pp. 1521–1525, doi: 10.1109/ICASSP55912.2026.11462844.
