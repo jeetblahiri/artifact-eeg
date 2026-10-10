@@ -149,3 +149,28 @@ The reconstruction analysis deduplicates source content, isolates windows before
 Runners reuse completed caches and checkpoints. Start a separate checkout with empty generated `data/` subdirectories and `results/` for a fresh replication. Preserve `data/erp_core/manifest.json`. After changing code or configuration, use fresh output directories; do not reuse historical caches. The code records new source/configuration hashes for new runs. No historical outputs are relabeled as results from the adapted release.
 
 Original dataset licenses govern downloaded data. The ERP release's license file and metadata use differing Creative Commons labels; consult both at the source before redistributing recordings or derivatives. This repository redistributes no raw recordings.
+
+## Fourth supervisory arm and reference-transmission decomposition
+
+`filter_revision_config.json` records a reviewer-directed addition made after inspection of the earlier outcomes and cohort. It preserves the earlier three-arm configurations and 18 fixed-epoch CNN fits. Six additional fits add **filter-only supervision** to the same two CNN architectures and three paired seeds. Two affine fits use the exact original task designs and regularization. Raw-source regeneration verifies identical input mixtures and earlier target labels; initialized-state and minibatch hashes verify pairing. All fits use final epoch 50 without outcome-selected checkpoints.
+
+After the automated recipe, affine, and paired-CNN stages above, run the following in order from the repository root:
+
+```sh
+python src/filter_design.py
+python src/filter_cnn.py
+python src/filter_cnn_assessment.py
+python src/filter_assessment.py
+python src/reference_passband100.py
+python src/passband_assessment.py
+python src/verify_filter_revision.py
+python src/build_filter_report.py
+```
+
+The added design is prepared once before training. Use the sequential default runner; concurrent initial design writers can race. Do not change earlier configurations or reuse stale caches after source changes. The CNN design uses the first fixed 10,000/2,000 rows per task from the saved affine designs, pooled equally across tasks. Development participants are shared between fitting and diagnostic validation; this is not participant-independent internal validation.
+
+Outputs distinguish parent-to-filter transmission from the filter-to-component-selection increment, as well as the total parent-to-recipe shift. Transfer fractions are **ratios of paired participant-mean shifts**, with 10,000 paired bootstrap draws and a denominator stability diagnostic; individual ratios with small contrasts are avoided. Parent-supervised attenuation and fit/deployment residuals remain separate. The full four-by-four cross-target loss matrices, seed effects, primary and shared-input controls are generated under ignored `results/filter_revision/`.
+
+The separate 1–100 Hz sensitivity refits both automated reference policies on all 80 ERP recordings, with final 30-Hz endpoint analysis unchanged. It does not retrain the denoisers on the sensitivity labels, reconstruct expert choices, resolve the 30-versus-64-channel limitation, or establish cortical purity. The pooled ICA coverage diagnostic remains unresolved. Reconstruction against constructed targets still does not identify neural error in the original released EEGdenoiseNet labels.
+
+The report runner exports two numerical figures and an inspectable text report. A consolidated journal supplement, when preceding local reports are present, is prepared as a separate supplementary TXT for author submission. No manuscript or supplementary manuscript text is included in this code-only repository.

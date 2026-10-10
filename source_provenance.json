@@ -204,6 +204,60 @@
       "executed_source_sha256": "f799f8f01274982299567537dabff013feecc626feee514b68e31e567b4b025d",
       "release_sha256": "f799f8f01274982299567537dabff013feecc626feee514b68e31e567b4b025d",
       "adaptation": "Unchanged"
+    },
+    {
+      "path": "filter_revision_config.json",
+      "executed_source_sha256": "e973cf6b9f18c8c41c1ce3f235769be578d0019b731b23ffb5407a97810dc933",
+      "release_sha256": "e973cf6b9f18c8c41c1ce3f235769be578d0019b731b23ffb5407a97810dc933",
+      "adaptation": "Unchanged fourth-arm revision source"
+    },
+    {
+      "path": "src/filter_design.py",
+      "executed_source_sha256": "c0de2f3271807b0abb850d6a41d95f697c1476404779754cb4fc06344da452a9",
+      "release_sha256": "c0de2f3271807b0abb850d6a41d95f697c1476404779754cb4fc06344da452a9",
+      "adaptation": "Unchanged fourth-arm revision source"
+    },
+    {
+      "path": "src/filter_cnn.py",
+      "executed_source_sha256": "afdc2ebd567c3ce764b23d6c6d2489102680039c451566bde8cb08c1883ab9d1",
+      "release_sha256": "afdc2ebd567c3ce764b23d6c6d2489102680039c451566bde8cb08c1883ab9d1",
+      "adaptation": "Unchanged fourth-arm revision source"
+    },
+    {
+      "path": "src/filter_cnn_assessment.py",
+      "executed_source_sha256": "f677c6fea4e3ccb9f4e0ab79623287342693b1b2309905b748cb169fe73986d7",
+      "release_sha256": "f677c6fea4e3ccb9f4e0ab79623287342693b1b2309905b748cb169fe73986d7",
+      "adaptation": "Unchanged fourth-arm revision source"
+    },
+    {
+      "path": "src/filter_assessment.py",
+      "executed_source_sha256": "85078eb86e605b20ee23669fb0e1a854f7e5a90ba2c44ce0341d317fc005b6bc",
+      "release_sha256": "85078eb86e605b20ee23669fb0e1a854f7e5a90ba2c44ce0341d317fc005b6bc",
+      "adaptation": "Unchanged fourth-arm revision source"
+    },
+    {
+      "path": "src/reference_passband100.py",
+      "executed_source_sha256": "17e8e7d05728fbd8ba15054e3110b69d8525ca5f1905c5b268f4812172d11b80",
+      "release_sha256": "17e8e7d05728fbd8ba15054e3110b69d8525ca5f1905c5b268f4812172d11b80",
+      "adaptation": "Unchanged fourth-arm revision source"
+    },
+    {
+      "path": "src/passband_assessment.py",
+      "executed_source_sha256": "1de8ea7a5d882061afa4587d384b2ef63faad8410f653b5950564b9f4f7d167e",
+      "release_sha256": "1de8ea7a5d882061afa4587d384b2ef63faad8410f653b5950564b9f4f7d167e",
+      "adaptation": "Unchanged fourth-arm revision source"
+    },
+    {
+      "path": "src/verify_filter_revision.py",
+      "executed_source_sha256": "0c7eeea782bf953fb45a8e142093184192884ae80a8804257cbf70c4664af22b",
+      "release_sha256": "0c7eeea782bf953fb45a8e142093184192884ae80a8804257cbf70c4664af22b",
+      "adaptation": "Unchanged fourth-arm revision source"
+    },
+    {
+      "path": "src/build_filter_report.py",
+      "executed_source_sha256": "242cd48061eaabb5ebd2b3fdfc5b485995e131870eb2c18975ffc292d0824b3b",
+      "release_sha256": "242cd48061eaabb5ebd2b3fdfc5b485995e131870eb2c18975ffc292d0824b3b",
+      "adaptation": "Unchanged fourth-arm revision source"
     }
   ],
   "original_configuration_sha256": {
@@ -214,5 +268,6 @@
   },
   "pinned_erp_manifest_sha256": "71831eb7ad022ec998fdf30192c78f1a71256cd367e4a5ec84c6c88ec53b6f8d",
   "revision_note": "Follow-up 10/20/10 analysis after inspection of earlier ERP results. Original 20/10/10 code/settings are retained. Reference-audit release changes its input bank path only; new runs fingerprint their own source. No generated historical signals or manuscript are included.",
-  "nonlinear_revision_note": "Exploratory paired-CNN target intervention on the inspected cohort. All 18 fits use epoch 50, with shared initialized state and batch order within architecture/seed. No new manuscript, generated reports, raw data, or large retrained weights included."
+  "nonlinear_revision_note": "Exploratory paired-CNN target intervention on the inspected cohort. All 18 fits use epoch 50, with shared initialized state and batch order within architecture/seed. No new manuscript, generated reports, raw data, or large retrained weights included.",
+  "filter_revision_note": "Reviewer-directed exploratory fourth supervisory arm. Earlier18 CNN fits and protocols are preserved; six added fits match initial state, minibatch order and final epoch50. All80 ERP records are refitted for the100Hz sensitivity. Manuscript, generated reports, signals and large weights remain excluded."
 }
