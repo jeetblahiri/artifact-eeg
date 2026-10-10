@@ -8,6 +8,7 @@ __pycache__/
 /data/erp_core/*
 !/data/erp_core/manifest.json
 /results/
+/reports/
 /figures/
 /manuscript/
 *.tex

@@ -1,3 +1,31 @@
+# EEG benchmark validity and measurement preservation
+
+Analysis code by Jeet Bandhu Lahiri and Siddharth Panwar, Indian Institute of Technology Mandi.
+
+This repository tests a specific inference: recovery of a constructed EEG reference does not, by itself, establish preservation of neural activity. It implements reference-bias sensitivity bounds, a known-source counterexample, synthetic reconstruction comparisons, and independent ERP measurement assessments. It does not measure actual EEGdenoiseNet target impurity or establish that artifact correction is always harmful.
+
+The release contains executable code, numerical protocols, scientific contract tests, public-source checksum metadata, and the frozen compact baseline's tensor-only checkpoint. Manuscript files, raw recordings, generated signal arrays, and private research reports are excluded.
+
+## Paired CNN supervision and clean-input checks
+
+`nonlinear_revision_config.json` records the follow-up settings before the new fits. Both published CNN architectures are retrained on identical development-only ERP/EOG mixtures with parent, brain-only, or conservative recipe targets. Within each architecture and seed, initialized state, minibatch order, dropout seed, optimizer, input-derived scaling and **fixed final epoch 50** are shared; validation is diagnostic, without target-specific checkpoint selection. Three seeds give 18 fits. Pooled N170/P3 designs contain 20,000 training and 4,000 diagnostic validation rows. Fit/validation trial indices and EOG windows are separated, while development participants are shared; neighboring raw epochs may overlap. Mixture SNR uses centered signal power (variance) relative to added, zero-mean EOG variance; full-window means are retained, so this is not a total-RMS-power ratio when those means are nonzero.
+
+The original EEGdenoiseNet-trained CNNs are also checked on all 903 held-out EEG references **without added artifact**, and on ERP parent inputs with alternative centering, development-fitted channel scales and overlap-averaged genuine recording contexts. An identity screen is descriptive, not a requirement that an MMSE denoiser reproduce its input or proof that the references are pure neural voltage.
+
+After the preceding public-data caches, historical CNNs and affine designs are prepared:
+
+```sh
+python src/cnn_sanity.py
+python src/matched_cnn.py
+python src/matched_cnn_assessment.py
+python src/verify_nonlinear_revision.py
+python src/build_nonlinear_report.py
+```
+
+`matched_cnn_assessment.py --wait-for-models` can wait for complete architecture groups while training continues. It uses the same ten development and ten evaluation participants, frozen parent decoders, separately development-fitted adapted decoders, equal seed output averages, the exact saved EOG-test mixtures, and output-average-reference controls. Individual-seed ROI waveforms/features and all physical ensemble arrays are saved under ignored output directories. ERP-trained models are excluded from all-participant cross-fitting. No validation or ERP result is used to select their checkpoints.
+
+The independent checker regenerates initial-state and minibatch hashes, verifies fixed-duration pairing and source separation, rescores voltage/decoder endpoints and target-loss matrices, checks the exact reference/fit-residual contrast decomposition, and independently reruns every new checkpoint on four evaluation trials. The generated supplement and plots expose all seeds, histories and controls. These establish target-definition effects conditional on the fixed learning procedure and two automated constructions, not impurity of released labels or the cause of historical CNN failure. All analyses use an already inspected cohort and remain exploratory. Raw data, generated reports, large retrained weights and manuscript files are excluded from this code-only release.
+
 ## Direct reference and controlled-target follow-up
 
 `causal_revision_config.json` records the new exploratory experiments requested after the preceding review. These add the published EEGdenoiseNet simple CNN and complex residual CNN architectures, translated from pinned official source and retrained on source-isolated EOG mixtures, without ERP tuning. Three seeds, 50 epochs, RMSprop 5e-5, and validation-MSE checkpoint selection are explicit; these are architecture reproductions, not original pretrained weights or claims to replicate the authors' leaderboard. Inference uses equal seed averages and records individual evaluation-seed outputs.
@@ -27,14 +55,6 @@ All new means, intervals, individual seeds, cross-target loss matrices and cover
 `mne-icalabel==0.9.0` is included in the dependency lock. Public benchmark code licensing is reproduced in `THIRD_PARTY_NOTICES.md`. Third-party source/weights, the six newly trained CNN weights, raw data, generated results and manuscript files are excluded from this code release. The previously included compact baseline is retained. Model training uses a local GPU when available; CPU reproduction is substantially slower.
 
 Coverage diagnostics include the original seven-candidate envelope with/without regression, the exact exchangeable-rank distribution for the ICA failure count, 100,000 frozen-score reassignments with ties, and separate development-fit sensitivity. The unusual 5/10 ICA coverage is flagged, not rationalized as a heavy-tail effect or used to claim prospective validation. All-40 cross-fitting excludes the paired-target learners, whose ERP training participants would otherwise enter held-out folds.
-
-# EEG benchmark validity and measurement preservation
-
-Analysis code by Jeet Bandhu Lahiri and Siddharth Panwar, Indian Institute of Technology Mandi.
-
-This repository tests a specific inference: recovery of a constructed EEG reference does not, by itself, establish preservation of neural activity. It implements reference-bias sensitivity bounds, a known-source counterexample, synthetic reconstruction comparisons, and independent ERP measurement assessments. It does not measure actual EEGdenoiseNet target impurity or establish that artifact correction is always harmful.
-
-The release contains executable code, numerical protocols, scientific contract tests, public-source checksum metadata, and the frozen compact baseline's tensor-only checkpoint. Manuscript files, raw recordings, generated signal arrays, and private research reports are excluded.
 
 ## Environment and checks
 

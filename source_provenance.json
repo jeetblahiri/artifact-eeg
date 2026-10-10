@@ -168,6 +168,42 @@
       "executed_source_sha256": "8f524d51517790fdaae470b13ac6b8cb010fa7889288a7e2cfe94ee997fa789e",
       "release_sha256": "8f524d51517790fdaae470b13ac6b8cb010fa7889288a7e2cfe94ee997fa789e",
       "adaptation": "Unchanged executed revision source"
+    },
+    {
+      "path": "src/cnn_sanity.py",
+      "executed_source_sha256": "9b08526f04ca970692401feb117bff9e479d5719b763d44b159e285828eb9875",
+      "release_sha256": "9b08526f04ca970692401feb117bff9e479d5719b763d44b159e285828eb9875",
+      "adaptation": "Unchanged"
+    },
+    {
+      "path": "src/matched_cnn.py",
+      "executed_source_sha256": "b3e75bfee2310a4f3d280b0f84297098beb87f99b0fe5f9c718d620869c6a01c",
+      "release_sha256": "b3e75bfee2310a4f3d280b0f84297098beb87f99b0fe5f9c718d620869c6a01c",
+      "adaptation": "Unchanged"
+    },
+    {
+      "path": "src/matched_cnn_assessment.py",
+      "executed_source_sha256": "7b966bc19937a8c48b8990e9c0c0802e51878dff572795e5359860359afb43cb",
+      "release_sha256": "7b966bc19937a8c48b8990e9c0c0802e51878dff572795e5359860359afb43cb",
+      "adaptation": "Unchanged"
+    },
+    {
+      "path": "src/verify_nonlinear_revision.py",
+      "executed_source_sha256": "a273c2982363cf9aef0f00943d6441d6d48532cf733714b8a4e4f80272232a73",
+      "release_sha256": "a273c2982363cf9aef0f00943d6441d6d48532cf733714b8a4e4f80272232a73",
+      "adaptation": "Unchanged"
+    },
+    {
+      "path": "src/build_nonlinear_report.py",
+      "executed_source_sha256": "c67e55027a99a08110c750ae489dd2b78e1a44d75a83b9d5a0bbdca2085c5d8e",
+      "release_sha256": "c67e55027a99a08110c750ae489dd2b78e1a44d75a83b9d5a0bbdca2085c5d8e",
+      "adaptation": "Unchanged"
+    },
+    {
+      "path": "nonlinear_revision_config.json",
+      "executed_source_sha256": "f799f8f01274982299567537dabff013feecc626feee514b68e31e567b4b025d",
+      "release_sha256": "f799f8f01274982299567537dabff013feecc626feee514b68e31e567b4b025d",
+      "adaptation": "Unchanged"
     }
   ],
   "original_configuration_sha256": {
@@ -177,5 +213,6 @@
     "tim_revision_config.json": "93a057b244adaf82ddd76957608b4c8710d20d15418c4362773666175d872c2e"
   },
   "pinned_erp_manifest_sha256": "71831eb7ad022ec998fdf30192c78f1a71256cd367e4a5ec84c6c88ec53b6f8d",
-  "revision_note": "Follow-up 10/20/10 analysis after inspection of earlier ERP results. Original 20/10/10 code/settings are retained. Reference-audit release changes its input bank path only; new runs fingerprint their own source. No generated historical signals or manuscript are included."
+  "revision_note": "Follow-up 10/20/10 analysis after inspection of earlier ERP results. Original 20/10/10 code/settings are retained. Reference-audit release changes its input bank path only; new runs fingerprint their own source. No generated historical signals or manuscript are included.",
+  "nonlinear_revision_note": "Exploratory paired-CNN target intervention on the inspected cohort. All 18 fits use epoch 50, with shared initialized state and batch order within architecture/seed. No new manuscript, generated reports, raw data, or large retrained weights included."
 }
